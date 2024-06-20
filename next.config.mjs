@@ -5,6 +5,10 @@ const nextConfig = {
           {
             source: '/login',
             destination: '/appPages/login',
+          },
+          {
+            source: '/budget',
+            destination: '/appPages/budget',
           }
         ]
     }

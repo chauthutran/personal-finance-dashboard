@@ -17,7 +17,7 @@ export default function Home() {
 		<main >
 			<Header />
 
-			<HomePage />	
+			<HomePage />
 
 			<Footer />
 		</main>

@@ -9,10 +9,12 @@ export const cloneJSONObject = ( obj: JSONObject | JSONObject[]) => {
     return JSON.parse(JSON.stringify(obj));
 }
 
-export const formatDate = ( date: Date) => {
-    const month =  String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${date.getFullYear()}-${month}-${day}`;
+export const formatDate = ( dateStr: string) => {
+    // const month =  String(date.getMonth() + 1).padStart(2, '0');
+    // const day = String(date.getDate()).padStart(2, '0');
+    // return `${date.getFullYear()}-${month}-${day}`;
+
+    return dateStr.substring(0, 10);
 }
 
 export const createEmptyClientData = (): JSONObject => {
@@ -78,4 +80,19 @@ export const findAndReplaceItemFromList = function( list: JSONObject[], searchVa
 
 export const createMessage = (type: string = "", msg: string = ""): Message => {
     return { type, msg };
+}
+
+export const convertUrlSearchParamToJson = (urlSearchParams: URLSearchParams): JSONObject => {
+    const json = {} as JSONObject;
+    for (const [key, value] of urlSearchParams) {
+      json[key] = value;
+    }
+    
+    return json;
+  }
+
+export const isEmptyJSON = ( obj: JSONObject ): boolean => {
+    console.log(obj);
+    console.log(Object.keys(obj));
+    return Object.keys(obj).length === 0;
 }

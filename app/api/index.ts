@@ -1,6 +1,6 @@
 
 
-export * from "./auth.api";
+export * from "./auth/login/route";
 
 // global.myGlobalVar = "Hello, world!"; // Assign a value to the global variable
 
