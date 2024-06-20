@@ -1,0 +1,26 @@
+
+export const SET_LOGIN_USER_DATA = "SET_LOGIN_USER_DATA";
+
+
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
+
+
+export const LOGOUT = "LOGOUT";
+
+
+export const SET_MAIN_PAGE = "SET_MAIN_PAGE";
+export const SET_SELECTED_CLIENT = "SET_SELECTED_CLIENT";
+
+
+export const UI_LOGIN_PAGE = "UI_LOGIN_PAGE";
+export const UI_CLIENT_LIST = "UI_CLIENT_LIST";
+export const UI_CLIENT_DETAILS = "UI_CLIENT_DETAILS";
+export const UI_ADD_CLIENT_FORM = "UI_ADD_CLIENT_FORM";
+
+
+export const ALERT_TYPE_INFO = "ALERT_TYPE_INFO";
+export const ALERT_TYPE_SUCCESS = "ALERT_TYPE_SUCCESS";
+export const ALERT_TYPE_WARNNG = "ALERT_TYPE_WARNNG";
+export const ALERT_TYPE_ERROR = "ALERT_TYPE_ERROR";
