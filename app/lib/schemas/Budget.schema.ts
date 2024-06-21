@@ -5,6 +5,8 @@ import { mongoose } from "@/lib/db";
 const BudgetSchema = new Schema ( 
     {
         userId: { type: String, required: true },
+        name: { type: String, required: true },
+        description: { type: String, required: false },
         category: { type: String, required: true },
         amount: { type: String, required: true },
         startDate: { type: Date, required: true },

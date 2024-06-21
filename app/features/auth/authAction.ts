@@ -1,7 +1,5 @@
-import * as api from '@/api';
-import { JSONObject, ActionType, ResponseData } from "@/lib/definations";
+import { ActionType } from "@/lib/definations";
 import * as Constant from "@/lib/constants";
-import * as Utils from "@/lib/utils";
 
 
 export const login = (username: string, password: string) => {
@@ -21,11 +19,11 @@ export const login = (username: string, password: string) => {
             }
             else {
                     
-                const userData = await response.json();
-                if (!Utils.isEmptyJSON(userData) ) {
+                const userList = await response.json();
+                if (userList.length > 0 ) {
                     dispatch({
                         type: Constant.LOGIN_SUCCESS,
-                        payload: userData
+                        payload: userList[0]
                     })
                 }
                 else {

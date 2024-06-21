@@ -1,25 +1,31 @@
 /** The login page for user authentication. Contains the LoginForm component. */
 
+"use client";
+
 import { CiUser } from "react-icons/ci";
 import { useEffect, useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 import { IoKeyOutline } from "react-icons/io5";
 import * as Constant from '@/lib/constants';
-import * as api from '@/api';
 import useAppHook from "@/features/hooks";
+import { useRouter } from "next/router";
+import * as Utils from "@/lib/utils";
 
 export default function LoginForm() {
 
-	const { statusData, login, setMainUi } = useAppHook();
+    // const router = useRouter();
+
+	const { statusData, currentUser, login, setMainUi } = useAppHook();
 
 	const [username, setUsername] = useState("test1");
 	const [password, setPassword] = useState("1234");
+	
 
 	// useEffect(() => {
-	//   if( statusData.status != Constant.LOGIN_SUCCESS ) {
-	//     // setMainUi(Constant.UI_CLIENT_LIST);
+	//   if( Utils.isEmptyJSON( currentUser ) ) {
+	//     router.push("/budget");
 	//   }
-	// },[statusData])
+	// },[currentUser])
 
 	const loginBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();

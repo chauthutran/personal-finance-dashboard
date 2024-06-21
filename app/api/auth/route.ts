@@ -13,8 +13,8 @@ export async function GET( request, {params}) {
     const searchValues: URLSearchParams = url.searchParams;
     
     const searchResult = await User.find( Utils.convertUrlSearchParamToJson(searchValues) );
-    const userData = ( searchResult.length > 0 ) ? Utils.converDbObjectToJson(searchResult[0]) : {};
+    const userList = ( searchResult.length > 0 ) ? Utils.converDbObjectToJson(searchResult) : [{}];
 
 
-    return NextResponse.json(userData, {status: 200});
+    return NextResponse.json(userList, {status: 200});
 }
