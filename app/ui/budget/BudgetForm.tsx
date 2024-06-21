@@ -6,20 +6,24 @@ import { JSONObject } from '@/lib/definations';
 import React, { useState } from 'react';
 import * as Utils from "@/lib/utils";
 
-export default function BudgetForm({ data = {} }: { data: JSONObject }) {
+export default function BudgetForm({ userId, data = {} as JSONObject}) {
 
-	const { saveBudget } = useAppHook();
+	const { saveBudget, setSubPage } = useAppHook();
 
 	const [budget, setBudget] = useState(data);
 
-	const setValues = (proName: string, value: string | Date) => {
+	const setValues = (propName: string, value: string | Date) => {
 		const tempData = Utils.cloneJSONObject(budget);
+		tempData[propName] = value;
+
 		setBudget(tempData);
 	}
 
 	const handleOnSave = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
+		budget.userId = userId;
+		console.log(budget);
 		saveBudget(budget);
 	};
 

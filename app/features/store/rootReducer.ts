@@ -8,7 +8,7 @@ import BudgetReducer from "@/features/budget/budgetReducer";
 const rootReducer = combineReducers({
     statusData: StatusReducer,
     authData: AuthenticateReducer,
-    mainUi: MainUiReducer,
+    mainPage: MainUiReducer,
     budget: BudgetReducer
 });
 

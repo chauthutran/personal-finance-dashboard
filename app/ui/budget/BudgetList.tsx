@@ -5,43 +5,33 @@ import { useEffect, useState } from "react"
 import BudgetItem from "./BudgetItem"
 import { JSONObject } from "@/lib/definations";
 import useAppHook from "@/features/hooks";
+import * as Constant from "@/lib/constants";
 
-export default async function BudgetList({user}: {user: JSONObject}) {
+export default function BudgetList({user}: {user: JSONObject}) {
+	console.log("====== BudgetList");
 console.log(user);
 	const userId = (user) ? user._id : "";
 
-	const { budgetList, fetchBudgetList } = useAppHook();
+	const { budgetList, fetchBudgetList, setSubPage } = useAppHook();
 
-	// const budgetList = await fetchBudgetList(userId);
-	// const [budgetList, setBudgetList] = useState<JSONObject[]>([]);
-	// const [error, setError] = useState<string>("");
-
-	// const fetchBudget = async() => {
-	// 	const response = await fetch(`api/budget?userId=${userId}`);
-
-	// 	if (!response.ok) {
-	// 		setError("Network response was not ok");
-	// 	}
-	// 	else {
-	// 		const list = await response.json();
-	// 		setBudgetList(list);
-	// 	}
-	// }
-
-	// useEffect(()=> {
-	// 	if( budgetList == null ) {
-	// 		fetchBudgetList(userId);
-	// 	}
-	// }, [budgetList]);
+	useEffect(()=> {
+		if( budgetList == null ) {
+			fetchBudgetList(userId);
+		}
+	}, []);
 
     return (
 		<>
-			<div className="divSiceNav w-10 hidden bg-gray-700 text-gray-300 p-1">m1</div>
 			<div className="divMainList m-1 grid h-[calc(100vh-90px)] flex-1 content-start gap-1 overflow-x-auto border-0 border-gray-400 md:grid-cols-2">
 				{budgetList && budgetList.map( (budget: JSONObject) => (
 					<BudgetItem key={budget._id} data={budget}  />
 				))}
 			</div>
+
+			{/* <!-- Floating Button --> */}
+			<button className="fixed bottom-16 right-5 w-14 h-14 bg-sal bg-yellow-500 hover:bg-yellow-600 text-black rounded-full shadow-lg flex items-center justify-center text-2xl"
+			onClick={()=> setSubPage(Constant.UI_BUDGET_ADD_FORM)}> + </button>
+			
 		</>
     )
 }

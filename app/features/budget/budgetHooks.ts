@@ -15,12 +15,12 @@ const useBudget = () => {
     // --------- For 'Budget' actions
     
     const fetchBudgetList = useCallback((userId: string) => {
-        dispatch(actions.fetchBudgetList( userId) );
+        dispatch( actions.fetchBudgetList( userId) );
     }, [dispatch]);
 
 
     const saveBudget = useCallback((budget: JSONObject) => {
-        dispatch(actions.saveBudget(budget));
+        dispatch( actions.saveBudget(budget) );
     }, [dispatch]);
 
     // END - For 'Budget' actions ----------------

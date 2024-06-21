@@ -5,7 +5,7 @@ export const fetchBudgetList = (userId: string ) => {
 
     return async (dispatch: (arg0: ActionType) => void) => {
 		dispatch({
-            type: Constant.LOGIN_REQUEST
+            type: Constant.FETCH_BUDGET_lIST_REQUEST
         });
 		
         try {
@@ -19,14 +19,14 @@ export const fetchBudgetList = (userId: string ) => {
             else {
                 const budgetList = await response.json();
                  dispatch({
-                    type: Constant.LOGIN_SUCCESS,
+                    type: Constant.FETCH_BUDGET_lIST_SUCCESS,
                     payload: budgetList
                 })
             }
         }
         catch( ex ) {
             dispatch({
-                type: Constant.LOGIN_FAILURE,
+                type: Constant.FETCH_BUDGET_lIST_FAILURE,
                 payload: `Fetching budget list failed. ${ex.message}`
             })
         }

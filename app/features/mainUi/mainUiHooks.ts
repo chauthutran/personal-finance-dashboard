@@ -1,5 +1,5 @@
-import { getMainUi } from './mainUiSelectors';
-import { setCurrentUi } from './mainUiActions';
+import { getMainPage, getSubPage } from './mainUiSelectors';
+import { setMainPage, setSubPage } from './mainUiActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { useCallback } from 'react';
@@ -9,14 +9,21 @@ const useStatus = () => {
     
     const dispatch = useDispatch<AppDispatch>();
 
-    const mainUi = useSelector((state: RootState) => getMainUi(state));
+    const mainPage = useSelector((state: RootState) => getMainPage(state));
+    const subPage = useSelector((state: RootState) => getSubPage(state));
 
-    const handleSetMainUi = useCallback((uiName: string) => {
-        dispatch(setCurrentUi(uiName));
+
+    const handleSetMainPage = useCallback((uiName: string) => {
+        dispatch(setMainPage(uiName));
+    }, [dispatch]);
+
+    
+    const handleSetSubPage = useCallback((uiName: string) => {
+        dispatch(setSubPage(uiName));
     }, [dispatch]);
 
 
-    return { mainUi, setMainUi: handleSetMainUi };
+    return { mainPage, subPage, setMainPage: handleSetMainPage, setSubPage: handleSetSubPage };
 };
 
 export default useStatus;

@@ -9,8 +9,8 @@ const BudgetSchema = new Schema (
         description: { type: String, required: false },
         category: { type: String, required: true },
         amount: { type: String, required: true },
-        startDate: { type: Date, required: true },
-        endDate: { type: Date, required: true },
+        startDate: { type: Date, required: true, default: Date.now },
+        endDate: { type: Date, required: true, default: Date.now },
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now }
     },

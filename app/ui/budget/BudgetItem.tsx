@@ -20,9 +20,9 @@ export default function BudgetItem({data} : {data: JSONObject}) {
             <img className="" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="" title="" />
         </div>
         <div className="p-1">
-            <div className="min-h-[20px] font-semibold">{data.amount}</div>
-            <div className="min-h-[20px]">budget.category</div>
-            <div className="min-h-[20px]">Date: {Utils.formatDate(data.startDate)} - {Utils.formatDate(data.endDate)}</div>
+            <div className="min-h-[20px] font-semibold">{data.name} - {data.amount}$ </div>
+            <div className="min-h-[20px]">{data.category} ( {data.description } )</div>
+            <div className="min-h-[20px]">From {Utils.formatDate(data.startDate)} to {Utils.formatDate(data.endDate)}</div>
         </div>
     </div>
     )

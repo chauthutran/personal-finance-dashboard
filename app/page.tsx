@@ -9,7 +9,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import useAppHook from "./features/hooks";
 import Header from "./ui/layout/Header";
 import Footer from "./ui/layout/Footer";
-import HomePage from "./appPages/page";
+import AppWrapper from "./ui/AppWrapper";
 
 export default function Home() {
 
@@ -17,7 +17,7 @@ export default function Home() {
 		<main >
 			<Header />
 
-			<HomePage />
+			<AppWrapper />
 
 			<Footer />
 		</main>

@@ -20,6 +20,7 @@ export const login = (username: string, password: string) => {
             else {
                     
                 const userList = await response.json();
+                console.log(userList);
                 if (userList.length > 0 ) {
                     dispatch({
                         type: Constant.LOGIN_SUCCESS,

@@ -8,30 +8,29 @@ import { FaSpinner } from 'react-icons/fa';
 import { IoKeyOutline } from "react-icons/io5";
 import * as Constant from '@/lib/constants';
 import useAppHook from "@/features/hooks";
-import { useRouter } from "next/navigation";
 import * as Utils from "@/lib/utils";
 
 export default function LoginForm() {
 
-    const router = useRouter();
-
-	const { statusData, currentUser, login, setMainUi } = useAppHook();
+	const { statusData, currentUser, login, setMainPage , setSubPage } = useAppHook();
 
 	const [username, setUsername] = useState("test1");
 	const [password, setPassword] = useState("1234");
 	
 
 	useEffect(() => {
-	  if( Utils.isEmptyJSON( currentUser ) ) {
-	    router.push("/budget");
+	  if( currentUser != null ) {
+	    setMainPage( Constant.UI_BUDGET_PAGE );
+		setSubPage ( Constant.UI_BUDGET_LIST );
 	  }
-	},[currentUser, router])
+	},[currentUser])
 
 	const loginBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
 		login(username, password);
 	};
+	
 
 	return (
 		<div className="max-w-md mx-auto p-8 h-[calc(100vh-138px)]">
