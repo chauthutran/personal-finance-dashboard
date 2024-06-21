@@ -21,7 +21,6 @@ export default function LoginForm() {
 	useEffect(() => {
 	  if( currentUser != null ) {
 	    setMainPage( Constant.UI_BUDGET_PAGE );
-		setSubPage ( Constant.UI_BUDGET_LIST );
 	  }
 	},[currentUser])
 

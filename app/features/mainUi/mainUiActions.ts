@@ -9,7 +9,7 @@ export const setMainPage = (uiName: string) => {
     }
 }
 
-export const setSubPage = (uiName: string) => {
+export const setSubPage = (uiName: string | null) => {
     return {
         type: Constant.SET_SUB_PAGE,
         payload: uiName

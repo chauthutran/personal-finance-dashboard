@@ -5,6 +5,7 @@ import useAppHook from '@/features/hooks';
 import { JSONObject } from '@/lib/definations';
 import React, { useState } from 'react';
 import * as Utils from "@/lib/utils";
+import DateField from '../basics/DateField';
 
 export default function BudgetForm({ userId, data = {} as JSONObject}) {
 
@@ -12,11 +13,24 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 
 	const [budget, setBudget] = useState(data);
 
-	const setValues = (propName: string, value: string | Date) => {
-		const tempData = Utils.cloneJSONObject(budget);
-		tempData[propName] = value;
+	const setValue = (propName: string, value: string | Date | null) => {
+		// const tempData = Utils.cloneJSONObject(budget);
+		// tempData[propName] = value;
 
-		setBudget(tempData);
+		// setBudget(tempData);
+
+		var tempData = Utils.cloneJSONObject(data);
+        if( value == null ) {
+            tempData[propName] = "";
+        }
+        else if( value instanceof Date ) {
+            tempData[propName] = value.toISOString();
+        }
+        else {
+            tempData[propName] = value;
+        }
+        
+        setBudget( tempData );
 	}
 
 	const handleOnSave = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,13 +60,13 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 				<div>
 					<div className="mb-4">
 						<label className="block text-gray-700 mb-2" htmlFor="name">
-							Budget Name
+							Name
 						</label>
 						<input
 							type="text"
 							id="name"
 							value={budget.budgetName}
-							onChange={(e) => setValues("name", e.target.value)}
+							onChange={(e) => setValue("name", e.target.value)}
 							className="w-full p-2 border border-gray-300 rounded"
 							required
 						/>
@@ -65,7 +79,7 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 							type="number"
 							id="amount"
 							value={budget.amount}
-							onChange={(e) => setValues("amount", e.target.value)}
+							onChange={(e) => setValue("amount", e.target.value)}
 							className="w-full p-2 border border-gray-300 rounded"
 							required
 						/>
@@ -77,7 +91,7 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 						<select
 							id="category"
 							value={budget.category}
-							onChange={(e) => setValues("category", e.target.value)}
+							onChange={(e) => setValue("category", e.target.value)}
 							className="w-full p-2 border border-gray-300 rounded"
 							required
 						>
@@ -96,10 +110,39 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 						<textarea
 							id="description"
 							value={budget.description}
-							onChange={(e) => setValues("description", e.target.value)}
+							onChange={(e) => setValue("description", e.target.value)}
 							className="w-full p-2 border border-gray-300 rounded"
 						/>
 					</div>
+
+					<div className="mb-4">
+						<label className="block text-gray-700 mb-2" htmlFor="startDate">
+							Start Date
+						</label>
+						<DateField 
+							id="startDate"
+							handleOnChange={(date: Date | null) => setValue("startDate", date)}
+							value={budget.startDate}
+							className="w-full p-2 border border-gray-300 rounded"
+							disabled={false}
+						/>
+					</div>
+
+
+					<div className="mb-4">
+						<label className="block text-gray-700 mb-2" htmlFor="startDate">
+							End Date
+						</label>
+						<DateField 
+							id="endDate"
+							handleOnChange={(date: Date | null) => setValue("endDate", date)}
+							value={budget.startDate}
+							className="w-full p-2 border border-gray-300 rounded"
+							disabled={false}
+						/>
+					</div>
+					
+
 					<div className="flex justify-between items-center">
 						<button
 							type="submit"

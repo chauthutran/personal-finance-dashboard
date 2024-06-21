@@ -18,7 +18,7 @@ const useStatus = () => {
     }, [dispatch]);
 
     
-    const handleSetSubPage = useCallback((uiName: string) => {
+    const handleSetSubPage = useCallback((uiName: string | null) => {
         dispatch(setSubPage(uiName));
     }, [dispatch]);
 
