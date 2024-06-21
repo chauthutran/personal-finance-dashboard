@@ -11,7 +11,7 @@ export async function GET( request: NextRequest, {params}) {
     const searchValues: URLSearchParams = url.searchParams;
     
     const searchResult = await Budget.find( Utils.convertUrlSearchParamToJson(searchValues) );
-    const userData = ( searchResult.length > 0 ) ? Utils.converDbObjectToJson(searchResult[0]) : {};
+    const userData = ( searchResult.length > 0 ) ? Utils.converDbObjectToJson(searchResult) : [];
 
     return NextResponse.json(userData, {status: 200});
 }

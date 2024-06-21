@@ -92,7 +92,5 @@ export const convertUrlSearchParamToJson = (urlSearchParams: URLSearchParams): J
   }
 
 export const isEmptyJSON = ( obj: JSONObject ): boolean => {
-    console.log(obj);
-    console.log(Object.keys(obj));
-    return Object.keys(obj).length === 0;
+    return obj === null || Object.keys(obj).length === 0;
 }

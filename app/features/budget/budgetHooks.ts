@@ -11,8 +11,14 @@ const useBudget = () => {
 
     const budgetList = useSelector((state: RootState) => getBudgetList(state));
 
+    
     // --------- For 'Budget' actions
     
+    const fetchBudgetList = useCallback((userId: string) => {
+        dispatch(actions.fetchBudgetList( userId) );
+    }, [dispatch]);
+
+
     const saveBudget = useCallback((budget: JSONObject) => {
         dispatch(actions.saveBudget(budget));
     }, [dispatch]);
@@ -22,7 +28,8 @@ const useBudget = () => {
 
     return { 
         budgetList,
-        saveBudget
+        saveBudget,
+        fetchBudgetList
      };
 };
 
