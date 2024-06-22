@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from "react";
-import useAppHook from "@/features/hooks";
 import * as Constant from "@/lib/constants";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMainUi } from "@/contexts/MainUiContext";

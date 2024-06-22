@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 import { IoKeyOutline } from "react-icons/io5";
 import * as Constant from '@/lib/constants';
-import useAppHook from "@/features/hooks";
 import * as Utils from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMainUi } from "@/contexts/MainUiContext";

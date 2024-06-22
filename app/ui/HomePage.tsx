@@ -1,4 +1,3 @@
-import useAppHook from "@/features/hooks";
 import * as Constant from "@/lib/constants";
 
 export default function HomePage() {

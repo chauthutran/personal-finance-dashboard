@@ -4,17 +4,12 @@
 import { useEffect, useState } from "react"
 import BudgetItem from "./BudgetItem"
 import { JSONObject } from "@/lib/definations";
-// import useAppHook from "@/features/hooks";
 import * as Constant from "@/lib/constants";
 import { useBudget } from "@/contexts/BudgetContext";
-// import { setSubPage } from "@/features/mainUi/mainUiActions";
 import { useMainUi } from "@/contexts/MainUiContext";
 
 export default function BudgetList() {
-	// const userId = (user) ? user._id.toString() : "";
-
-	// const { budgetList, fetchBudgetList, setSubPage } = useAppHook();
-
+	
 	const { setSubPage } = useMainUi();
 	const { userId, budgetList } = useBudget();
 
