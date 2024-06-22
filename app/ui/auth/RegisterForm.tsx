@@ -7,21 +7,23 @@ import { useEffect, useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 import { IoKeyOutline } from "react-icons/io5";
 import * as Constant from '@/lib/constants';
-import useAppHook from "@/features/hooks";
 import * as Utils from "@/lib/utils";
 import { JSONObject } from "@/lib/definations";
+import { useMainUi } from "@/contexts/MainUiContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function RegisterForm() {
 
-	const { statusData, currentUser, register, setMainPage } = useAppHook();
+	const { setMainPage } = useMainUi();
+	const { loading, error, user, register} = useAuth();
 
     const [data, setData] = useState<JSONObject>({});
 
 	useEffect(() => {
-	  if( currentUser != null ) {
+	  if( user != null ) {
 	    setMainPage( Constant.UI_BUDGET_PAGE );
 	  }
-	},[currentUser])
+	},[user])
 
     const setDataValue = ( propName: string, value: string ) => {
         let tempData = Utils.cloneJSONObject(data);
@@ -140,7 +142,7 @@ export default function RegisterForm() {
 				<div className="flex justify-between space-x-4">
 					<button className="grid-cols-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" style={{width: "45%"}} onClick={(e) => handleRegisterBtn(e)} >
 						Register
-						{statusData.status == Constant.LOGIN_REQUEST && <FaSpinner className="ml-auto  h-5 text-gray-50" />}
+						{loading && <FaSpinner className="ml-auto  h-5 text-gray-50" />}
 					</button>
 
 					<button onClick={(e) => handleCancelBtn()} className="grid-cols-1 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" style={{width: "45%"}}>
@@ -148,7 +150,7 @@ export default function RegisterForm() {
 					</button>
 				</div>
 				<div className="flex h-8 items-end space-x-1">
-					{statusData.status == Constant.LOGIN_FAILURE && <p>{statusData.message}</p>}
+					{error !== null && <p>{error}</p>}
 				</div>
 				
 

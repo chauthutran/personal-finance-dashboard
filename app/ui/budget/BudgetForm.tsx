@@ -1,7 +1,6 @@
 /** Form component for setting or updating the user's budget */
 
 "use client";
-import useAppHook from '@/features/hooks';
 import { JSONObject } from '@/lib/definations';
 import React, { useState } from 'react';
 import * as Utils from "@/lib/utils";

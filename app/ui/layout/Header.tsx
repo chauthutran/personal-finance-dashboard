@@ -1,4 +1,3 @@
-import useAppHook from "@/features/hooks";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import * as Constant from "@/lib/constants";
 import { IoMenuOutline } from "react-icons/io5";
