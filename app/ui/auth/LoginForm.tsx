@@ -24,11 +24,19 @@ export default function LoginForm() {
 	  }
 	},[currentUser])
 
-	const loginBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+	const handleLoginBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
 		login(username, password);
 	};
+	
+    const handleCancelBtn = () => {
+        const ok = confirm("Are you sure you don't want to login ?")
+        if( ok ) {
+            setMainPage(Constant.UI_INTRO_PAGE);
+        }
+    }
 	
 
 	return (
@@ -80,12 +88,12 @@ export default function LoginForm() {
 				</div>
 
 				<div className="flex justify-between space-x-4">
-					<button className="grid-cols-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" style={{width: "45%"}} onClick={(e) => loginBtnClick(e)} >
+					<button className="grid-cols-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" style={{width: "45%"}} onClick={(e) => handleLoginBtn(e)} >
 						Log in
 						{statusData.status == Constant.LOGIN_REQUEST && <FaSpinner className="ml-auto  h-5 text-gray-50" />}
 					</button>
 
-					<button className="grid-cols-1 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" style={{width: "45%"}}>
+					<button onClick={() => handleCancelBtn()} className="grid-cols-1 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" style={{width: "45%"}}>
 						Cancel
 					</button>
 				</div>

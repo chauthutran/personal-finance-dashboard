@@ -21,6 +21,10 @@ const useAuth = () => {
         dispatch(actions.logout());
     }, [dispatch]);
 
+    const register = useCallback((user: JSONObject) => {
+        dispatch(actions.register(user));
+    }, [dispatch]);
+
 
     // END - For 'ClientData' actions ----------------
 
@@ -28,7 +32,8 @@ const useAuth = () => {
     return { 
         currentUser,
         login,
-        logout
+        logout,
+        register
      };
 };
 

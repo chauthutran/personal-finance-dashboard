@@ -50,7 +50,9 @@ export const saveBudget = (budget: JSONObject) => {
                 },
                 body: JSON.stringify(budget)
             })
-
+            var fasdfa = await response.json();
+console.log("=============== after saving ");
+console.log(fasdfa);
             if( !response.ok ){
                 dispatch({
                     type: Constant.SAVE_BUDGET_FAILURE,
@@ -60,7 +62,7 @@ export const saveBudget = (budget: JSONObject) => {
             else {
                 dispatch({
                     type: Constant.SAVE_BUDGET_SUCCESS,
-                    payload: await response.json()
+                    payload: fasdfa
                 })
             }
         }

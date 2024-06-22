@@ -8,8 +8,7 @@ import useAppHook from "@/features/hooks";
 import * as Constant from "@/lib/constants";
 
 export default function BudgetList({user}: {user: JSONObject}) {
-	
-	const userId = (user) ? user._id : "";
+	const userId = (user) ? user._id.toString() : "";
 
 	const { budgetList, fetchBudgetList, setSubPage } = useAppHook();
 

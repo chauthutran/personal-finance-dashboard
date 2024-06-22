@@ -6,20 +6,16 @@ import { JSONObject } from '@/lib/definations';
 import React, { useState } from 'react';
 import * as Utils from "@/lib/utils";
 import DateField from '../basics/DateField';
+import mongoose from 'mongoose';
 
 export default function BudgetForm({ userId, data = {} as JSONObject}) {
 
-	const { saveBudget, setSubPage } = useAppHook();
+	const { saveBudget } = useAppHook();
 
 	const [budget, setBudget] = useState(data);
 
 	const setValue = (propName: string, value: string | Date | null) => {
-		// const tempData = Utils.cloneJSONObject(budget);
-		// tempData[propName] = value;
-
-		// setBudget(tempData);
-
-		var tempData = Utils.cloneJSONObject(data);
+		var tempData = Utils.cloneJSONObject(budget);
         if( value == null ) {
             tempData[propName] = "";
         }
@@ -36,7 +32,7 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 	const handleOnSave = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		budget.userId = userId;
+		budget.userId = new mongoose.Types.ObjectId(userId);
 		console.log(budget);
 		saveBudget(budget);
 	};

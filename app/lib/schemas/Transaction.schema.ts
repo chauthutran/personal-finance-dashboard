@@ -4,7 +4,12 @@ import {  Schema } from "mongoose";
 import { mongoose } from "@/lib/db";
 const TransactionSchema = new Schema ( 
     {
-        userId: { type: String, required: true },
+        // userId: { type: String, required: true },
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User',
+        },
         amount: { type: String, required: true },
         description: { type: String, required: true },
         type: { type: String, required: true },  // "income" or "expense"

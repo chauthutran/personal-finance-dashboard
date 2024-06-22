@@ -8,9 +8,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET( request: NextRequest, {params}) {
     const url = new URL(request.url);
-    const searchValues: URLSearchParams = url.searchParams;
+	const searchValues = Utils.convertUrlSearchParamToJson( url.searchParams );
     
-    const searchResult = await Budget.find( Utils.convertUrlSearchParamToJson(searchValues) );
+    const userId = searchValues.userId;
+	if(  userId != undefined ) {
+		searchValues.userId = new mongoose.Types.ObjectId( userId as string );
+	}
+
+    console.log("---------------- searchValues");
+    console.log(searchValues);
+    // const searchResult = await Budget.find(searchValues);
+    const searchResult = await Budget.find({userId: new mongoose.Types.ObjectId( userId as string )});
+
+
     const userData = ( searchResult.length > 0 ) ? Utils.converDbObjectToJson(searchResult) : [];
 
     return NextResponse.json(userData, {status: 200});
