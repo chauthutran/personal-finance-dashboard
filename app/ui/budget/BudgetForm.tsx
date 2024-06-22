@@ -12,7 +12,7 @@ import Alert from '../basics/Alert';
 import * as Constant from '@/lib/constants';
 import { useBudget } from '@/contexts/BudgetContext';
 
-export default function BudgetForm({ userId, data = {} as JSONObject }) {
+export default function BudgetForm({ data = {} as JSONObject }) {
 
 	const categories = [
 		'Housing',
@@ -26,7 +26,7 @@ export default function BudgetForm({ userId, data = {} as JSONObject }) {
 		'Miscellaneous'
 	];
 
-	const { error, saveBudget } = useBudget();
+	const { userId, loading, error, saveBudget } = useBudget();
 
 	const [budget, setBudget] = useState(data);
 
@@ -49,7 +49,6 @@ export default function BudgetForm({ userId, data = {} as JSONObject }) {
 		event.preventDefault();
 
 		budget.userId = new mongoose.Types.ObjectId(userId);
-		console.log(budget);
 		saveBudget(budget);
 	};
 
@@ -60,7 +59,7 @@ export default function BudgetForm({ userId, data = {} as JSONObject }) {
 
 	return (
 		<div className="h-[calc(100vh-120px)] mt-5 overflow-x-auto  border-gray-400 ">
-			{/* {statusData.status == Constant.SAVE_BUDGET_FAILURE && <Alert type={statusData.type} message={statusData.message} />} */}
+			
 			<div className="flex items-center justify-center ">
 				<div className="p-6 rounded border-2 bg-slate-100 shadow-md w-full max-w-md">
 					<h2 className="text-2xl mb-4 text-center">{setTitle()}</h2>

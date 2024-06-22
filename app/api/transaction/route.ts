@@ -34,7 +34,7 @@ export async function POST( request: NextRequest ) {
 export async function PUT( request: NextRequest, {params} ) {
     const payload: JSONObject = await request.json();
 
-    const newBudget = await Transaction.findByIdAndUpdate(payload._id, payload);
+    const newBudget = await Transaction.findByIdAndUpdate(payload._id, payload, { new: true });
 
     return NextResponse.json(newBudget, {status: 200 })
 }

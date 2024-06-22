@@ -5,13 +5,13 @@ import { JSONObject } from "@/lib/definations";
 import * as Utils from "@/lib/utils";
 import * as AppStore from "@/lib/appStore";
 import * as Constant from "@/lib/constants";
-import useAppHook from "@/features/hooks";
 import { AiFillDollarCircle } from "react-icons/ai";
+import { useMainUi } from "@/contexts/MainUiContext";
 
 
 export default function BudgetItem({data} : {data: JSONObject}) {
 
-    const { setSubPage } = useAppHook();
+    const { setSubPage } = useMainUi();
 
     const setSelectedBudget = () => {
         AppStore.setSelected(data);

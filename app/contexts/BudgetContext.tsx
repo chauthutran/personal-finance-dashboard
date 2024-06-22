@@ -11,6 +11,7 @@ interface BudgetContextProps {
     saveBudget: (budget: JSONObject) => Promise<void>;
 	deleteBudget: (budget: JSONObject) => Promise<void>;
     error: string | null;
+    loading: boolean;
 }
 
 const BudgetContext = createContext<BudgetContextProps>({
@@ -18,7 +19,8 @@ const BudgetContext = createContext<BudgetContextProps>({
 	budgetList: null,
 	saveBudget: async(budget: JSONObject) => {},
 	deleteBudget: async(budget: JSONObject) => {},
-    error: null
+    error: null,
+    loading: false
 });
 
 export const useBudget = (): BudgetContextProps => {
@@ -32,6 +34,7 @@ export const useBudget = (): BudgetContextProps => {
 export const BudgetProvider = ({ userId, children }: { userId: string, children: ReactNode }) => {
     const [budgetList, setBudgetList] = useState<JSONObject[] | null>(null);
 	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		fetchBudgetList()
@@ -56,6 +59,7 @@ export const BudgetProvider = ({ userId, children }: { userId: string, children:
 	};
 
     const saveBudget = async(budget: JSONObject) => { 
+        setLoading(true);
         setError(null);
 
         try {
@@ -91,6 +95,9 @@ export const BudgetProvider = ({ userId, children }: { userId: string, children:
         catch( err ) {
             setError(Utils.getErrMessage(err));
         }
+        finally {
+            setLoading(false);
+        }
     }
  
     const deleteBudget = async(budget: JSONObject) => { 
@@ -115,7 +122,7 @@ export const BudgetProvider = ({ userId, children }: { userId: string, children:
     }
 
 	return (
-		<BudgetContext.Provider value={{ userId, error, budgetList, saveBudget, deleteBudget }}>
+		<BudgetContext.Provider value={{ userId, loading, error, budgetList, saveBudget, deleteBudget }}>
 			{children}
 		</BudgetContext.Provider>
 	);

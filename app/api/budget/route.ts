@@ -34,7 +34,8 @@ export async function POST( request: NextRequest ) {
 export async function PUT( request: NextRequest, {params} ) {
     const payload: JSONObject = await request.json();
 
-    const newBudget = await Budget.findByIdAndUpdate(payload._id, payload);
+    // { new: true } --> return the modified document rather than the original one
+    const newBudget = await Budget.findByIdAndUpdate(payload._id, payload, { new: true });
 
     return NextResponse.json(newBudget, {status: 200 })
 }

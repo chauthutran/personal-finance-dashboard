@@ -11,9 +11,7 @@ import { BudgetProvider } from "@/contexts/BudgetContext";
 
 export default function AppWrapper() {
     const { mainPage } = useMainUi();
-    const { user } = useAuth();
     
-    const userId = ( user === null ) ? "" : user._id;
     return (
         <>
             { mainPage == Constant.UI_INTRO_PAGE && <HomePage /> }
@@ -22,9 +20,7 @@ export default function AppWrapper() {
 
             { mainPage == Constant.UI_REGISTRATION_PAGE && <RegisterForm /> }
 
-            <BudgetProvider userId={userId}>
-                { mainPage == Constant.UI_BUDGET_PAGE && <BudgetPage /> }
-            </BudgetProvider>
+            { mainPage == Constant.UI_BUDGET_PAGE && <BudgetPage /> }
         </>
     )
 }

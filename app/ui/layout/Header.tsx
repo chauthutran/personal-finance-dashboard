@@ -6,17 +6,18 @@ import Modal from "../basics/Modal";
 import { useState } from "react";
 import SlideBar from "./Sidebar";
 import * as Utils from "@/lib/utils";
+import { useMainUi } from "@/contexts/MainUiContext";
 
 
 export default function Header() {
 
-	const { mainPage, subPage, setSubPage } = useAppHook();
+	const { mainPage, subPage, setSubPage } = useMainUi();
 	
 	const [isVisible, setIsVisible] = useState<boolean>(false);
 
 	const subTitle = Utils.getAppHeaderSubTitle( mainPage );
-	console.log(subTitle);
-    return (
+
+	return (
         <>
 			{( mainPage == Constant.UI_INTRO_PAGE || mainPage == Constant.UI_LOGIN_PAGE ) 
 				? <header className="w-full py-6 bg-blue-600 text-white text-center">

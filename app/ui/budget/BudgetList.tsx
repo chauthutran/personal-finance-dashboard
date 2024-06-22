@@ -18,11 +18,9 @@ export default function BudgetList() {
 	const { setSubPage } = useMainUi();
 	const { userId, budgetList } = useBudget();
 
-	// useEffect(()=> {
-	// 	if( budgetList == null ) {
-	// 		fetchBudgetList(userId);
-	// 	}
-	// }, []);
+	useEffect(()=> {
+		console.log("Refresh the Budget list");
+	}, [budgetList]);
 
     return (
 		<>

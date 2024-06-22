@@ -7,14 +7,14 @@ interface MainUiContextProps {
 	mainPage: string;
 	subPage: string | null;
 	setMainPage: (pageName: string) => void;
-	setSubPage: (pageName: string) => void;
+	setSubPage: (pageName: string | null ) => void;
 }
 
 const MainUiContext = createContext<MainUiContextProps>({
 	mainPage: Contanst.UI_INTRO_PAGE,
 	subPage: null,
 	setMainPage: (pageName: String) => {},
-	setSubPage: (pageName: String) => {}
+	setSubPage: (pageName: String | null) => {}
 });
 
 export const useMainUi = (): MainUiContextProps => {
