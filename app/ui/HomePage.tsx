@@ -1,8 +1,9 @@
+import { useMainUi } from "@/contexts/MainUiContext";
 import * as Constant from "@/lib/constants";
 
 export default function HomePage() {
 
-    const { setMainPage } = useAppHook();
+    const { setMainPage } = useMainUi();
 
 	return (
 		<div className="flex-grow flex flex-col items-center py-10 px-5 h-[calc(100vh-138px)]">

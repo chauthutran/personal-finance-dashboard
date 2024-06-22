@@ -15,7 +15,6 @@ export default function LoginForm() {
 
 	const { setMainPage } = useMainUi();
 	const { user, login, loading, error } = useAuth();
-	// const { statusData,  setMainPage , setSubPage } = useAppHook();
 
 	const [username, setUsername] = useState("test1");
 	const [password, setPassword] = useState("1234");
