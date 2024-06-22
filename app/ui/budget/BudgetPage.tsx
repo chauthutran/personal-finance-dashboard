@@ -5,16 +5,18 @@ import * as Constant from "@/lib/constants";
 import BudgetList from "./BudgetList";
 import BudgetForm from "./BudgetForm";
 import * as AppStore from "@/lib/appStore";
+import { BudgetProvider } from "@/contexts/BudgetContext";
+import { useMainUi } from "@/contexts/MainUiContext";
 
 export default function BudgetPage() {
 
-    const { currentUser, subPage, setSubPage } = useAppHook();
+    const { subPage } = useMainUi();
     
     return (
         <>
-            { subPage == null && <BudgetList user={currentUser} />}
-            { subPage == Constant.SUB_UI_ADD_FORM && <BudgetForm userId={currentUser._id}  />}
-            { subPage == Constant.SUB_UI_EDIT_FORM && <BudgetForm userId={currentUser._id} data={AppStore.getSelected()} />}
+            { subPage === null && <BudgetList /> }
+            {/* { subPage == Constant.SUB_UI_ADD_FORM && <BudgetForm  />}
+            { subPage == Constant.SUB_UI_EDIT_FORM && <BudgetForm data={AppStore.getSelected()} />} */}
         </>
     )
 }

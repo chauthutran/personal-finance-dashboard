@@ -4,19 +4,25 @@
 import { useEffect, useState } from "react"
 import BudgetItem from "./BudgetItem"
 import { JSONObject } from "@/lib/definations";
-import useAppHook from "@/features/hooks";
+// import useAppHook from "@/features/hooks";
 import * as Constant from "@/lib/constants";
+import { useBudget } from "@/contexts/BudgetContext";
+// import { setSubPage } from "@/features/mainUi/mainUiActions";
+import { useMainUi } from "@/contexts/MainUiContext";
 
-export default function BudgetList({user}: {user: JSONObject}) {
-	const userId = (user) ? user._id.toString() : "";
+export default function BudgetList() {
+	// const userId = (user) ? user._id.toString() : "";
 
-	const { budgetList, fetchBudgetList, setSubPage } = useAppHook();
+	// const { budgetList, fetchBudgetList, setSubPage } = useAppHook();
 
-	useEffect(()=> {
-		if( budgetList == null ) {
-			fetchBudgetList(userId);
-		}
-	}, []);
+	const { setSubPage } = useMainUi();
+	const { userId, budgetList } = useBudget();
+
+	// useEffect(()=> {
+	// 	if( budgetList == null ) {
+	// 		fetchBudgetList(userId);
+	// 	}
+	// }, []);
 
     return (
 		<>

@@ -10,19 +10,20 @@ import useAppHook from "./features/hooks";
 import Header from "./ui/layout/Header";
 import Footer from "./ui/layout/Footer";
 import AppWrapper from "./ui/AppWrapper";
+import { MainUiProvider } from "./contexts/MainUiContext";
+import { AuthProvider } from "./contexts/AuthContext";
 
 export default function Home() {
 
 	return (
 		<main >
-			<Header />
-
-			{/* <div className="m-1 grid h-[calc(100vh-120px)] flex-1 content-start gap-1 overflow-x-auto border-0 border-gray-400 md:grid-cols-2"> */}
-			{/*  */}
-				<AppWrapper />
-			{/* </div> */}
-
-			<Footer />
+			  <MainUiProvider>
+				<AuthProvider>
+					<Header />
+					<AppWrapper />
+					<Footer />
+				</AuthProvider>
+			</MainUiProvider>
 		</main>
 
 	)

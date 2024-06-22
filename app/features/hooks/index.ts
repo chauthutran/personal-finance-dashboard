@@ -7,18 +7,18 @@ import useTransaction from "../transaction/transactionHooks";
 
 
 const useAppHook = () => {
-    const authHook = useAuth();
-    const statusHook = useStatus();
-    const uiHook = useUi();
-    const budgetHook = useBudget();
-    const transactionHook = useTransaction();
+    // const authHook = useAuth();
+    // const statusHook = useStatus();
+    // const uiHook = useUi();
+    // const budgetHook = useBudget();
+    // const transactionHook = useTransaction();
   
     return {
-      ...authHook,
-      ...statusHook,
-      ...uiHook,
-      ...budgetHook,
-      ...transactionHook
+      // ...authHook,
+      // ...statusHook,
+      // ...uiHook,
+      // ...budgetHook,
+      // ...transactionHook
     };
   };
   

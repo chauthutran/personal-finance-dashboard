@@ -5,10 +5,15 @@ import LoginForm from "./auth/LoginForm";
 import HomePage from "./HomePage";
 import BudgetPage from "./budget/BudgetPage";
 import RegisterForm from "./auth/RegisterForm";
+import { useAuth } from "@/contexts/AuthContext";
+import { useMainUi } from "@/contexts/MainUiContext";
+import { BudgetProvider } from "@/contexts/BudgetContext";
 
 export default function AppWrapper() {
-    const { mainPage } = useAppHook();
+    const { mainPage } = useMainUi();
+    const { user } = useAuth();
     
+    const userId = ( user === null ) ? "" : user._id;
     return (
         <>
             { mainPage == Constant.UI_INTRO_PAGE && <HomePage /> }
@@ -17,7 +22,9 @@ export default function AppWrapper() {
 
             { mainPage == Constant.UI_REGISTRATION_PAGE && <RegisterForm /> }
 
-            { mainPage == Constant.UI_BUDGET_PAGE && <BudgetPage /> }
+            <BudgetProvider userId={userId}>
+                { mainPage == Constant.UI_BUDGET_PAGE && <BudgetPage /> }
+            </BudgetProvider>
         </>
     )
 }

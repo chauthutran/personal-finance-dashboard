@@ -17,6 +17,28 @@ export const isEmptyJSON = ( obj: JSONObject ): boolean => {
     return obj === null || Object.keys(obj).length === 0;
 }
 
+export const removeFromArray = function( list: JSONObject[], value: string, propertyName: string )
+{
+	let index: any;
+
+	for( let i = 0; i < list.length; i++ )
+	{
+		var item = list[i];
+		if ( item[ propertyName ] == value ) 
+		{
+			index = i;
+			break;
+		}
+	}
+
+	if ( index != undefined ) 
+	{
+		list.splice( index, 1 );
+	}
+
+	return list;
+};
+
 /** 
  * Relate to DATE 
  * */ 
@@ -122,3 +144,10 @@ export const getAppHeaderSubTitle = ( subTitleKey: string ): string => {
   
 }
 
+export const getErrMessage = (ex: any) => {
+    if (ex instanceof Error) {
+        return `An error occurred: ${ex.message}`;
+    } 
+    
+    return `An unexpected error occurred: ${ex}`;
+  }

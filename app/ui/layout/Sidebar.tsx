@@ -3,10 +3,13 @@
 import { useState } from "react";
 import useAppHook from "@/features/hooks";
 import * as Constant from "@/lib/constants";
+import { useAuth } from "@/contexts/AuthContext";
+import { useMainUi } from "@/contexts/MainUiContext";
 
 export default function SlideBar({handleOnClose = () => {}}: {handleOnClose: () => void}) {
 
-	const { setMainPage, logout } = useAppHook();
+	const { logout } = useAuth();
+	const { setMainPage } = useMainUi();
 
 	const [isVisible, setIsVisible] = useState<boolean>(false);
 

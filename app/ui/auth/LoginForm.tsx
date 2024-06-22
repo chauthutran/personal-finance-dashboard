@@ -9,20 +9,24 @@ import { IoKeyOutline } from "react-icons/io5";
 import * as Constant from '@/lib/constants';
 import useAppHook from "@/features/hooks";
 import * as Utils from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { useMainUi } from "@/contexts/MainUiContext";
 
 export default function LoginForm() {
 
-	const { statusData, currentUser, login, setMainPage , setSubPage } = useAppHook();
+	const { setMainPage } = useMainUi();
+	const { user, login, loading, error } = useAuth();
+	// const { statusData,  setMainPage , setSubPage } = useAppHook();
 
 	const [username, setUsername] = useState("test1");
 	const [password, setPassword] = useState("1234");
 	
 
 	useEffect(() => {
-	  if( currentUser != null ) {
+	  if( user != null ) {
 	    setMainPage( Constant.UI_BUDGET_PAGE );
 	  }
-	},[currentUser])
+	},[user])
 
 
 	const handleLoginBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -91,7 +95,7 @@ export default function LoginForm() {
 				<div className="flex justify-between space-x-4">
 					<button className="grid-cols-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" style={{width: "45%"}} onClick={(e) => handleLoginBtn(e)} >
 						Log in
-						{statusData.status == Constant.LOGIN_REQUEST && <FaSpinner className="ml-auto  h-5 text-gray-50" />}
+						{loading && <FaSpinner className="ml-auto  h-5 text-gray-50" />}
 					</button>
 
 					<button onClick={() => handleCancelBtn()} className="grid-cols-1 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" style={{width: "45%"}}>
@@ -99,7 +103,7 @@ export default function LoginForm() {
 					</button>
 				</div>
 				<div className="flex h-8 items-end space-x-1">
-					{statusData.status == Constant.LOGIN_FAILURE && <p>{statusData.message}</p>}
+					{error != null && <p>{error}</p>}
 				</div>
 				
 
