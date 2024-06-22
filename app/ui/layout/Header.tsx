@@ -2,7 +2,7 @@ import useAppHook from "@/features/hooks";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import * as Constant from "@/lib/constants";
 import { IoMenuOutline } from "react-icons/io5";
-import Modal from "./modal";
+import Modal from "./Modal";
 import { useState } from "react";
 import SlideBar from "./Sidebar";
 
@@ -42,7 +42,7 @@ console.log(subPage);
 				: <header className="w-full px-3 py-3 bg-blue-600 text-white flex inline-block">
 					{ subPage == null && <IoMenuOutline className="text-2xl font-bold cursor-pointer hover:bg-blue-500" onClick={(e) => setIsVisible(true)} />}
 					{ subPage != null && <IoMdArrowRoundBack  className="text-2xl font-bold cursor-pointer hover:bg-blue-500" onClick={(e) => setSubPage(null) } />}
-					 <h2 className="text-xl px-3 ">Personal Finance Management</h2>
+					 <h2 className="text-xl pl-3 ">Personal Finance Management</h2>
 				</header> }
 
 				<Modal isVisible={isVisible} onClose={() => setIsVisible(true)}>

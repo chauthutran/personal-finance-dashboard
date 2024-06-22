@@ -59,19 +59,6 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 				<h2 className="text-2xl mb-4 text-center">Add a New Budget</h2>
 				<div>
 					<div className="mb-4">
-						<label className="block text-gray-700 mb-2" htmlFor="name">
-							Name
-						</label>
-						<input
-							type="text"
-							id="name"
-							value={budget.budgetName}
-							onChange={(e) => setValue("name", e.target.value)}
-							className="w-full p-2 border border-gray-300 rounded"
-							required
-						/>
-					</div>
-					<div className="mb-4">
 						<label className="block text-gray-700 mb-2" htmlFor="amount">
 							Amount
 						</label>

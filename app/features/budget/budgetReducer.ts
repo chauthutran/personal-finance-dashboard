@@ -15,6 +15,19 @@ const BudgetReducer = (state = initialState, action: ActionType) => {
 
         return newState;
     }
+
+    if( action.type == Constant.SAVE_BUDGET_SUCCESS ) {
+        var newBudget = action.payload;
+        let foundBudget = Utils.findItemFromList(newState.budgetList, newBudget._id, "_id");
+        if( foundBudget == null ) { // Update case
+            newState.budgetList.push( newBudget );
+        }
+        else { // Add case
+            foundBudget = newBudget;
+        }
+
+        return newState;
+    }
     
     return state;
 }

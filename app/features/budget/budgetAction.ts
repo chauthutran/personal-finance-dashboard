@@ -42,7 +42,7 @@ export const saveBudget = (budget: JSONObject) => {
         });
 		
         try {
-            const requestMethod = ( budget.id === undefined ) ? "POST" : "PUT";
+            const requestMethod = ( budget._id === undefined ) ? "POST" : "PUT";
             const response = await fetch("api/budget", {
                 method: requestMethod,
                 headers: {

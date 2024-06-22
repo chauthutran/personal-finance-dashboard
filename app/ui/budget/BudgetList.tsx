@@ -29,7 +29,7 @@ export default function BudgetList({user}: {user: JSONObject}) {
 
 			{/* <!-- Floating Button --> */}
 			<button className="fixed bottom-16 right-5 w-14 h-14 bg-sal bg-yellow-500 hover:bg-yellow-600 text-black rounded-full shadow-lg flex items-center justify-center text-2xl"
-			onClick={()=> setSubPage(Constant.UI_BUDGET_ADD_FORM)}> + </button>
+			onClick={()=> setSubPage(Constant.SUB_UI_ADD_FORM)}> + </button>
 			
 		</>
     )

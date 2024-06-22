@@ -24,11 +24,10 @@ export const SET_SUB_PAGE = "SET_SUB_PAGE";
 
 export const UI_INTRO_PAGE = "UI_INTRO_PAGE";
 export const UI_LOGIN_PAGE = "UI_LOGIN_PAGE";
-
 export const UI_BUDGET_PAGE = "UI_BUDGET_PAGE";
-export const UI_BUDGET_LIST = "UI_BUDGET_LIST";
-export const UI_BUDGET_ADD_FORM = "UI_BUDGET_ADD_FORM";
-export const UI_BUDGET_EDIT_FORM = "UI_BUDGET_EDIT_FORM"
+
+export const SUB_UI_ADD_FORM = "SUB_UI_ADD_FORM";
+export const SUB_UI_EDIT_FORM = "SUB_UI_EDIT_FORM"
 
 
 export const ALERT_TYPE_INFO = "ALERT_TYPE_INFO";
