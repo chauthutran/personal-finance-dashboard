@@ -74,3 +74,44 @@ export const saveBudget = (budget: JSONObject) => {
     }
 }
 
+
+export const deleteBudget = (budget: JSONObject) => {
+
+    return async (dispatch: (arg0: ActionType) => void) => {
+		dispatch({
+            type: Constant.SAVE_BUDGET_REQUEST
+        });
+		
+        try {
+            const requestMethod = ( budget._id === undefined ) ? "POST" : "PUT";
+            const response = await fetch("api/budget", {
+                method: requestMethod,
+                headers: {
+                    "Content-type": "appliction/json"
+                },
+                body: JSON.stringify(budget)
+            })
+
+            if( !response.ok ){
+                dispatch({
+                    type: Constant.SAVE_BUDGET_FAILURE,
+                    payload: "Network response was not ok"
+                });
+            }
+            else {
+                var newBudget = await response.json();
+                dispatch({
+                    type: Constant.SAVE_BUDGET_SUCCESS,
+                    payload: newBudget
+                });
+            }
+        }
+        catch( ex ) {
+            dispatch({
+                type: Constant.SAVE_BUDGET_FAILURE,
+                payload: `Fetching budget list failed. ${ex.message}`
+            });
+        }
+    }
+}
+

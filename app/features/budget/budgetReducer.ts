@@ -19,8 +19,7 @@ const BudgetReducer = (state = initialState, action: ActionType) => {
     if( action.type == Constant.SAVE_BUDGET_SUCCESS ) {
         var newBudget = action.payload;
         
-        console.log("============ newBudget");
-        console.log(newBudget);
+        
         let foundBudget = Utils.findItemFromList(newState.budgetList, newBudget._id, "_id");
         console.log(foundBudget);
         if( foundBudget == null ) { // Add case

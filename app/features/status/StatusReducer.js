@@ -12,7 +12,17 @@ const StatusReducer = (state = initialState, action) => {
 
 	let newState = Utils.cloneJSONObject( state );
 
-	if( action.type == Constant.LOGIN_FAILURE ) 
+	if( action.type == Constant.LOGIN_FAILURE 
+		|| action.type == Constant.FETCH_BUDGET_lIST_FAILURE
+		|| action.type == Constant.SAVE_BUDGET_FAILURE ) 
+	{
+		newState.status = action.type;
+		newState.type = Constant.ALERT_TYPE_ERROR;
+		newState.message = action.payload;
+
+		return newState;
+	}
+	else if( action.type == Constant.SAVE_BUDGET_SUCCESS ) 
 	{
 		newState.status = action.type;
 		newState.type = Constant.ALERT_TYPE_INFO;
@@ -20,17 +30,20 @@ const StatusReducer = (state = initialState, action) => {
 
 		return newState;
 	}
+
+
 	
 
-	else
-	{
-		return {
-            ... state,
-            status: action.type,
-            type: "",
-            message: ""
-        }
-	}
+	return state;
+	// else
+	// {
+	// 	return {
+    //         ... state,
+    //         status: action.type,
+    //         type: "",
+    //         message: ""
+    //     }
+	// }
 
 };
 
