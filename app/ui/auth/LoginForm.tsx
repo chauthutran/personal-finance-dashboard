@@ -41,6 +41,7 @@ export default function LoginForm() {
 
 	return (
 		<div className="max-w-md mx-auto p-8 h-[calc(100vh-138px)]">
+		 {/* <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2/5"> */}
 			<h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
 			<div className="mb-4">

@@ -50,27 +50,26 @@ export const saveBudget = (budget: JSONObject) => {
                 },
                 body: JSON.stringify(budget)
             })
-            var fasdfa = await response.json();
-console.log("=============== after saving ");
-console.log(fasdfa);
+
             if( !response.ok ){
                 dispatch({
                     type: Constant.SAVE_BUDGET_FAILURE,
                     payload: "Network response was not ok"
-                })
+                });
             }
             else {
+                var newBudget = await response.json();
                 dispatch({
                     type: Constant.SAVE_BUDGET_SUCCESS,
-                    payload: fasdfa
-                })
+                    payload: newBudget
+                });
             }
         }
         catch( ex ) {
             dispatch({
                 type: Constant.SAVE_BUDGET_FAILURE,
                 payload: `Fetching budget list failed. ${ex.message}`
-            })
+            });
         }
     }
 }

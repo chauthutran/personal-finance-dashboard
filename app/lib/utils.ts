@@ -1,6 +1,10 @@
+import { UI_BUDGET_PAGE } from './constants';
 import { Document } from "mongoose";
 import { JSONObject, Message } from "@/lib/definations";
-
+import * as Constant from "@/lib/constants";
+/** 
+ * Relate to JSONObject 
+ * */ 
 export const converDbObjectToJson = ( obj: Document | Document[]) => {
     return JSON.parse(JSON.stringify(obj));
 }
@@ -9,6 +13,13 @@ export const cloneJSONObject = ( obj: JSONObject | JSONObject[]) => {
     return JSON.parse(JSON.stringify(obj));
 }
 
+export const isEmptyJSON = ( obj: JSONObject ): boolean => {
+    return obj === null || Object.keys(obj).length === 0;
+}
+
+/** 
+ * Relate to DATE 
+ * */ 
 export const formatDate = ( dateStr: string) => {
     // const month =  String(date.getMonth() + 1).padStart(2, '0');
     // const day = String(date.getDate()).padStart(2, '0');
@@ -17,14 +28,10 @@ export const formatDate = ( dateStr: string) => {
     return dateStr.substring(0, 10);
 }
 
-export const createEmptyClientData = (): JSONObject => {
-    return  {
-            fullName: "",
-            birthdate: (new Date()).toISOString(),
-            phone: "",
-            createdAt: (new Date()).toISOString()
-        };
-}
+
+/** 
+ * Relate to Searching/Replace data in a list
+ *  */ 
 
 export const findItemFromList = ( list: JSONObject[], value: any, propertyName: string ) =>
 {
@@ -53,7 +60,6 @@ export const findItemFromList = ( list: JSONObject[], value: any, propertyName: 
     return item;
 }
 
-
 export const findAndReplaceItemFromList = function( list: JSONObject[], searchValue: any, searchProperty: string, replacedData: JSONObject )
 {
 	var found = false;
@@ -78,10 +84,16 @@ export const findAndReplaceItemFromList = function( list: JSONObject[], searchVa
 }
 
 
+/** 
+ * Relate to Alert
+ *  */ 
 export const createMessage = (type: string = "", msg: string = ""): Message => {
     return { type, msg };
 }
 
+/** 
+ * Relate to URL ( getting parametter from URL, ...)
+ *  */ 
 export const convertUrlSearchParamToJson = (urlSearchParams: URLSearchParams): JSONObject => {
     const json = {} as JSONObject;
     for (const [key, value] of urlSearchParams) {
@@ -89,8 +101,24 @@ export const convertUrlSearchParamToJson = (urlSearchParams: URLSearchParams): J
     }
     
     return json;
-  }
-
-export const isEmptyJSON = ( obj: JSONObject ): boolean => {
-    return obj === null || Object.keys(obj).length === 0;
 }
+
+  
+/** 
+ * Other Supportive methods
+ * */
+export const getAppHeaderSubTitle = ( subTitleKey: string ): string => {
+   
+    let title = "";
+
+    switch( subTitleKey ) {
+        case Constant.UI_BUDGET_PAGE:
+            title = "Budget Management";
+            break
+        default:
+            break;
+    }
+    return title;
+  
+}
+

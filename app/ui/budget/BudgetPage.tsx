@@ -9,8 +9,7 @@ import * as AppStore from "@/lib/appStore";
 export default function BudgetPage() {
 
     const { currentUser, subPage, setSubPage } = useAppHook();
-    console.log("============== currentUser: " + currentUser);
-    console.log(currentUser);
+    
     return (
         <>
             { subPage == null && <BudgetList user={currentUser} />}

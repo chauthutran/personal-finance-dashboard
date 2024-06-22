@@ -31,8 +31,7 @@ export async function GET(request, { params }) {
 		}
 
 		const result = (userList.length > 0) ? Utils.converDbObjectToJson( userList ) : [{}] as JSONObject[];
-		console.log("================ result");
-		console.log(result);
+		
 		return NextResponse.json(result, { status: 200 });
 	}
 

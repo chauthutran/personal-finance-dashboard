@@ -37,6 +37,10 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 		saveBudget(budget);
 	};
 
+	const setTitle = () => {
+		return ( budget._id != undefined ) ? "Edit budget" : "Add a new Budget";
+	}
+
 	const categories = [
 		'Housing',
 		'Utilities',
@@ -52,7 +56,7 @@ export default function BudgetForm({ userId, data = {} as JSONObject}) {
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gray-100">
 			<div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-				<h2 className="text-2xl mb-4 text-center">Add a New Budget</h2>
+				<h2 className="text-2xl mb-4 text-center">{setTitle()}</h2>
 				<div>
 					<div className="mb-4">
 						<label className="block text-gray-700 mb-2" htmlFor="amount">

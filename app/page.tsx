@@ -17,7 +17,10 @@ export default function Home() {
 		<main >
 			<Header />
 
-			<AppWrapper />
+			{/* <div className="m-1 grid h-[calc(100vh-120px)] flex-1 content-start gap-1 overflow-x-auto border-0 border-gray-400 md:grid-cols-2"> */}
+			{/*  */}
+				<AppWrapper />
+			{/* </div> */}
 
 			<Footer />
 		</main>

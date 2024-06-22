@@ -18,12 +18,16 @@ const BudgetReducer = (state = initialState, action: ActionType) => {
 
     if( action.type == Constant.SAVE_BUDGET_SUCCESS ) {
         var newBudget = action.payload;
+        
+        console.log("============ newBudget");
+        console.log(newBudget);
         let foundBudget = Utils.findItemFromList(newState.budgetList, newBudget._id, "_id");
-        if( foundBudget == null ) { // Update case
+        console.log(foundBudget);
+        if( foundBudget == null ) { // Add case
             newState.budgetList.push( newBudget );
         }
-        else { // Add case
-            foundBudget = newBudget;
+        else { // Update case
+            Utils.findAndReplaceItemFromList(newState.budgetList, newBudget._id, "_id", newBudget);
         }
 
         return newState;

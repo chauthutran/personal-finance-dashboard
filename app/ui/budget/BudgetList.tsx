@@ -20,7 +20,8 @@ export default function BudgetList({user}: {user: JSONObject}) {
 
     return (
 		<>
-			<div className="divMainList m-1 grid h-[calc(100vh-90px)] flex-1 content-start gap-1 overflow-x-auto border-0 border-gray-400 md:grid-cols-2">
+			{/* <div className="m-1 grid flex-1 content-start gap-1 overflow-x-auto border-0 border-gray-400 md:grid-cols-2"> */}
+			<div className="h-[calc(100vh-110px)] m-1 grid flex-1 content-start gap-1 overflow-x-auto border-0 border-gray-400 md:grid-cols-2">
 				{budgetList && budgetList.map( (budget: JSONObject) => (
 					<BudgetItem key={budget._id} data={budget}  />
 				))}

@@ -24,7 +24,6 @@ export const LOGOUT = "LOGOUT";
 export const SET_MAIN_PAGE = "SET_MAIN_PAGE";
 export const SET_SUB_PAGE = "SET_SUB_PAGE";
 
-
 export const UI_INTRO_PAGE = "UI_INTRO_PAGE";
 export const UI_LOGIN_PAGE = "UI_LOGIN_PAGE";
 export const UI_REGISTRATION_PAGE = "UI_REGISTRATION_PAGE";
