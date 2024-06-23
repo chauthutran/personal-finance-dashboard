@@ -2,7 +2,7 @@
 
 "use client";
 import { JSONObject } from '@/lib/definations';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Utils from "@/lib/utils";
 import DateField from '../basics/DateField';
 import mongoose from 'mongoose';
@@ -10,6 +10,8 @@ import Dropdown from '../basics/Dropdown';
 import Alert from '../basics/Alert';
 import * as Constant from '@/lib/constants';
 import { useBudget } from '@/contexts/BudgetContext';
+import { useMainUi } from '@/contexts/MainUiContext';
+import * as AppStore from "@/lib/appStore";
 
 export default function BudgetForm({ data = {} as JSONObject }) {
 
@@ -19,15 +21,23 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 		'Food',
 		'Transportation',
 		'Entertainment',
+		'Groceries',
 		'Health',
 		'Savings',
-		'Debt Payments',
-		'Miscellaneous'
+		'Debt Payments'
 	];
 
-	const { userId, loading, error, saveBudget } = useBudget();
+	const { setSubPage } = useMainUi();
+	const { userId, processingStatus, error, saveBudget, newBudget } = useBudget();
 
 	const [budget, setBudget] = useState(data);
+
+	useEffect(() => {
+		console.log(" ----------- processingStatus ");
+		if( processingStatus === Constant.SAVE_BUDGET_SUCCESS ) {
+			setSubPage( null );
+		}
+	}, [processingStatus]);
 
 	const setValue = (propName: string, value: string | Date | null) => {
 		var tempData = Utils.cloneJSONObject(budget);
@@ -59,6 +69,9 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 	return (
 		<div className="h-[calc(100vh-120px)] mt-5 overflow-x-auto  border-gray-400 ">
 			
+			{processingStatus == Constant.SAVE_BUDGET_SUCCESS && <Alert type={Constant.ALERT_TYPE_INFO} message={`Saved successfully.`} />}
+			{processingStatus == Constant.SAVE_BUDGET_FAILURE && <Alert type={Constant.ALERT_TYPE_ERROR} message={`Saving data is failed. ${error}`} />}
+
 			<div className="flex items-center justify-center ">
 				<div className="p-6 rounded border-2 bg-slate-100 shadow-md w-full max-w-md">
 					<h2 className="text-2xl mb-4 text-center">{setTitle()}</h2>

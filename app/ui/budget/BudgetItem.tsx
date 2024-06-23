@@ -7,27 +7,69 @@ import * as AppStore from "@/lib/appStore";
 import * as Constant from "@/lib/constants";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { useMainUi } from "@/contexts/MainUiContext";
+import { FaTrash, FaShoppingCart, FaUtensils, FaHome, FaCar } from 'react-icons/fa';
+import { IconType } from 'react-icons';
+import { useBudget } from "@/contexts/BudgetContext";
+import Alert from "../basics/Alert";
 
+const categoryIcons: Record<string, IconType> = {
+    groceries: FaShoppingCart,
+    food: FaUtensils,
+    rent: FaHome,
+    car: FaCar,
 
+    'Housing': FaHome,
+    // 'Utilities': ,
+    'Food': FaUtensils,
+    // 'Transportation',
+    // 'Entertainment',
+    'Groceries': FaShoppingCart,
+    // 'Health',
+    // 'Savings',
+    // 'Debt Payments'
+  };
+
+  
 export default function BudgetItem({data} : {data: JSONObject}) {
 
     const { setSubPage } = useMainUi();
+	const { error, processingStatus, deleteBudget } = useBudget();
 
     const setSelectedBudget = () => {
         AppStore.setSelected(data);
         setSubPage( Constant.SUB_UI_EDIT_FORM );
     }
 
+    const handleOnDelete = (id) => {
+        const ok = confirm(`Are you sure you want to delete this budget ${data.description} ?`);
+        if( ok ) {
+            deleteBudget(id);
+        }
+    }
+
+    const Icon = categoryIcons[data.category] || FaShoppingCart;
+
     return (
-        <div key={data._id} onClick={() => setSelectedBudget()} className="m-1 grid min-h-[100px] cursor-pointer grid-cols-[10%_80%_10%] gap-1 rounded-lg bg-gray-200 p-2 text-gray-700 shadow-lg hover:bg-blue-200">
-            <div className="flex items-center p-1 align-middle">
-                <AiFillDollarCircle className="text-5xl text-yellow-600" />
+        <>
+        {processingStatus == Constant.DELETE_BUDGET_SUCCESS && <Alert type={Constant.ALERT_TYPE_INFO} message={`Deleted successfully.`} />}
+        {processingStatus == Constant.DELETE_BUDGET_FAILURE && <Alert type={Constant.ALERT_TYPE_ERROR} message={`Deleted Failed. ${error}`} />}
+
+        <div key={data._id} onClick={() => setSelectedBudget()} className="p-3 py-3 min-h-[100px] flex items-center justify-between hover:bg-blue-200 cursor-pointer">
+              <div className="flex items-center space-x-5">
+                <Icon className="text-green-500 shadow-md w-6 h-6" />
+                <div>
+                  <div className="text-lg font-medium text-gray-900">{data.description}</div>
+                  <div className="mt-1 text-gray-500">From {Utils.formatDate(data.startDate)} to {Utils.formatDate(data.endDate)}</div>
+                  <div className="mt-1 text-gray-900 font-semibold">${data.amount}</div>
+                </div>
+              </div>
+              <button
+                onClick={() => handleOnDelete(data._id)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <FaTrash className="w-6 h-6" />
+              </button>
             </div>
-            <div className="p-1">
-                <div className="min-h-[20px] font-semibold">{data.category} - ${data.amount}</div>
-                <div className="min-h-[20px]">{data.description }</div>
-                <div className="min-h-[20px]">From {Utils.formatDate(data.startDate)} to {Utils.formatDate(data.endDate)}</div>
-            </div>
-        </div>
+            </>
     )
 }
