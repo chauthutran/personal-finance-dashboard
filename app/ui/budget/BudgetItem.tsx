@@ -40,10 +40,12 @@ export default function BudgetItem({data} : {data: JSONObject}) {
         setSubPage( Constant.SUB_UI_EDIT_FORM );
     }
 
-    const handleOnDelete = (id) => {
+    const handleOnDelete = () => {
+        console.log("========== handleOnDelete");
+        console.log(data);
         const ok = confirm(`Are you sure you want to delete this budget ${data.description} ?`);
         if( ok ) {
-            deleteBudget(id);
+            deleteBudget(data._id);
         }
     }
 
@@ -54,8 +56,8 @@ export default function BudgetItem({data} : {data: JSONObject}) {
         {processingStatus == Constant.DELETE_BUDGET_SUCCESS && <Alert type={Constant.ALERT_TYPE_INFO} message={`Deleted successfully.`} />}
         {processingStatus == Constant.DELETE_BUDGET_FAILURE && <Alert type={Constant.ALERT_TYPE_ERROR} message={`Deleted Failed. ${error}`} />}
 
-        <div key={data._id} onClick={() => setSelectedBudget()} className="p-3 py-3 min-h-[100px] flex items-center justify-between hover:bg-blue-200 cursor-pointer">
-              <div className="flex items-center space-x-5">
+        <div key={data._id} className="p-3 py-3 min-h-[100px] flex items-center justify-between hover:bg-blue-200 cursor-pointer">
+              <div className="flex items-center space-x-5" onClick={() => setSelectedBudget()} >
                 <Icon className="text-green-500 shadow-md w-6 h-6" />
                 <div>
                   <div className="text-lg font-medium text-gray-900">{data.description}</div>
@@ -64,7 +66,7 @@ export default function BudgetItem({data} : {data: JSONObject}) {
                 </div>
               </div>
               <button
-                onClick={() => handleOnDelete(data._id)}
+                onClick={() => handleOnDelete()}
                 className="text-red-500 hover:text-red-700"
               >
                 <FaTrash className="w-6 h-6" />

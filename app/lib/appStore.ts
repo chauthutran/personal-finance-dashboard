@@ -1,7 +1,7 @@
 import { JSONObject } from "./definations";
 
-let data : JSONObject = {};
-export const setSelected = (obj: JSONObject) => {
+let data : JSONObject | null = null;
+export const setSelected = (obj: JSONObject | null) => {
     data = obj;
 }
 

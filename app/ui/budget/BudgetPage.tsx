@@ -19,7 +19,7 @@ export default function BudgetPage() {
         <>
             { subPage === null && <BudgetList /> }
             { subPage == Constant.SUB_UI_ADD_FORM && <BudgetForm  />}
-            { subPage == Constant.SUB_UI_EDIT_FORM && <BudgetForm data={AppStore.getSelected()} />}
+            { subPage == Constant.SUB_UI_EDIT_FORM && <BudgetForm data={AppStore.getSelected()!} />}
         </>
         </BudgetProvider>
     )
