@@ -14,9 +14,9 @@ export default function BudgetList() {
 	const { setSubPage } = useMainUi();
 	const { userId, budgetList } = useBudget();
 
-	useEffect(()=> {
-		console.log("Refresh the Budget list");
-	}, [budgetList]);
+	// useEffect(()=> {
+	// 	console.log("Refresh the Budget list");
+	// }, [budgetList]);
 
     return (
 		<>

@@ -10,16 +10,19 @@ import Footer from "./ui/layout/Footer";
 import AppWrapper from "./ui/AppWrapper";
 import { MainUiProvider } from "./contexts/MainUiContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import Category from "./lib/schemas/Category.schema";
+import { CategoryProvider } from "./contexts/CategoryContext";
 
 export default function Home() {
+
 
 	return (
 		<main >
 			  <MainUiProvider>
 				<AuthProvider>
-					<Header />
-					<AppWrapper />
-					<Footer />
+						<Header />
+						<AppWrapper />
+						<Footer />
 				</AuthProvider>
 			</MainUiProvider>
 		</main>

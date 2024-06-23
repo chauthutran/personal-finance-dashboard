@@ -11,11 +11,12 @@ export async function GET( request: NextRequest, {params}) {
 	const searchValues = Utils.convertUrlSearchParamToJson( url.searchParams );
     
     const userId = searchValues.userId;
-	if(  userId != undefined ) {
+	if(  userId !== undefined ) {
 		searchValues.userId = new mongoose.Types.ObjectId( userId as string );
 	}
 
-    const searchResult = await Budget.find({userId: new mongoose.Types.ObjectId( userId as string )});
+    // const searchResult = await Budget.find({userId: new mongoose.Types.ObjectId( userId as string )});
+    const searchResult = await Budget.find(searchValues);
 
     const userData = ( searchResult.length > 0 ) ? Utils.converDbObjectToJson(searchResult) : [];
 
@@ -26,6 +27,8 @@ export async function GET( request: NextRequest, {params}) {
 export async function POST( request: NextRequest ) {
     const payload: JSONObject = await request.json();
 
+    payload.userId = new mongoose.Types.ObjectId(payload.userId as string);
+    payload.categoryId = new mongoose.Types.ObjectId(payload.categoryId as string);
     const newBudget = await Budget.create(payload);
 
     return NextResponse.json(newBudget, {status: 200 })

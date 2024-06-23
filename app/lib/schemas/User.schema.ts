@@ -2,6 +2,7 @@
 
 import {  Schema } from "mongoose";
 import { mongoose } from "@/lib/db";
+
 const UserSchema = new Schema ( 
     {
         fullName: { type: String, required: true },
@@ -16,6 +17,5 @@ const UserSchema = new Schema (
     }
 )
 const User = mongoose.models.User || mongoose.model('User', UserSchema);
-
 
 export default User;

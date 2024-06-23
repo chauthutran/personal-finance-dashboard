@@ -1,4 +1,4 @@
-"use budget";
+"use category";
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import * as Contanst from "../lib/constants";
@@ -6,61 +6,59 @@ import { JSONObject } from '@/lib/definations';
 import * as Utils from '@/lib/utils';
 import * as Constant from '@/lib/constants';
 
-interface BudgetContextProps {
+interface CategoryContextProps {
     userId: string,
-	budgetList: JSONObject[] | null;
-    saveBudget: (budget: JSONObject) => Promise<void>;
-	deleteBudget: (budgetId: string) => Promise<void>;
+	categoryList: JSONObject[] | null;
+    saveCategory: (category: JSONObject) => Promise<void>;
+	deleteCategory: (categoryId: string) => Promise<void>;
     error: string | null;
     processingStatus: string;
-    setProcessingStatus: (status: string) => void;
-    newBudget: JSONObject | null; // After adding new budget or after updating, the new budget will be set here
+    newCategory: JSONObject | null; // After adding new category or after updating, the new category will be set here
 }
 
-const BudgetContext = createContext<BudgetContextProps>({
+const CategoryContext = createContext<CategoryContextProps>({
     userId: "",
-	budgetList: null,
-	saveBudget: async(budget: JSONObject) => {},
-	deleteBudget: async(budgetId: string) => {},
+	categoryList: null,
+	saveCategory: async(category: JSONObject) => {},
+	deleteCategory: async(categoryId: string) => {},
     error: null,
     processingStatus: "",
-    setProcessingStatus: (status: string) => {},
-    newBudget: null
+    newCategory: null
 });
 
-export const useBudget = (): BudgetContextProps => {
-	const context = useContext(BudgetContext);
+export const useCategory = (): CategoryContextProps => {
+	const context = useContext(CategoryContext);
 	if (!context) {
-	  throw new Error('useBudget must be used within an BudgetProvider');
+	  throw new Error('useCategory must be used within an CategoryProvider');
 	}
 	return context;
 };
 
-export const BudgetProvider = ({ userId, children }: { userId: string, children: ReactNode }) => {
-    const [budgetList, setBudgetList] = useState<JSONObject[] | null>(null);
+export const CategoryProvider = ({ userId, children }: { userId: string, children: ReactNode }) => {
+    const [categoryList, setCategoryList] = useState<JSONObject[] | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [processingStatus, setProcessingStatus] = useState("");
-	const [newBudget, setNewBudget] = useState<JSONObject | null>(null);
+	const [newCategory, setNewCategory] = useState<JSONObject | null>(null);
 
 	useEffect(() => {
-        if( budgetList === null ) {
-		    fetchBudgetList();
+        if( categoryList === null ) {
+		    fetchCategoryList();
         }
 	}, []);
 
 
-    const fetchBudgetList = async () => {
+    const fetchCategoryList = async () => {
         setProcessingStatus(Constant.FETCH_BUDGET_lIST_REQUEST);
         setError(null);
 		try {
-			const response = await fetch(`api/budget?userId=${userId}`);
+			const response = await fetch(`api/category?userId=${userId}`);
             if (!response.ok) {
                 setError("Network response was not ok");
                 setProcessingStatus(Constant.FETCH_BUDGET_lIST_FAILURE);
             }
             else {
                 const list = await response.json();
-				setBudgetList(list);
+				setCategoryList(list);
                 setProcessingStatus(Constant.FETCH_BUDGET_lIST_SUCCESS);
             }
 
@@ -70,18 +68,18 @@ export const BudgetProvider = ({ userId, children }: { userId: string, children:
 		}
 	};
 
-    const saveBudget = async(budget: JSONObject) => { 
+    const saveCategory = async(category: JSONObject) => { 
         setProcessingStatus(Constant.SAVE_BUDGET_REQUEST);
         setError(null);
 
         try {
-            const requestMethod = ( budget._id === undefined ) ? "POST" : "PUT";
-            const response = await fetch("api/budget", {
+            const requestMethod = ( category._id === undefined ) ? "POST" : "PUT";
+            const response = await fetch("api/category", {
                 method: requestMethod,
                 headers: {
                     "Content-type": "appliction/json"
                 },
-                body: JSON.stringify(budget)
+                body: JSON.stringify(category)
             })
 
             if( !response.ok ){
@@ -89,20 +87,20 @@ export const BudgetProvider = ({ userId, children }: { userId: string, children:
                 setProcessingStatus(Constant.SAVE_BUDGET_FAILURE);
             }
             else {
-                var newBudget = await response.json();
-                let tempList = Utils.cloneJSONObject(budgetList!);
+                var newCategory = await response.json();
+                let tempList = Utils.cloneJSONObject(categoryList!);
                
                 // Update list
-                let foundBudget = Utils.findItemFromList(tempList!, newBudget._id, "_id");
-                if( foundBudget == null ) { // Add case
-                    tempList!.push( newBudget );
+                let foundCategory = Utils.findItemFromList(tempList!, newCategory._id, "_id");
+                if( foundCategory == null ) { // Add case
+                    tempList!.push( newCategory );
                 }
                 else { // Update case
-                    Utils.findAndReplaceItemFromList(tempList!, newBudget._id, "_id", newBudget);
+                    Utils.findAndReplaceItemFromList(tempList!, newCategory._id, "_id", newCategory);
                 }
 
-                setNewBudget( newBudget );
-                setBudgetList( tempList );
+                setNewCategory( newCategory );
+                setCategoryList( tempList );
                 setProcessingStatus(Constant.SAVE_BUDGET_SUCCESS);
             }
         }
@@ -112,22 +110,22 @@ export const BudgetProvider = ({ userId, children }: { userId: string, children:
         }
     }
  
-    const deleteBudget = async(budgetId: string) => { 
+    const deleteCategory = async(categoryId: string) => { 
         setProcessingStatus(Constant.DELETE_BUDGET_REQUEST);
         setError(null);
         
         try {
-            const response = await fetch(`api/budget?id=${budgetId}`, { method: "DELETE" });
+            const response = await fetch(`api/category?id=${categoryId}`, { method: "DELETE" });
 
             if( !response.ok ){
                 setError("Network response was not ok");
                 setProcessingStatus(Constant.DELETE_BUDGET_FAILURE);
             }
             else {
-                // Remove this budget from the list
-                let tempList = Utils.cloneJSONObject(budgetList!);
-                Utils.removeFromArray( tempList!, budgetId, "_id");
-                setBudgetList(tempList);
+                // Remove this category from the list
+                let tempList = Utils.cloneJSONObject(categoryList!);
+                Utils.removeFromArray( tempList!, categoryId, "_id");
+                setCategoryList(tempList);
                 setProcessingStatus(Constant.DELETE_BUDGET_SUCCESS);
             }
         }
@@ -138,8 +136,8 @@ export const BudgetProvider = ({ userId, children }: { userId: string, children:
     }
 
 	return (
-		<BudgetContext.Provider value={{ userId, processingStatus, setProcessingStatus, error, budgetList, saveBudget, deleteBudget, newBudget }}>
+		<CategoryContext.Provider value={{ userId, processingStatus, error, categoryList, saveCategory, deleteCategory, newCategory }}>
 			{children}
-		</BudgetContext.Provider>
+		</CategoryContext.Provider>
 	);
 };

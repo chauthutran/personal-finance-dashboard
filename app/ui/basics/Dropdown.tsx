@@ -1,3 +1,4 @@
+import { JSONObject } from '@/lib/definations';
 import React, { useState, useEffect, useRef } from 'react';
 
 interface DropdownProps {
@@ -8,7 +9,7 @@ export default function Dropdown({ options, handleOnChange = (event: React.Chang
 	const initValue = ( rest.value == undefined ) ? "" : rest.value;
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
+	const [filteredOptions, setFilteredOptions] = useState<JSONObject[]>(options);
 	const [inputValue, setInputValue] = useState(initValue);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -34,11 +35,11 @@ export default function Dropdown({ options, handleOnChange = (event: React.Chang
 		handleOnChange(event);
 	};
 
-	const handleOptionClick = (option: string) => {
+	const handleOptionClick = (option: JSONObject) => {
 		setInputValue(option);
 		setIsOpen(false);
 
-		let e = {target: {value: option }} as React.ChangeEvent<HTMLInputElement>;
+		let e = {target: {value: option._id }} as React.ChangeEvent<HTMLInputElement>;
 		handleOnChange(e);
 	};
 
@@ -60,7 +61,7 @@ export default function Dropdown({ options, handleOnChange = (event: React.Chang
 							className="p-2 cursor-pointer hover:bg-gray-200"
 							onClick={() => handleOptionClick(option)}
 						>
-							{option}
+							{option.name}
 						</div>
 					))}
 				</div>

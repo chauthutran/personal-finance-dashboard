@@ -12,29 +12,31 @@ import * as Constant from '@/lib/constants';
 import { useBudget } from '@/contexts/BudgetContext';
 import { useMainUi } from '@/contexts/MainUiContext';
 import * as AppStore from "@/lib/appStore";
+import { useCategory } from '@/contexts/CategoryContext';
 
 export default function BudgetForm({ data = {} as JSONObject }) {
 
-	const categories = [
-		'Housing',
-		'Utilities',
-		'Food',
-		'Transportation',
-		'Entertainment',
-		'Groceries',
-		'Health',
-		'Savings',
-		'Debt Payments'
-	];
+	// const categories = [
+	// 	'Housing',
+	// 	'Utilities',
+	// 	'Food',
+	// 	'Transportation',
+	// 	'Entertainment',
+	// 	'Groceries',
+	// 	'Health',
+	// 	'Savings',
+	// 	'Debt Payments'
+	// ];
 
 	const { setSubPage } = useMainUi();
-	const { userId, processingStatus, error, saveBudget, newBudget } = useBudget();
+	const { categoryList } = useCategory();
+	const { userId, processingStatus, setProcessingStatus, error, saveBudget, newBudget } = useBudget();
 
 	const [budget, setBudget] = useState(data);
 
 	useEffect(() => {
-		console.log(" ----------- processingStatus ");
 		if( processingStatus === Constant.SAVE_BUDGET_SUCCESS ) {
+			setProcessingStatus("");
 			setSubPage( null );
 		}
 	}, [processingStatus]);
@@ -57,7 +59,7 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 	const handleOnSave = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		budget.userId = new mongoose.Types.ObjectId(userId);
+		budget.userId = userId;
 		saveBudget(budget);
 	};
 
@@ -94,11 +96,16 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 							<label className="block text-gray-700 mb-2" htmlFor="category">
 								Category
 							</label>
-							<Dropdown options={categories}
+							<select
+								id="categoryId"
+								onChange={(e) => setValue("categoryId", e.target.value)}
+								value={budget.categoryId}
 								className="w-full p-2 border border-gray-300 rounded"
-								value={budget.category}
-								handleOnChange={(e) => setValue("category", e.target.value)}
-							/>
+							>
+								{categoryList && categoryList?.map((category: JSONObject) => (
+									<option value={category._id}>({category.type}) - {category.name}</option>
+								))}
+							</select>
 						</div>
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="description">
@@ -113,29 +120,43 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 						</div>
 
 						<div className="mb-4">
-							<label className="block text-gray-700 mb-2" htmlFor="startDate">
-								Start Date
+							<label className="block text-gray-700 mb-2" htmlFor="month">
+								Month
 							</label>
-							<DateField
-								id="startDate"
-								handleOnChange={(date: Date | null) => setValue("startDate", date)}
-								value={budget.startDate}
+							<select
+								id="month"
+								onChange={(e) => setValue("month", e.target.value)}
+								value={budget.month}
 								className="w-full p-2 border border-gray-300 rounded"
-								disabled={false}
-							/>
+							>
+								<option value="">[Please select]</option>
+								<option value="1">Jan</option>
+								<option value="2">Feb</option>
+								<option value="3">Mar</option>
+								<option value="4">Apr</option>
+								<option value="5">May</option>
+								<option value="6">Jun</option>
+								<option value="7">Jul</option>
+								<option value="8">Aug</option>
+								<option value="9">Sep</option>
+								<option value="10">Oct</option>
+								<option value="11">Nov</option>
+								<option value="12">Dec</option>
+							</select>
 						</div>
 
 
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="startDate">
-								End Date
+								Year
 							</label>
-							<DateField
-								id="endDate"
-								handleOnChange={(date: Date | null) => setValue("endDate", date)}
-								value={budget.startDate}
+							<input
+								type="number"
+								id="year"
+								value={budget.year}
+								onChange={(e) => setValue("year", e.target.value)}
 								className="w-full p-2 border border-gray-300 rounded"
-								disabled={false}
+								required
 							/>
 						</div>
 
