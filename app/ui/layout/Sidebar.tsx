@@ -22,6 +22,15 @@ export default function SlideBar({handleOnClose = () => {}}: {handleOnClose: () 
 		handleOnClose();
 	}
 	
+	const handleClickOnBudget = () => {
+		setMainPage(Constant.UI_BUDGET_PAGE); 
+		handleOnClose();
+	}
+	
+	const handleClickOnExpense = () => {
+		setMainPage(Constant.UI_EXPENSE_PAGE); 
+		handleOnClose();
+	}
 
 	return (
         <div className="w-1/3 min-w-[150px] h-screen bg-white p-1 absolute left-0 top-0" >
@@ -29,7 +38,9 @@ export default function SlideBar({handleOnClose = () => {}}: {handleOnClose: () 
                 <div className="inline-block ml-2 hover:bg-blue-200 p-1 cursor-pointer font-bold " onClick={(e) => handleOnClose()}>X</div>
             </div>
             <div className="grid gap-2 p-1">
-                <div className="cursor-pointer rounded-md bg-blue-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-blue-200" onClick={() => { setMainPage(Constant.UI_BUDGET_PAGE); handleOnClose(); }}>Budgets</div>
+                <div className="cursor-pointer rounded-md bg-blue-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-blue-200" onClick={() => handleClickOnBudget() }>Budgets</div>
+                <div className="cursor-pointer rounded-md bg-blue-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-blue-200" onClick={() => handleClickOnExpense() }>Expenses</div>
+				<hr className="mt-5" />
                 <div className="cursor-pointer rounded-md bg-blue-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-blue-200" onClick={() => handleOnLogout()} >Logout</div>
             </div>
         </div>

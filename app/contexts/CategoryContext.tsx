@@ -1,4 +1,4 @@
-"use category";
+"use client";
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import * as Contanst from "../lib/constants";
@@ -9,6 +9,8 @@ import * as Constant from '@/lib/constants';
 interface CategoryContextProps {
     userId: string,
 	categoryList: JSONObject[] | null;
+    incomeList: JSONObject[] | null;
+    expenseList: JSONObject[] | null;
     saveCategory: (category: JSONObject) => Promise<void>;
 	deleteCategory: (categoryId: string) => Promise<void>;
     error: string | null;
@@ -19,6 +21,8 @@ interface CategoryContextProps {
 const CategoryContext = createContext<CategoryContextProps>({
     userId: "",
 	categoryList: null,
+    incomeList: null,
+    expenseList: null,
 	saveCategory: async(category: JSONObject) => {},
 	deleteCategory: async(categoryId: string) => {},
     error: null,
@@ -36,6 +40,8 @@ export const useCategory = (): CategoryContextProps => {
 
 export const CategoryProvider = ({ userId, children }: { userId: string, children: ReactNode }) => {
     const [categoryList, setCategoryList] = useState<JSONObject[] | null>(null);
+    const [incomeList, setIncomeList] = useState<JSONObject[] | null>(null);
+    const [expenseList, setExpenseList] = useState<JSONObject[] | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [processingStatus, setProcessingStatus] = useState("");
 	const [newCategory, setNewCategory] = useState<JSONObject | null>(null);
@@ -57,8 +63,12 @@ export const CategoryProvider = ({ userId, children }: { userId: string, childre
                 setProcessingStatus(Constant.FETCH_BUDGET_lIST_FAILURE);
             }
             else {
-                const list = await response.json();
-				setCategoryList(list);
+                const categories = await response.json();
+                const incomes = categories.filter((item: JSONObject) => item.type === "income");
+                const expenses = categories.filter((item: JSONObject) => item.type === "expense");
+				setCategoryList(categories);
+                setIncomeList(incomes);
+                setExpenseList(expenses);
                 setProcessingStatus(Constant.FETCH_BUDGET_lIST_SUCCESS);
             }
 
@@ -67,6 +77,7 @@ export const CategoryProvider = ({ userId, children }: { userId: string, childre
             setProcessingStatus(Constant.FETCH_BUDGET_lIST_FAILURE);
 		}
 	};
+
 
     const saveCategory = async(category: JSONObject) => { 
         setProcessingStatus(Constant.SAVE_BUDGET_REQUEST);
@@ -136,7 +147,7 @@ export const CategoryProvider = ({ userId, children }: { userId: string, childre
     }
 
 	return (
-		<CategoryContext.Provider value={{ userId, processingStatus, error, categoryList, saveCategory, deleteCategory, newCategory }}>
+		<CategoryContext.Provider value={{ userId, processingStatus, error, categoryList, incomeList, expenseList, saveCategory, deleteCategory, newCategory }}>
 			{children}
 		</CategoryContext.Provider>
 	);

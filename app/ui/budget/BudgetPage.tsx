@@ -14,13 +14,12 @@ export default function BudgetPage() {
     const { user } = useAuth();
 
     return (
-        
         <BudgetProvider userId={user!._id}>
-        <>
-            { subPage === null && <BudgetList /> }
-            { subPage == Constant.SUB_UI_ADD_FORM && <BudgetForm  />}
-            { subPage == Constant.SUB_UI_EDIT_FORM && <BudgetForm data={AppStore.getSelected()!} />}
-        </>
+            <>
+                { subPage === null && <BudgetList /> }
+                { subPage == Constant.SUB_UI_ADD_FORM && <BudgetForm  />}
+                { subPage == Constant.SUB_UI_EDIT_FORM && <BudgetForm data={AppStore.getSelected()!} />}
+            </>
         </BudgetProvider>
     )
 }

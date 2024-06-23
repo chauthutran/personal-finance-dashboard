@@ -8,6 +8,7 @@ import RegisterForm from "./auth/RegisterForm";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMainUi } from "@/contexts/MainUiContext";
 import { CategoryProvider } from "@/contexts/CategoryContext";
+import ExpensePage from "./expense/ExpensePage";
 
 export default function AppWrapper() {
     const { mainPage } = useMainUi();
@@ -23,6 +24,7 @@ export default function AppWrapper() {
 
             {user != null && <CategoryProvider userId={user._id}>
                 { mainPage == Constant.UI_BUDGET_PAGE && <BudgetPage /> }
+                { mainPage == Constant.UI_EXPENSE_PAGE && <ExpensePage /> }
             </CategoryProvider> }
         </>
     )
