@@ -13,11 +13,7 @@ export default function BudgetList() {
 	
 	const { setSubPage } = useMainUi();
 	const { userId, budgetList } = useBudget();
-
-	// useEffect(()=> {
-	// 	console.log("Refresh the Budget list");
-	// }, [budgetList]);
-
+	
     return (
 		<>
 			 <div className="mx-auto my-3 p-3 bg-white shadow-md">

@@ -46,9 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setError("Network response was not ok");
             }
             else {
-                    
                 const userList = await response.json();
-                console.log("==== Login result");
                 if (userList.length > 0 ) {
                     setUser(userList[0]);
                 }

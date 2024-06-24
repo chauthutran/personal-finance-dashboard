@@ -44,8 +44,6 @@ export async function PUT( request: NextRequest, {params} ) {
 }
 
 export async function DELETE( request: NextRequest ) {
-
-    console.log(request);
     const id = request.nextUrl.searchParams.get("id");
 
     await Budget.findByIdAndDelete(id);

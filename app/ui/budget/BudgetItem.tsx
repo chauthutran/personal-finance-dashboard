@@ -34,8 +34,7 @@ export default function BudgetItem({ data }: { data: JSONObject }) {
 
 	const { subPage, setSubPage } = useMainUi();
 	const { error, processingStatus, deleteBudget } = useBudget();
-console.log("================= subPage");
-console.log(subPage);
+	
 	const setSelectedBudget = () => {
 		AppStore.setSelected(data);
 		setSubPage(Constant.SUB_UI_EDIT_FORM);

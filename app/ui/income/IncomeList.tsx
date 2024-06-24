@@ -1,26 +1,26 @@
-/** Lists all expenses with details such as amount, start date, and end date. */
+/** Lists all incomes with details such as amount, start date, and end date. */
 "use client";
 
 import { useEffect, useState } from "react"
-import ExpenseItem from "./ExpenseItem"
+import IncomeItem from "./IncomeItem"
 import { JSONObject } from "@/lib/definations";
 import * as Constant from "@/lib/constants";
-import { useExpense } from "@/contexts/ExpenseContext";
+import { useIncome } from "@/contexts/IncomeContext";
 import { useMainUi } from "@/contexts/MainUiContext";
 import * as AppStore from "@/lib/appStore";
 
-export default function ExpenseList() {
+export default function IncomeList() {
 	
 	const { setSubPage } = useMainUi();
-	const { expenseList } = useExpense();
-
+	const { userId, incomeList } = useIncome();
+console.log("=========== Income list");
     return (
 		<>
 			 <div className="mx-auto my-3 p-3 bg-white shadow-md">
 				<div className=" overflow-y-auto h-[calc(100vh-150px)]">
 					<div className="divide-y divide-gray-200 ">
-						{expenseList && expenseList.map( (expense: JSONObject) => (
-							<ExpenseItem key={expense._id} data={expense}  />
+						{incomeList && incomeList.map( (income: JSONObject) => (
+							<IncomeItem key={income._id} data={income}  />
 						))}
 					</div>
 				</div>

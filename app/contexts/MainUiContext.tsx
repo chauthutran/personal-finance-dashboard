@@ -26,7 +26,7 @@ export const useMainUi = (): MainUiContextProps => {
 };
 
 export const MainUiProvider = ({ children }: { children: ReactNode }) => {
-	const [mainPage, setMainPage] = useState<string>(Contanst.UI_LOGIN_PAGE);
+	const [mainPage, setMainPage] = useState<string>(Contanst.UI_INTRO_PAGE);
 	const [subPage, setSubPage] = useState<string | null>(null);
 
 	return (

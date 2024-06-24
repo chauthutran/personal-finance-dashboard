@@ -1,23 +1,26 @@
-/** Form component for setting or updating the user's expense */
+/** Form component for setting or updating the user's income */
 
 "use client";
 import { JSONObject } from '@/lib/definations';
 import React, { useEffect, useState } from 'react';
 import * as Utils from "@/lib/utils";
 import DateField from '../basics/DateField';
+import mongoose from 'mongoose';
+import Dropdown from '../basics/Dropdown';
 import Alert from '../basics/Alert';
 import * as Constant from '@/lib/constants';
-import { useExpense } from '@/contexts/ExpenseContext';
+import { useIncome } from '@/contexts/IncomeContext';
 import { useMainUi } from '@/contexts/MainUiContext';
+import * as AppStore from "@/lib/appStore";
 import { useCategory } from '@/contexts/CategoryContext';
 
-export default function ExpenseForm({ data = {} as JSONObject }) {
+export default function IncomeForm({ data = {} as JSONObject }) {
 
 	const { setSubPage } = useMainUi();
-	const { expenseList } = useCategory();
-	const { userId, processingStatus, setProcessingStatus, error, saveExpense, newExpense } = useExpense();
+	const { incomeList } = useCategory();
+	const { userId, processingStatus, setProcessingStatus, error, saveIncome, newIncome } = useIncome();
 
-	const [expense, setExpense] = useState(data);
+	const [income, setIncome] = useState(data);
 	const [continueCreateNew, setContinueCreateNew] = useState(false);
 	const [errMsg, setErrMsg] = useState("");
 
@@ -35,7 +38,7 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 
 	const setValue = (propName: string, value: string | Date | null) => {
 		setErrMsg("");
-		var tempData = Utils.cloneJSONObject(expense);
+		var tempData = Utils.cloneJSONObject(income);
 		if (value == null) {
 			tempData[propName] = "";
 		}
@@ -46,20 +49,20 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 			tempData[propName] = value;
 		}
 
-		setExpense(tempData);
+		setIncome(tempData);
 	}
 
 	const handleOnSave = (event: React.MouseEvent<HTMLButtonElement>, isContinue: boolean) => {
 		event.preventDefault();
 		if( checkValidation() ) {
-			expense.userId = userId;
-			// if( expense.date === undefined ) {
-			// 	expense.date = (new Date()).toISOString();
+			income.userId = userId;
+			// if( income.date === undefined ) {
+			// 	income.date = (new Date()).toISOString();
 			// }
-
+	
 			setContinueCreateNew(isContinue);
-
-			saveExpense(expense);
+	
+			saveIncome(income);
 		}
 		else {
 			console.log(errMsg);
@@ -68,18 +71,19 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 	};
 
 	const checkValidation = () => {
-		return (expense.categoryId === undefined 
-			|| expense.amount === undefined
-			|| expense.date === undefined
+		return (income.categoryId === undefined 
+			|| income.amount === undefined
+			|| income.date === undefined
 		) ? false: true;
 	}
 
+
 	const handleOnReset = () => {
-		setExpense(Utils.cloneJSONObject(data));
+		setIncome(Utils.cloneJSONObject(data));
 	}
 
 	const setTitle = () => {
-		return (expense._id != undefined) ? "Edit expense" : "Add a new Expense";
+		return (income._id != undefined) ? "Edit income" : "Add a new Income";
 	}
 
 	return (
@@ -89,8 +93,7 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 			{processingStatus == Constant.SAVE_EXPENSE_FAILURE && <Alert type={Constant.ALERT_TYPE_ERROR} message={`Saving data is failed. ${error}`} />}
 			{error == Constant.SAVE_EXPENSE_FAILURE && <Alert type={Constant.ALERT_TYPE_ERROR} message={`Saving data is failed. ${error}`} />}
 			{errMsg !== "" && <Alert type={Constant.ALERT_TYPE_ERROR} message={`${errMsg}`} />}
-
-
+			
 			<div className="flex items-center justify-center">
 				<div className="flex-1 p-6 rounded border-2 bg-slate-100 shadow-md  max-w-xl">
 					<h2 className="text-2xl mb-4 text-center">{setTitle()}</h2>
@@ -103,12 +106,12 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 							<input
 								type="number"
 								id="amount"
-								value={expense.amount}
+								value={income.amount}
 								onChange={(e) => setValue("amount", e.target.value)}
 								className="w-full p-2 border border-gray-300 rounded"
 								required
 							/>
-							{(expense.amount == undefined || expense.amount == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
+							{(income.amount == undefined || income.amount == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
 						</div>
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="category">
@@ -117,15 +120,15 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 							<select
 								id="categoryId"
 								onChange={(e) => setValue("categoryId", e.target.value)}
-								value={expense.categoryId}
+								value={income.categoryId}
 								className="w-full p-2 border border-gray-300 rounded"
 							>
 								<option value="">[Please select]</option>
-								{expenseList && expenseList?.map((category: JSONObject) => (
+								{incomeList && incomeList?.map((category: JSONObject) => (
 									<option key={category._id} value={category._id}>{category.name}</option>
 								))}
 							</select>
-							{(expense.categoryId == undefined || expense.categoryId == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
+							{(income.categoryId == undefined || income.categoryId == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
 						</div>
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="date">
@@ -133,11 +136,11 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 							</label>
 							<DateField
 								id="date"
-								value={expense.date}
+								value={income.date}
 								handleOnChange={(date) => setValue("date", date)}
 								className="w-full p-2 border border-gray-300 rounded"
-							/>
-							{(expense.date == undefined || expense.date == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
+							/>	
+							{(income.date == undefined || income.date == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
 						</div>
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="description">
@@ -145,7 +148,7 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 							</label>
 							<textarea
 								id="description"
-								value={expense.description}
+								value={income.description}
 								onChange={(e) => setValue("description", e.target.value)}
 								className="w-full p-2 border border-gray-300 rounded"
 							/>

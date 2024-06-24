@@ -34,10 +34,7 @@ export default function LoginForm() {
 	};
 	
     const handleCancelBtn = () => {
-        const ok = confirm("Are you sure you don't want to login ?")
-        if( ok ) {
-            setMainPage(Constant.UI_INTRO_PAGE);
-        }
+        setMainPage(Constant.UI_INTRO_PAGE);
     }
 	
 

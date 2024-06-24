@@ -1,4 +1,4 @@
-/** Displays individual expense details with options to edit or delete. */
+/** Displays individual income details with options to edit or delete. */
 
 "use client";
 
@@ -10,7 +10,7 @@ import { AiFillDollarCircle } from "react-icons/ai";
 import { useMainUi } from "@/contexts/MainUiContext";
 import { FaTrash, FaShoppingCart, FaUtensils, FaHome, FaCar } from 'react-icons/fa';
 import { IconType } from 'react-icons';
-import { useExpense } from "@/contexts/ExpenseContext";
+import { useIncome } from "@/contexts/IncomeContext";
 import Alert from "../basics/Alert";
 
 const categoryIcons: Record<string, IconType> = {
@@ -31,21 +31,20 @@ const categoryIcons: Record<string, IconType> = {
 };
 
 
-export default function ExpenseItem({ data }: { data: JSONObject }) {
+export default function IncomeItem({ data }: { data: JSONObject }) {
 
 	const { subPage, setSubPage } = useMainUi();
-	const { error, processingStatus, deleteExpense } = useExpense();
-
+	const { error, processingStatus, deleteIncome } = useIncome();
 	
-	const setSelectedExpense = () => {
+	const setSelectedIncome = () => {
 		AppStore.setSelected(data);
 		setSubPage(Constant.SUB_UI_EDIT_FORM);
 	}
 
 	const handleOnDelete = () => {
-		const ok = confirm(`Are you sure you want to delete this expense ${data.description} ?`);
+		const ok = confirm(`Are you sure you want to delete this income ${data.description} ?`);
 		if (ok) {
-			deleteExpense(data._id);
+			deleteIncome(data._id);
 		}
 	}
 
@@ -57,7 +56,7 @@ export default function ExpenseItem({ data }: { data: JSONObject }) {
 			{processingStatus == Constant.DELETE_BUDGET_FAILURE && <Alert type={Constant.ALERT_TYPE_ERROR} message={`Deleted Failed. ${error}`} />}
 
 			<div key={data._id} className="p-3 py-3 min-h-[100px] flex items-center justify-between hover:bg-blue-200 cursor-pointer">
-				<div className="flex items-center space-x-5 flex-1" onClick={() => setSelectedExpense()} >
+				<div className="flex items-center space-x-5 flex-1" onClick={() => setSelectedIncome()} >
 					<Icon className="text-green-500 shadow-md w-6 h-6" />
 					<div className="flex-1">
 						<div className="text-lg font-medium text-gray-900">{data.description}</div>

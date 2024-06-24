@@ -1,1 +1,0 @@
-/** Displays individual transaction details with options to edit or delete. */

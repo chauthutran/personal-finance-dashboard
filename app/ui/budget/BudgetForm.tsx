@@ -33,15 +33,23 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 	const { userId, processingStatus, setProcessingStatus, error, saveBudget, newBudget } = useBudget();
 
 	const [budget, setBudget] = useState(data);
+	const [continueCreateNew, setContinueCreateNew] = useState(false);
+	const [errMsg, setErrMsg] = useState("");
 
 	useEffect(() => {
 		if( processingStatus === Constant.SAVE_BUDGET_SUCCESS ) {
-			setProcessingStatus("");
-			setSubPage( null );
+			if( continueCreateNew) {
+				handleOnReset();
+			}
+			else {
+				setProcessingStatus("");
+				setSubPage( null );
+			}
 		}
 	}, [processingStatus]);
 
 	const setValue = (propName: string, value: string | Date | null) => {
+		setErrMsg("");
 		var tempData = Utils.cloneJSONObject(budget);
 		if (value == null) {
 			tempData[propName] = "";
@@ -56,12 +64,29 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 		setBudget(tempData);
 	}
 
-	const handleOnSave = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleOnSave = (event: React.MouseEvent<HTMLButtonElement>, isContinue: boolean) => {
 		event.preventDefault();
-
-		budget.userId = userId;
-		saveBudget(budget);
+		if( checkValidation() ) {
+			budget.userId = userId;
+			setContinueCreateNew(isContinue);
+			saveBudget(budget);
+		}
+		else {
+			console.log(errMsg);
+			setErrMsg("Please check red fields.")
+		}
 	};
+	
+	const handleOnReset = () => {
+		setBudget(Utils.cloneJSONObject(data));
+	}
+
+	const checkValidation = () => {
+		return (budget.categoryId === undefined 
+			|| budget.amount === undefined
+			|| budget.date === undefined
+		) ? false: true;
+	}
 
 	const setTitle = () => {
 		return (budget._id != undefined) ? "Edit budget" : "Add a new Budget";
@@ -73,6 +98,7 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 			
 			{processingStatus == Constant.SAVE_BUDGET_SUCCESS && <Alert type={Constant.ALERT_TYPE_INFO} message={`Saved successfully.`} />}
 			{processingStatus == Constant.SAVE_BUDGET_FAILURE && <Alert type={Constant.ALERT_TYPE_ERROR} message={`Saving data is failed. ${error}`} />}
+			{errMsg !== "" && <Alert type={Constant.ALERT_TYPE_ERROR} message={`${errMsg}`} />}
 
 			<div className="flex items-center justify-center ">
 				<div className="p-6 rounded border-2 bg-slate-100 shadow-md w-full max-w-md">
@@ -81,7 +107,7 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 					<div>
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="amount">
-								Amount
+								Amount <span className="text-red-600 ml-1">*</span>
 							</label>
 							<input
 								type="number"
@@ -91,10 +117,11 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 								className="w-full p-2 border border-gray-300 rounded"
 								required
 							/>
+							{(budget.amount == undefined || budget.amount == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
 						</div>
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="category">
-								Category
+								Category <span className="text-red-600 ml-1">*</span>
 							</label>
 							<select
 								id="categoryId"
@@ -103,25 +130,14 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 								className="w-full p-2 border border-gray-300 rounded"
 							>
 								{categoryList && categoryList?.map((category: JSONObject) => (
-									<option value={category._id}>({category.type}) - {category.name}</option>
+									<option key={category._id} value={category._id}>({category.type}) - {category.name}</option>
 								))}
 							</select>
+							{(budget.categoryId == undefined || budget.categoryId == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
 						</div>
-						<div className="mb-4">
-							<label className="block text-gray-700 mb-2" htmlFor="description">
-								Description
-							</label>
-							<textarea
-								id="description"
-								value={budget.description}
-								onChange={(e) => setValue("description", e.target.value)}
-								className="w-full p-2 border border-gray-300 rounded"
-							/>
-						</div>
-
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="month">
-								Month
+								Month <span className="text-red-600 ml-1">*</span>
 							</label>
 							<select
 								id="month"
@@ -143,12 +159,13 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 								<option value="11">Nov</option>
 								<option value="12">Dec</option>
 							</select>
+							{(budget.month == undefined || budget.month == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
 						</div>
 
 
 						<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="startDate">
-								Year
+								Year <span className="text-red-600 ml-1">*</span>
 							</label>
 							<input
 								type="number"
@@ -158,21 +175,40 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 								className="w-full p-2 border border-gray-300 rounded"
 								required
 							/>
+							{(budget.year == undefined || budget.year == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
 						</div>
 
+						<div className="mb-4">
+							<label className="block text-gray-700 mb-2" htmlFor="description">
+								Description 
+							</label>
+							<textarea
+								id="description"
+								value={budget.description}
+								onChange={(e) => setValue("description", e.target.value)}
+								className="w-full p-2 border border-gray-300 rounded"
+							/>
+						</div>
 
 						<div className="flex justify-between items-center">
 							<button
 								type="submit"
-								className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-								onClick={(e) => handleOnSave(e)}
+								className="bg-blue-500 w-2/6 text-white px-4 py-2 rounded hover:bg-blue-600"
+								onClick={(e) => handleOnSave(e, false)}
 							>
-								Save
+								Save And Go back
+							</button>	
+							<button
+								type="submit"
+								className="bg-blue-500 w-2/6 text-white px-4 py-2 rounded hover:bg-blue-600"
+								onClick={(e) => handleOnSave(e, true)}
+							>
+								Save and Continue
 							</button>
 							<button
 								type="button"
 								onClick={() => setBudget(data)}
-								className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+								className="bg-gray-500 w-2/6 text-white px-4 py-2 rounded hover:bg-gray-600"
 							>
 								Reset
 							</button>
