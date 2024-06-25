@@ -74,3 +74,12 @@
 .slide-down {
   animation: slideDown 1s ease-out;
 }
+
+
+
+/** 
+* Charts
+*/
+.recharts-pie-sector:focus {
+  outline: none;
+}
