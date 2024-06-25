@@ -54,6 +54,7 @@ export const UI_BUDGET_PAGE = "UI_BUDGET_PAGE";
 export const UI_EXPENSE_PAGE = "UI_EXPENSE_PAGE";
 export const UI_INCOME_PAGE = "UI_INCOME_PAGE";
 export const UI_DASHBOARD_PAGE = "UI_DASHBOARD_PAGE";
+export const UI_REPORT_PAGE = "UI_REPORT_PAGE";
 
 
 export const SUB_UI_ADD_FORM = "SUB_UI_ADD_FORM";
@@ -64,3 +65,7 @@ export const ALERT_TYPE_INFO = "ALERT_TYPE_INFO";
 export const ALERT_TYPE_SUCCESS = "ALERT_TYPE_SUCCESS";
 export const ALERT_TYPE_WARNNG = "ALERT_TYPE_WARNNG";
 export const ALERT_TYPE_ERROR = "ALERT_TYPE_ERROR";
+
+
+export const REPORT_TYPE_CATEGORY_WISE = "categoryWise";
+export const REPORT_TYPE_MONTHLY_REPORT = "monthlyReport";

@@ -42,6 +42,10 @@ export default function SlideBar({handleOnClose = () => {}}: {handleOnClose: () 
 		handleOnClose();
 	}
 
+	const handleClickOnReport = () => {
+		setMainPage(Constant.UI_REPORT_PAGE); 
+		handleOnClose();
+	}
 
 	return (
         <div className="w-1/3 min-w-[150px] h-screen bg-white p-1 absolute left-0 top-0" >
@@ -55,6 +59,9 @@ export default function SlideBar({handleOnClose = () => {}}: {handleOnClose: () 
 				<div className="cursor-pointer rounded-md bg-blue-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-blue-200" onClick={() => handleClickOnBudget() }>Budgets</div>
                 <div className="cursor-pointer rounded-md bg-blue-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-blue-200" onClick={() => handleClickOnExpense() }>Expenses</div>
                 <div className="cursor-pointer rounded-md bg-blue-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-blue-200" onClick={() => handleClickOnIncome() }>Incomes</div>
+
+				<hr className="mt-5" />
+                <div className="cursor-pointer rounded-md bg-purple-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-purple-200" onClick={() => handleClickOnReport() }>Report</div>
 
 				<hr className="mt-5" />
                 <div className="cursor-pointer rounded-md bg-red-100 p-2 text-sm font-semibold text-gray-600 shadow-md hover:bg-red-200" onClick={() => handleOnLogout()} >Logout</div>
