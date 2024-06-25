@@ -1,1 +1,0 @@
-/** Generates reports on income over a selected time period. */

@@ -50,6 +50,10 @@ export const formatDate = ( dateStr: string) => {
     return dateStr.substring(0, 10);
 }
 
+export const isValidDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date instanceof Date && !isNaN(date.getTime());
+}
 
 /** 
  * Relate to Searching/Replace data in a list
