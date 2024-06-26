@@ -43,26 +43,27 @@ export default function ReportPage() {
 	}
 	
 	const generateReport = async() => {
-		let tempChartData: JSONObject = {};
 
-		if( reportType == Constant.REPORT_TYPE_CATEGORY_WISE ) {
-			if( dataFrom.indexOf("expense") >= 0 ) {
-				tempChartData.expenseData = await ReportService.retrieveCategoryWiseExpenseData(user!._id, startDate!.toISOString(), endDate!.toISOString());
-			}
-
-			if( dataFrom.indexOf("income") >= 0 ) {
-				// tempChartData.incomeData = await ReportService.retrieveCategoryWiseExpenseData(user!._id, startDate!.toISOString(), endDate!.toISOString());
-			}
-
-			if( dataFrom.indexOf("budget") >= 0 ) {
-				// tempChartData.budgetData = await ReportService.retrieveCategoryWiseExpenseData(user!._id, startDate!.toISOString(), endDate!.toISOString());
-			}
+		let urlPath = "";
+		switch( reportType ) {
+			case Constant.REPORT_TYPE_CATEGORY_WISE:
+				urlPath = "category-wise-report";
+				break;
+			case Constant.REPORT_TYPE_CATEGORY_WISE:
+				urlPath = "monthly-report";
+				break;
+			default: 
+				break;
+		}
+		
+		const tempChartData = await ReportService.retrieveAggregateData(urlPath, user!._id, startDate!.toISOString(), endDate!.toISOString(), dataFrom.join(";"));
 			
+		if( tempChartData.errMsg === undefined ) {
 			setChartData(tempChartData);
 			handleUpdateChart();
 		}
-		else if( reportType == Constant.REPORT_TYPE_MONTHLY_REPORT ) {
-
+		else {
+			// Show error message here
 		}
 	}
 

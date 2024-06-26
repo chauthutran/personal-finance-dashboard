@@ -48,7 +48,7 @@ export async function POST( request: NextRequest ) {
 	}
 
 	if( errArr.length > 0 ) {
-		return NextResponse.json({message: errArr.join("; ")}, { status: 200 });
+		return NextResponse.json({errMsg: errArr.join("; ")}, { status: 200 });
 	}
 
 

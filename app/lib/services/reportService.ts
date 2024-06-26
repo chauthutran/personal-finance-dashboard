@@ -1,56 +1,44 @@
 import { JSONObject } from "@/lib/definations";
+import * as Utils from '@/lib/utils';
+
 
 export const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82ca9d'];
-
 	
-export const retrieveCategoryWiseExpenseData = async (userId: string, startDate: string, endDate: string): Promise<JSONObject[] | string> => {
-	const response = await fetch(`api/report/category-wise-expense?userId=${userId}&startDate=${startDate}&endDate=${endDate}`);
+export const retrieveAggregateData = async (path: string, userId: string, startDate: string, endDate: string, dataFrom: string): Promise<JSONObject> => {
 
-	if (response.ok) {
-		var jsonResponse: any = await response.json();
-		if (jsonResponse.message == undefined) { // success
-			const aggregateData = jsonResponse as JSONObject[];
-			return aggregateData;
-		}
-		else { // fail
-			return jsonResponse.message;
-		}
+	const payload = {
+		"userId" : userId,
+		"startDate" : startDate,
+		"endDate": endDate,
+		"dataFrom": dataFrom
 	}
 
-	return "Error while loading expense data";
-}
+	try {
+		const response = await fetch(`api/report/${path}`, {
+			method: "POST",
+			headers: {
+				"Content-type": "appliction/json"
+			},
+			body: JSON.stringify(payload)
+		})
 
-
-
-export const retrieveMonthExpenseData = async (userId: string, year: string): Promise<JSONObject[] | string> => {
-	const startDate = `${year}-01-01T00:00:00`;
-	const endDate = `${year}-12-31T00:00:00`;
-
-	// try
-	// {
-		// const response = await fetch("api/budget", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-type": "appliction/json"
-		// 	},
-		// 	body: JSON.stringify(budget)
-		// })
-
-	// }
-
-	const response = await fetch(`api/report/monthly-expense-report?userId=${userId}&startDate=${startDate}&endDate=${endDate}`);
-
-	if (response.ok) {
-		var jsonResponse: any = await response.json();
-		if (jsonResponse.message == undefined) { // run successfully.
-			const aggregateData = jsonResponse as JSONObject[];
-			return aggregateData;
+		if( !response.ok ){
+			console.log("====================== response");
+			console.log(response);
+			return ({ errMsg: "Network response was not ok"});
 		}
-		else { // fail
-			return jsonResponse.message;
+		else {
+			var jsonResponse: JSONObject = await response.json();
+			if (jsonResponse.errMsg == undefined) { // run successfully.
+				return jsonResponse;
+			}
+			else { // fail
+				return jsonResponse.errMsg;
+			}
 		}
 	}
-
-	return "Error while loading expense data";
+	catch( err ) {
+		return ({ errMsg: Utils.getErrMessage(err)});
+	}
 
 }
