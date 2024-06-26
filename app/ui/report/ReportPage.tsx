@@ -6,7 +6,8 @@ import { JSONObject } from '@/lib/definations';
 import * as Constant from "@/lib/constants";
 import * as Utils from "@/lib/utils";
 import * as ReportService from "@/lib/services/reportService";
-import { Cell, Pie, PieChart } from 'recharts';
+import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
+import CustomPieChart from './CustomPieChart';
 
 
 export default function ReportPage() {
@@ -56,9 +57,9 @@ export default function ReportPage() {
 			if( dataFrom.indexOf("budget") >= 0 ) {
 				// tempChartData.budgetData = await ReportService.retrieveCategoryWiseExpenseData(user!._id, startDate!.toISOString(), endDate!.toISOString());
 			}
-console.log("=========== tempChartData");
-console.log(tempChartData);
+			
 			setChartData(tempChartData);
+			handleUpdateChart();
 		}
 		else if( reportType == Constant.REPORT_TYPE_MONTHLY_REPORT ) {
 
@@ -141,33 +142,10 @@ console.log(tempChartData);
 			</div>
 
 
-			{!Utils.isEmptyJSON(chartData) && <div className="grid grid-cols-2 gap-4">
-				<div className="bg-white rounded-lg p-4 shadow-md">
-				<PieChart width={500} height={400}>
-					{/* {chartData.expenseData !== null && <Pie
-						dataKey="totalAmount"
-						isAnimationActive={false}
-						data={chartData.expenseData!}
-						cx={"50%"}
-						cy={"50%"}
-						outerRadius={80}
-						fill="#8884d8"
-						label
-						style={{ outline: 'none' }}
-					>
-						{chartData.expenseData!.map((entry, index) => (
-							<Cell key={`cell-${index}`} fill={ReportService.COLORS[index % ReportService.COLORS.length]}  > </Cell>
-						))}
-					</Pie>} */}
-
-					<Pie data={chartData.expenseData} dataKey="totalAmount" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" />
-          <Pie data={chartData.expenseData} dataKey="totalAmount" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
-        
-
-					{/* {chartData.expenseData !== null && <CustomPie data={chartData.expenseData!} dataKey="totalAmount" /> }
-					{chartData.incomeData !== null && <CustomPie data={chartData.incomeData!} dataKey="totalAmount" /> }
-					{chartData.budgetData !== null && <CustomPie data={chartData.budgetData!} dataKey="totalAmount" /> } */}
-					</PieChart>
+			{!Utils.isEmptyJSON(chartData) && <div className="grid grid-cols-2 gap-4  shadow-md w-full">
+				<div className="bg-white rounded-lg p-4">
+				
+					<CustomPieChart requestToUpdate={requestToUpdate} expenseData={chartData.expenseData} incomeData={chartData.incomeData} budgetData={chartData.budgetData} />
 				</div>
 			</div>}
 

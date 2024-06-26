@@ -26,6 +26,18 @@ export const retrieveMonthExpenseData = async (userId: string, year: string): Pr
 	const startDate = `${year}-01-01T00:00:00`;
 	const endDate = `${year}-12-31T00:00:00`;
 
+	// try
+	// {
+		// const response = await fetch("api/budget", {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-type": "appliction/json"
+		// 	},
+		// 	body: JSON.stringify(budget)
+		// })
+
+	// }
+
 	const response = await fetch(`api/report/monthly-expense-report?userId=${userId}&startDate=${startDate}&endDate=${endDate}`);
 
 	if (response.ok) {

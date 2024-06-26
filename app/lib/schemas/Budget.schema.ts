@@ -14,7 +14,7 @@ const BudgetSchema = new Schema (
             ref: 'Category',
             required: true,
         },
-        amount: { type: String, required: true },
+        amount: { type: Number, required: true },
         description: { type: String, required: false },
         month: { type: Number, required: true },
         year: { type: Number, required: true },
