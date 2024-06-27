@@ -8,69 +8,21 @@ import {
 	CartesianGrid,
 	Tooltip,
 	Legend,
+	ResponsiveContainer,
 } from "recharts";
 import * as ReportService from "@/lib/services/reportService";
 
-// const data = [
-// 	{
-// 		name: "Page A",
-// 		uv: 4000,
-// 		pv: 2400,
-// 		amt: 2400,
-// 	},
-// 	{
-// 		name: "Page B",
-// 		uv: 3000,
-// 		pv: 1398,
-// 		amt: 2210,
-// 	},
-// 	{
-// 		name: "Page C",
-// 		uv: 2000,
-// 		pv: 9800,
-// 		amt: 2290,
-// 	},
-// 	{
-// 		name: "Page D",
-// 		uv: 2780,
-// 		pv: 3908,
-// 		amt: 2000,
-// 	},
-// 	{
-// 		name: "Page E",
-// 		uv: 1890,
-// 		pv: 4800,
-// 		amt: 2181,
-// 	},
-// 	{
-// 		name: "Page F",
-// 		uv: 2390,
-// 		pv: 3800,
-// 		amt: 2500,
-// 	},
-// 	{
-// 		name: "Page G",
-// 		uv: 3490,
-// 		pv: 4300,
-// 		amt: 2100,
-// 	},
-// ];
-const barDataConfig = [
-    { dataKey: "income", fill: "#8884d8" },
-    { dataKey: "expense", fill: "#82ca9d" },
-    // Add more configurations as needed
-];
 
 export default function CustomBarChart({ data }: { data: JSONObject[] }) {
 	let valueColdsName = (data.length > 0) ? Object.keys(data[0]) : [];
 	valueColdsName = valueColdsName.filter(item => item !== "name");
-console.log("===== CustomBarChart");
-console.log(valueColdsName);
-console.log(data);
+
 	return (
+		// <div className="w-full h-full">
+		<ResponsiveContainer width="100%" height={400}>
 		<BarChart
-			width={500}
-			height={300}
+			// width={1500}
+			// height={400}
 			data={data}
 			margin={{
 				top: 5,
@@ -80,22 +32,22 @@ console.log(data);
 			}}
 		>
 			<CartesianGrid strokeDasharray="3 3" />
-			<XAxis dataKey="name" />
+			<XAxis 
+				dataKey="name" 
+				interval={0}
+				angle={-45}
+				textAnchor="end"
+				tick={{ fontSize: 12 }}
+			/>
 			<YAxis />
-			<Tooltip shared={false} trigger="click" />
-			<Legend />
-			{valueColdsName.map((item, index) => {
-				// <Bar dataKey={`${item}`} fill={ReportService.COLORS[index % ReportService.COLORS.length]} />
-				<Bar key={index} dataKey={item} fill="#82ca9d" />
-			})}
-
-			 {/* <Bar dataKey="income" fill="#82ca9d" />
-			 <Bar dataKey="expense" fill="#8884d8" />
-			 <Bar dataKey="budget" fill="#82ca9d" /> */}
-
-{/* {barDataConfig.map((barConfig, index) => (
-                <Bar key={index} dataKey={barConfig.dataKey} fill={barConfig.fill} />
-            ))} */}
+			{/* <Tooltip shared={false} trigger="click" /> */}
+			<Tooltip />
+			<Legend wrapperStyle={{paddingTop: "60px"}} />
+			{valueColdsName.map((item, index) => (
+				<Bar key={index} dataKey={item} fill={ReportService.generateColor(index)} />
+			))}
 		</BarChart>
+		</ResponsiveContainer>
+		// </div>
 	);
 }

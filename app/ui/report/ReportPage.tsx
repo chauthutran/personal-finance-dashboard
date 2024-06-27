@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import CustomDatePicker from './DatePicker';
-import CustomMonthPicker from './MonthPicker';
-import CustomYearPicker from './YearPicker';
-import CategoryFilter from './CategoryFilter';
-import ReportTypeSelector from './ReportTypeSelector';
-import ReportDisplay from './ReportDisplay';
+import CustomDatePicker from './basics/DatePicker';
+import CustomMonthPicker from './basics/MonthPicker';
+import CustomYearPicker from './basics/YearPicker';
+import CategoryFilter from './basics/CategoryFilter';
+import ReportTypeSelector from './basics/ReportTypeSelector';
+import ReportDisplay from './basics/ReportDisplay';
 import { JSONObject } from '@/lib/definations';
 import * as Constant from "@/lib/constants";
 import * as ReportService from "@/lib/services/reportService";
@@ -66,42 +66,35 @@ export default function ReportPage() {
 		if( reportType === Constant.REPORT_TYPE_INCOME_VS_REPORT ) {
 			const incomeData = data.incomeData;
 			const expenseData = data.expenseData;
-			// totalAmount: number;
-			// details: JSONObject[],
-			// month: number,
-			// year: number
 
-			// {
-			// 	name: "Page G",
-			// 	uv: 3490,
-			// 	pv: 4300,
-			// 	amt: 2100,
-			//   },
+			// const incomePeriods = incomeData.map((item: JSONObject) => `${item.year}-${item.month}`);
+			// const exprensePeriods = expenseData.map((item: JSONObject) => `${item.year}-${item.month}`);
+			// let periods: string[] = Array.from(new Set([...incomePeriods, ...exprensePeriods]));
+			// periods.sort();
 
-			const incomePeriods = incomeData.map((item: JSONObject) => `${item.month}-${item.year}`);
-			const exprensePeriods = expenseData.map((item: JSONObject) => `${item.month}-${item.year}`);
-			let periods: string[] = Array.from(new Set([...incomePeriods, ...exprensePeriods]));
-			periods.sort();
+			const monthList = Utils.getMonthListFromDateRange(startDate!, endDate!);
 
-console.log("=== periods");
-console.log(periods);
-
-			for( var i=0; i< periods.length; i++ ) {
-				const period = periods[i];
-				const income = incomeData.filter((item) => `${item.month}-${item.year}` === period);
-				const expense = expenseData.filter((item) => `${item.month}-${item.year}` === period);
+			for( var i=0; i< monthList.length; i++ ) {
+				const monthInfo = monthList[i];
+				const income = incomeData.filter((item) => (item.month === monthInfo.month && item.year === monthInfo.year));
+				const expense = expenseData.filter((item) => (item.month === monthInfo.month && item.year === monthInfo.year));
+				
+				// const expense = expenseData.filter((item) => `${item.year}-${item.month}` === period);
 
 				const incomeVal = (income === undefined || income.length == 0) ? 0 : income[0].totalAmount;
 				const expenseVal = (expense === undefined || expense.length == 0 ) ? 0 : expense[0].totalAmount;
 				result.push({
-					name: period,
-					income: incomeVal,
-					expense: expenseVal
+					name: monthInfo.displayName,
+					// name: "Page A",
+					Income: incomeVal,
+					Expense: expenseVal
 				})
 			}
 
 		}
 		
+		console.log("=========== result");
+		console.log(result);
 		return result;
 	}
 

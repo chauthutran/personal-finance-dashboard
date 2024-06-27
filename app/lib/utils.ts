@@ -50,11 +50,49 @@ export const formatDate = ( dateStr: string) => {
     return dateStr.substring(0, 10);
 }
 
+// export const formatDate = (dateStr: string): string => {
+//     const dateObj = new Date(dateStr);
+const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+//     return dateObj.toLocaleDateString('en-US', options); // Example: "June 27, 2024"
+//   };
+
+
+export const formatMonth = (dateStr: string): string => {
+    const dateObj = new Date(dateStr);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short' };
+    return dateObj.toLocaleDateString('en-US', options); // Example: "June 2024"
+};
+
 export const isValidDate = (dateStr: string) => {
     const date = new Date(dateStr);
     return date instanceof Date && !isNaN(date.getTime());
 }
 
+
+export const getMonthListFromDateRange = (startDate: Date, endDate: Date): JSONObject[] => {
+  
+    if (startDate > endDate) {
+      throw new Error("Start date must be before end date");
+    }
+  
+    const monthList: JSONObject[] = [];
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short' };
+    
+    const currentDate = new Date(startDate);
+  
+    while (currentDate <= endDate) {
+      monthList.push({
+        month: currentDate.getMonth() + 1,
+        year: currentDate.getFullYear(),
+        displayName: currentDate.toLocaleDateString('en-US', options)
+      });
+      currentDate.setMonth(currentDate.getMonth() + 1);
+    }
+    
+    return monthList;
+  };
+
+  
 /** 
  * Relate to Searching/Replace data in a list
  *  */ 
@@ -108,6 +146,12 @@ export const findAndReplaceItemFromList = function( list: JSONObject[], searchVa
 	}
 
 }
+
+/** Merge 2 list and remove the duplicate items */
+// const incomePeriods = incomeData.map((item: JSONObject) => `${item.year}-${item.month}`);
+// 			const exprensePeriods = expenseData.map((item: JSONObject) => `${item.year}-${item.month}`);
+// 			let periods: string[] = Array.from(new Set([...incomePeriods, ...exprensePeriods]));
+// 			periods.sort();
 
 
 /** 

@@ -2,8 +2,11 @@ import { JSONObject } from "@/lib/definations";
 import * as Utils from '@/lib/utils';
 
 
-export const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82ca9d'];
+// export const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82ca9d'];
 	
+export const COLORS = ['#4CAF50', '#F44336', '#2196F3', '#9E9E9E'];
+
+
 export const retrieveAggregateData = async (path: string, userId: string, startDate: string, endDate: string, dataFrom: string): Promise<JSONObject> => {
 
 	const payload = {
@@ -41,4 +44,8 @@ export const retrieveAggregateData = async (path: string, userId: string, startD
 		return ({ errMsg: Utils.getErrMessage(err)});
 	}
 
+}
+
+export const generateColor = (num: number) => {
+	return COLORS[num % COLORS.length];
 }
