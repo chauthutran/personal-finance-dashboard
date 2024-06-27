@@ -12,6 +12,7 @@ import { FaTrash, FaShoppingCart, FaUtensils, FaHome, FaCar } from 'react-icons/
 import { IconType } from 'react-icons';
 import { useExpense } from "@/contexts/ExpenseContext";
 import Alert from "../basics/Alert";
+import { useCategory } from "@/contexts/CategoryContext";
 
 const categoryIcons: Record<string, IconType> = {
 	groceries: FaShoppingCart,
@@ -35,6 +36,8 @@ export default function ExpenseItem({ data }: { data: JSONObject }) {
 
 	const { subPage, setSubPage } = useMainUi();
 	const { error, processingStatus, deleteExpense } = useExpense();
+
+	const { categoryList } = useCategory();
 
 	
 	const setSelectedExpense = () => {
@@ -60,7 +63,7 @@ export default function ExpenseItem({ data }: { data: JSONObject }) {
 				<div className="flex items-center space-x-5 flex-1" onClick={() => setSelectedExpense()} >
 					<Icon className="text-green-500 shadow-md w-6 h-6" />
 					<div className="flex-1">
-						<div className="text-lg font-medium text-gray-900">{data.description}</div>
+						<div className="text-lg font-medium text-gray-900">{Utils.findItemFromList(categoryList!, data.categoryId, "_id")!.name}</div>
 						<div className="mt-1 text-gray-500">{Utils.formatDate(data.date)}</div>
 						<div className="mt-1 text-gray-900 font-semibold">${data.amount}</div>
 					</div>

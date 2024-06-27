@@ -71,5 +71,5 @@ export const REPORT_TYPE_CATEGORY_WISE = "categoryWise";
 export const REPORT_TYPE_MONTHLY_REPORT = "monthlyReport";
 
 
-export const REPORT_TYPE_INCOME_VS_REPORT = "Income vs. Expense Report";
-// export const REPORT_TYPE_MONTHLY_REPORT = "monthlyReport";
+export const REPORT_TYPE_INCOME_VS_EXPENSE = "Income vs. Expense Report";
+export const REPORT_TYPE_BUDGET_VS_ACTUAL = "Budget vs. Actual Report";

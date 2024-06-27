@@ -8,6 +8,7 @@ import * as Constant from "@/lib/constants";
 import { useExpense } from "@/contexts/ExpenseContext";
 import { useMainUi } from "@/contexts/MainUiContext";
 import * as AppStore from "@/lib/appStore";
+import { useCategory } from "@/contexts/CategoryContext";
 
 export default function ExpenseList() {
 	

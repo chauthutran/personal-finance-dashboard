@@ -58,6 +58,7 @@ export const CategoryProvider = ({ userId, children }: { userId: string, childre
         setError(null);
 		try {
 			const response = await fetch(`api/category?userId=${userId}`);
+            console.log(response); 
             if (!response.ok) {
                 setError("Network response was not ok");
                 setProcessingStatus(Constant.FETCH_BUDGET_lIST_FAILURE);

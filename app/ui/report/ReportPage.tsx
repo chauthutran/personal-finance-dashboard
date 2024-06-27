@@ -21,6 +21,10 @@ export default function ReportPage() {
 	const [startDate, setStartDate] = useState<Date | null>(new Date());
 	const [endDate, setEndDate] = useState<Date | null>(new Date());
 
+	
+	const [startMonth, setStartMonth ] = useState<Date | null>(new Date());
+	const [endMonth, setEndMonth] = useState<Date | null>(new Date());
+
 	//   const [selectedDate, setSelectedDate] = useState(null);
 	//   const [selectedMonth, setSelectedMonth] = useState(null);
 	//   const [selectedYear, setSelectedYear] = useState(null);
@@ -38,65 +42,35 @@ export default function ReportPage() {
 
 	const generateReport = async () => {
 		let urlPath = "";
-		switch (selectedReportType) {
-			case Constant.REPORT_TYPE_INCOME_VS_REPORT:
-				urlPath = "monthly-report";
-				break;
-			case Constant.REPORT_TYPE_CATEGORY_WISE:
-				urlPath = "category-wise-report";
-				break;
-			default:
-				break;
-		}
+		if( selectedReportType === Constant.REPORT_TYPE_INCOME_VS_EXPENSE ) {
+			const urlPath = "monthly-report";
+			const tempChartData = await ReportService.retrieveAggregateData(urlPath, user!._id, startDate!.toISOString(), endDate!.toISOString());
 
-		const tempChartData = await ReportService.retrieveAggregateData(urlPath, user!._id, startDate!.toISOString(), endDate!.toISOString(), "income;expense");
-
-		if (tempChartData.errMsg === undefined) {
-			const dataTranformed = transformData( selectedReportType, tempChartData );
-			setChartData(dataTranformed);
-			handleUpdateChart();
-		}
-		else {
-			// Show error message here
-		}
-	}
-
-	const transformData = (reportType: string, data: JSONObject ): JSONObject[] => {
-		var result: JSONObject[] = [];
-		if( reportType === Constant.REPORT_TYPE_INCOME_VS_REPORT ) {
-			const incomeData = data.incomeData;
-			const expenseData = data.expenseData;
-
-			// const incomePeriods = incomeData.map((item: JSONObject) => `${item.year}-${item.month}`);
-			// const exprensePeriods = expenseData.map((item: JSONObject) => `${item.year}-${item.month}`);
-			// let periods: string[] = Array.from(new Set([...incomePeriods, ...exprensePeriods]));
-			// periods.sort();
-
-			const monthList = Utils.getMonthListFromDateRange(startDate!, endDate!);
-
-			for( var i=0; i< monthList.length; i++ ) {
-				const monthInfo = monthList[i];
-				const income = incomeData.filter((item) => (item.month === monthInfo.month && item.year === monthInfo.year));
-				const expense = expenseData.filter((item) => (item.month === monthInfo.month && item.year === monthInfo.year));
-				
-				// const expense = expenseData.filter((item) => `${item.year}-${item.month}` === period);
-
-				const incomeVal = (income === undefined || income.length == 0) ? 0 : income[0].totalAmount;
-				const expenseVal = (expense === undefined || expense.length == 0 ) ? 0 : expense[0].totalAmount;
-				result.push({
-					name: monthInfo.displayName,
-					// name: "Page A",
-					Income: incomeVal,
-					Expense: expenseVal
-				})
+			if (tempChartData.errMsg === undefined) {
+				const dataTranformed = ReportService.transformReportData_IncomeVSExpense(tempChartData, startDate!, endDate!);
+				setChartData(dataTranformed);
+				handleUpdateChart();
 			}
-
+			else {
+				// Show error message here
+			}
 		}
-		
-		console.log("=========== result");
-		console.log(result);
-		return result;
+		if( selectedReportType === Constant.REPORT_TYPE_BUDGET_VS_ACTUAL ) {
+			const urlPath = "budget-vs-expense";
+			const tempChartData = await ReportService.retrieveAggregateData(urlPath, user!._id, startDate!.toISOString(), endDate!.toISOString());
+
+			if (tempChartData.errMsg === undefined) {
+				const dataTranformed = ReportService.transformReportData_BudgetVSActual( tempChartData );
+				setChartData(dataTranformed);
+				handleUpdateChart();
+			}
+			else {
+				// Show error message here
+			}
+		}
 	}
+
+
 
 	return (
 

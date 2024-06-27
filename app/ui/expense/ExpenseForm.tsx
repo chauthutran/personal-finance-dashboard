@@ -10,11 +10,13 @@ import * as Constant from '@/lib/constants';
 import { useExpense } from '@/contexts/ExpenseContext';
 import { useMainUi } from '@/contexts/MainUiContext';
 import { useCategory } from '@/contexts/CategoryContext';
+import { useBudget } from '@/contexts/BudgetContext';
 
 export default function ExpenseForm({ data = {} as JSONObject }) {
 
 	const { setSubPage } = useMainUi();
 	const { expenseList } = useCategory();
+	const { budgetList } = useBudget();
 	const { userId, processingStatus, setProcessingStatus, error, saveExpense, newExpense } = useExpense();
 
 	const [expense, setExpense] = useState(data);
@@ -150,6 +152,30 @@ export default function ExpenseForm({ data = {} as JSONObject }) {
 								className="w-full p-2 border border-gray-300 rounded"
 							/>
 						</div>
+
+						<div className="mb-4">
+							<label className="block text-gray-700 mb-2" htmlFor="category">
+								Budget
+							</label>
+							<select
+								id="budgetId"
+								onChange={(e) => setValue("budgetId", e.target.value)}
+								value={expense.budgetId}
+								className="w-full p-2 border border-gray-300 rounded"
+							>
+								<option value="">[Please select]</option>
+								? Only show 'Expense' budgets here
+								{budgetList && budgetList?.map((budget: JSONObject) => {
+									
+									const category = Utils.findItemFromList(expenseList!, budget.categoryId, "_id");
+									return ( category !== null ) 
+										? ( <option key={budget._id} value={budget._id}>{category.name}</option>)
+										: <></>;
+								
+								})}
+							</select>
+						</div>
+						
 
 						<div className="flex justify-between items-center">
 							<button

@@ -8,8 +8,14 @@ const ReportDisplay = ({ reportType, data }) => {
   return (
     <div className="mt-4">
       <h2 className="text-xl font-bold">Report</h2>
-      { reportType === Constant.REPORT_TYPE_INCOME_VS_REPORT && <CustomBarChart data={data}/> }
-      { reportType === Constant.REPORT_TYPE_INCOME_VS_REPORT && <CustomLineChart data={data}/> }
+      { reportType === Constant.REPORT_TYPE_INCOME_VS_EXPENSE && <>
+        <CustomBarChart data={data}/>
+        <CustomLineChart data={data}/> 
+      </> }
+      { reportType === Constant.REPORT_TYPE_BUDGET_VS_ACTUAL && <>
+        <CustomBarChart data={data}/>
+        <CustomLineChart data={data}/> 
+      </>}
     </div>
   );
 };

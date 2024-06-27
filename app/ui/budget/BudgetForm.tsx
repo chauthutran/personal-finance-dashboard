@@ -84,7 +84,8 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 	const checkValidation = () => {
 		return (budget.categoryId === undefined 
 			|| budget.amount === undefined
-			|| budget.date === undefined
+			|| budget.startDate === undefined
+			|| budget.endDate === undefined
 		) ? false: true;
 	}
 
@@ -136,46 +137,32 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 							{(budget.categoryId == undefined || budget.categoryId == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
 						</div>
 						<div className="mb-4">
-							<label className="block text-gray-700 mb-2" htmlFor="month">
-								Month <span className="text-red-600 ml-1">*</span>
-							</label>
-							<select
-								id="month"
-								onChange={(e) => setValue("month", e.target.value)}
-								value={budget.month}
-								className="w-full p-2 border border-gray-300 rounded"
-							>
-								<option value="">[Please select]</option>
-								<option value="1">Jan</option>
-								<option value="2">Feb</option>
-								<option value="3">Mar</option>
-								<option value="4">Apr</option>
-								<option value="5">May</option>
-								<option value="6">Jun</option>
-								<option value="7">Jul</option>
-								<option value="8">Aug</option>
-								<option value="9">Sep</option>
-								<option value="10">Oct</option>
-								<option value="11">Nov</option>
-								<option value="12">Dec</option>
-							</select>
-							{(budget.month == undefined || budget.month == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
-						</div>
-
-
-						<div className="mb-4">
+							<div className="mb-4">
 							<label className="block text-gray-700 mb-2" htmlFor="startDate">
-								Year <span className="text-red-600 ml-1">*</span>
-							</label>
-							<input
-								type="number"
-								id="year"
-								value={budget.year}
-								onChange={(e) => setValue("year", e.target.value)}
-								className="w-full p-2 border border-gray-300 rounded"
-								required
-							/>
-							{(budget.year == undefined || budget.year == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
+									Start Date <span className="text-red-600 ml-1">*</span>
+								</label>
+								<DateField
+									id="startDate"
+									value={budget.startDate}
+									handleOnChange={(date) => setValue("startDate", date)}
+									className="w-full p-2 border border-gray-300 rounded"
+								/>
+								{(budget.startDate == undefined || budget.startDate == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
+							</div>
+						</div>
+						<div className="mb-4">
+							<div className="mb-4">
+							<label className="block text-gray-700 mb-2" htmlFor="endDate">
+									End Date <span className="text-red-600 ml-1">*</span>
+								</label>
+								<DateField
+									id="endDate"
+									value={budget.startDate}
+									handleOnChange={(date) => setValue("endDate", date)}
+									className="w-full p-2 border border-gray-300 rounded"
+								/>
+								{(budget.endDate == undefined || budget.endDate == "" ) && <><br /><span className="text-sm italic text-red-600 ml-1">This field is required</span></>}
+							</div>
 						</div>
 
 						<div className="mb-4">

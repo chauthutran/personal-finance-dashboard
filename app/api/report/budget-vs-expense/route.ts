@@ -4,13 +4,16 @@ import { JSONObject } from "@/lib/definations";
 import * as Utils from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 import * as Constant from "@/lib/constants";
+import Budget from "@/lib/schemas/Budget.schema";
 import Transaction from "@/lib/schemas/Transaction.schema";
  
 interface ReportData {
-	category: string;
-	name: string;
-	totalAmount: number;
-	details: JSONObject[],
+	categoryId: string,
+	budgetAmount: number,
+	expenseAmount: number,
+	categoryName: string,
+	remainingAmount: number,
+	categories: string[]
 }
 
 
@@ -37,79 +40,80 @@ export async function POST( request: NextRequest ) {
 	else if(!Utils.isValidDate(payload.endDate) ) {
 		errArr.push("End date is invalid");
 	}
-	
-	if (payload.dataFrom == undefined 
-		|| (payload.dataFrom.indexOf("income") < 0 
-			&& payload.dataFrom.indexOf("expense") < 0 ) ) {
-		errArr.push(`Please define at least one 'dataFrom', 'income' or 'expense'`);
-	}
-
 
 	if( errArr.length > 0 ) {
 		return NextResponse.json({errMsg: errArr.join("; ")}, { status: 200 });
 	}
 
 	let reportData: JSONObject = {};
-	if( payload.dataFrom.indexOf("income") >= 0 ) {
-		reportData.incomeData = await getReportData(payload.userId, payload.startDate, payload.endDate, "income");
-	}
-	
-	if( payload.dataFrom.indexOf("expense") >= 0 ) {
-		reportData.expenseData = await getReportData(payload.userId, payload.startDate, payload.endDate, "expense");
-	}
-	
+	reportData.data = await getReportData(payload.userId, payload.startDate, payload.endDate);
+		
 	return NextResponse.json(reportData, { status: 200 });
 }
 
 
-const getReportData = async(userId: string, startDate: string, endDate: string, categoryType: string): Promise<ReportData[]> => {
+const getReportData = async(userId: string, startDate: string, endDate: string): Promise<ReportData[]> => {
 	const reportData: ReportData[] = await Transaction.aggregate([
 		{
 			$match: {
 				userId: new mongoose.Types.ObjectId(userId),
+				budgetId: { $exists: true, $ne: null },
 				date: {
 					$gte: new Date(startDate),
 					$lte: new Date(endDate)
-				},
+				}
 			}
 		},
 		{
-			$lookup: {
-				from: 'categories',
-				localField: 'categoryId',
-				foreignField: '_id',
-				as: 'categoryInfo'
-			}
+		  $lookup: {
+			from: 'budgets',
+			localField: 'budgetId',
+			foreignField: '_id',
+			as: 'budgetDetails'
+		  }
 		},
 		{
 			$unwind: {
-				path: '$categoryInfo',
+				path: '$budgetDetails',
 				preserveNullAndEmptyArrays: false
 			}
 		},
 		{
-			$match: {
-			  'categoryInfo.type': categoryType
+		  $lookup: {
+			from: 'categories',
+			localField: 'categoryId',
+			foreignField: '_id',
+			as: 'categoryDetails'
+		  }
+		},
+		{
+			$unwind: {
+				path: '$categoryDetails',
+				preserveNullAndEmptyArrays: true
 			}
 		},
 		{
-			$group: {
-				_id: '$categoryId',
-				totalAmount: { $sum: '$amount' },
-				categoryType: { $first: "$categoryInfo.type" },
-				name: { $first: "$categoryInfo.name" }
-			},
+		  $group: {
+			_id: '$budgetId',
+			category: { $first: '$budgetDetails.categoryId' },
+			budgetAmount: { $first: '$budgetDetails.amount' },
+			expenseAmount: { $sum: '$amount' },
+			categoryName: { $first: '$categoryDetails.name' },
+			categories: { $addToSet: '$categoryDetails.name' }
+		  }
 		},
 		{
-			$project: {
-				_id: 0,
-				category: '$_id',
-				totalAmount: 1,
-				categoryType: 1,
-				name: 1
-			},
-		},
-	]);
-	
+		  $project: {
+			categoryId: 1,
+			budgetAmount: 1,
+			expenseAmount: 1,
+			remainingAmount: { $subtract: ['$budgetAmount', '$expenseAmount'] },
+			categoryName: 1,
+			categories: 1
+		  }
+		}
+	  ]);
+	  console.log("=========== reportData");
+	console.log(reportData);
 	return reportData;
 }

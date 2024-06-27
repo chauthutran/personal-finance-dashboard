@@ -12,6 +12,7 @@ import { MainUiProvider } from "./contexts/MainUiContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import Category from "./lib/schemas/Category.schema";
 import { CategoryProvider } from "./contexts/CategoryContext";
+import { BudgetProvider } from "./contexts/BudgetContext";
 
 export default function Home() {
 
@@ -20,9 +21,9 @@ export default function Home() {
 		<main >
 			  <MainUiProvider>
 				<AuthProvider>
-						<Header />
-						<AppWrapper />
-						<Footer />
+					<Header />
+					<AppWrapper />
+					<Footer />
 				</AuthProvider>
 			</MainUiProvider>
 		</main>

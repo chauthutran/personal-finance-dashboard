@@ -52,7 +52,7 @@ export const IncomeProvider = ({ userId, children }: { userId: string, children:
         setProcessingStatus(Constant.FETCH_INCOME_lIST_REQUEST);
         setError(null);
 		try {
-			const response = await fetch(`api/income?userId=${userId}`);
+			const response = await fetch(`api/transaction?userId=${userId}&categoryType=income`);
             if (!response.ok) {
                 setError("Network response was not ok");
                 setProcessingStatus(Constant.FETCH_INCOME_lIST_FAILURE);
@@ -75,7 +75,7 @@ export const IncomeProvider = ({ userId, children }: { userId: string, children:
 
         try {
             const requestMethod = ( income._id === undefined ) ? "POST" : "PUT";
-            const response = await fetch("api/income", {
+            const response = await fetch("api/transaction", {
                 method: requestMethod,
                 headers: {
                     "Content-type": "appliction/json"
@@ -116,7 +116,7 @@ export const IncomeProvider = ({ userId, children }: { userId: string, children:
         setError(null);
         
         try {
-            const response = await fetch(`api/income?id=${incomeId}`, { method: "DELETE" });
+            const response = await fetch(`api/transaction?id=${incomeId}`, { method: "DELETE" });
 
             if( !response.ok ){
                 setError("Network response was not ok");

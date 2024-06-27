@@ -13,11 +13,13 @@ import { useIncome } from '@/contexts/IncomeContext';
 import { useMainUi } from '@/contexts/MainUiContext';
 import * as AppStore from "@/lib/appStore";
 import { useCategory } from '@/contexts/CategoryContext';
+import { useBudget } from '@/contexts/BudgetContext';
 
 export default function IncomeForm({ data = {} as JSONObject }) {
 
 	const { setSubPage } = useMainUi();
 	const { incomeList } = useCategory();
+	const { budgetList } = useBudget();
 	const { userId, processingStatus, setProcessingStatus, error, saveIncome, newIncome } = useIncome();
 
 	const [income, setIncome] = useState(data);
@@ -153,6 +155,29 @@ export default function IncomeForm({ data = {} as JSONObject }) {
 								className="w-full p-2 border border-gray-300 rounded"
 							/>
 						</div>
+						<div className="mb-4">
+							<label className="block text-gray-700 mb-2" htmlFor="category">
+								Budget
+							</label>
+							<select
+								id="budgetId"
+								onChange={(e) => setValue("budgetId", e.target.value)}
+								value={income.budgetId}
+								className="w-full p-2 border border-gray-300 rounded"
+							>
+								<option value="">[Please select]</option>
+								? Only show 'Expense' budgets here
+								{budgetList && budgetList?.map((budget: JSONObject) => {
+									
+									const category = Utils.findItemFromList(incomeList!, budget.categoryId, "_id");
+									return ( category !== null ) 
+										? ( <option key={budget._id} value={budget._id}>{category.name}</option>)
+										: <></>;
+								
+								})}
+							</select>
+						</div>
+						
 
 						<div className="flex justify-between items-center">
 							<button

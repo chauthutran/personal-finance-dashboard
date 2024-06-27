@@ -7,7 +7,7 @@ import * as Constant from "@/lib/constants";
 import * as Utils from "@/lib/utils";
 import * as ReportService from "@/lib/services/reportService";
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
-import CustomPieChart from './CustomPieChart';
+import CustomPieChart from './basics/CustomPieChart';
 
 
 export default function ReportPage() {
