@@ -8,21 +8,27 @@ import * as Constant from "@/lib/constants";
 import { useBudget } from "@/contexts/BudgetContext";
 import { useMainUi } from "@/contexts/MainUiContext";
 import * as AppStore from "@/lib/appStore";
+import { useCategory } from "@/contexts/CategoryContext";
+import LoadingIcon from "../basics/LoadingIcon";
 
 export default function BudgetList() {
 	
 	const { setSubPage } = useMainUi();
 	const { userId, budgetList } = useBudget();
+	const { categoryList } = useCategory();
 	
     return (
 		<>
 			 <div className="mx-auto my-3 p-3 bg-white shadow-md">
 				<div className=" overflow-y-auto h-[calc(100vh-150px)]">
+
+				{categoryList === null ? <LoadingIcon /> :
 					<div className="divide-y divide-gray-200 ">
 						{budgetList && budgetList.map( (budget: JSONObject) => (
 							<BudgetItem key={budget._id} data={budget}  />
 						))}
-					</div>
+					</div> }
+
 				</div>
 			</div>
 

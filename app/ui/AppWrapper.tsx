@@ -26,7 +26,7 @@ export default function AppWrapper() {
             { mainPage == Constant.UI_REGISTRATION_PAGE && <RegisterForm /> }
 
 
-            {user != null && <CategoryProvider userId={user._id}>
+            {user != null && <CategoryProvider>
                 <BudgetProvider userId={user._id}>
                     { mainPage == Constant.UI_DASHBOARD_PAGE && <DashboardPage /> }
 
@@ -34,6 +34,7 @@ export default function AppWrapper() {
                     { mainPage == Constant.UI_EXPENSE_PAGE && <ExpensePage /> }
                     { mainPage == Constant.UI_INCOME_PAGE && <IncomePage /> }
                 </BudgetProvider>
+                
                 { mainPage == Constant.UI_REPORT_PAGE && <ReportPage /> }
                 
             </CategoryProvider> }

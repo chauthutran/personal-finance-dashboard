@@ -166,7 +166,7 @@ export default function IncomeForm({ data = {} as JSONObject }) {
 								className="w-full p-2 border border-gray-300 rounded"
 							>
 								<option value="">[Please select]</option>
-								? Only show 'Expense' budgets here
+								{/* Only show 'Income' budgets here */}
 								{budgetList && budgetList?.map((budget: JSONObject) => {
 									
 									const category = Utils.findItemFromList(incomeList!, budget.categoryId, "_id");

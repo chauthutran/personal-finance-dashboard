@@ -13,6 +13,7 @@ import { useBudget } from '@/contexts/BudgetContext';
 import { useMainUi } from '@/contexts/MainUiContext';
 import * as AppStore from "@/lib/appStore";
 import { useCategory } from '@/contexts/CategoryContext';
+import LoadingIcon from '../basics/LoadingIcon';
 
 export default function BudgetForm({ data = {} as JSONObject }) {
 
@@ -96,7 +97,7 @@ export default function BudgetForm({ data = {} as JSONObject }) {
 
 	return (
 		<div className="h-[calc(100vh-120px)] mt-5 overflow-x-auto  border-gray-400 ">
-			
+
 			{processingStatus == Constant.SAVE_BUDGET_SUCCESS && <Alert type={Constant.ALERT_TYPE_INFO} message={`Saved successfully.`} />}
 			{processingStatus == Constant.SAVE_BUDGET_FAILURE && <Alert type={Constant.ALERT_TYPE_ERROR} message={`Saving data is failed. ${error}`} />}
 			{errMsg !== "" && <Alert type={Constant.ALERT_TYPE_ERROR} message={`${errMsg}`} />}

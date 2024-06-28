@@ -7,7 +7,6 @@ import * as Utils from '@/lib/utils';
 import * as Constant from '@/lib/constants';
 
 interface CategoryContextProps {
-    userId: string,
 	categoryList: JSONObject[] | null;
     incomeList: JSONObject[] | null;
     expenseList: JSONObject[] | null;
@@ -19,7 +18,6 @@ interface CategoryContextProps {
 }
 
 const CategoryContext = createContext<CategoryContextProps>({
-    userId: "",
 	categoryList: null,
     incomeList: null,
     expenseList: null,
@@ -38,7 +36,7 @@ export const useCategory = (): CategoryContextProps => {
 	return context;
 };
 
-export const CategoryProvider = ({ userId, children }: { userId: string, children: ReactNode }) => {
+export const CategoryProvider = ({ children }: { children: ReactNode }) => {
     const [categoryList, setCategoryList] = useState<JSONObject[] | null>(null);
     const [incomeList, setIncomeList] = useState<JSONObject[] | null>(null);
     const [expenseList, setExpenseList] = useState<JSONObject[] | null>(null);
@@ -57,7 +55,7 @@ export const CategoryProvider = ({ userId, children }: { userId: string, childre
         setProcessingStatus(Constant.FETCH_BUDGET_lIST_REQUEST);
         setError(null);
 		try {
-			const response = await fetch(`api/category?userId=${userId}`);
+			const response = await fetch(`api/category`);
             console.log(response); 
             if (!response.ok) {
                 setError("Network response was not ok");
@@ -148,7 +146,7 @@ export const CategoryProvider = ({ userId, children }: { userId: string, childre
     }
 
 	return (
-		<CategoryContext.Provider value={{ userId, processingStatus, error, categoryList, incomeList, expenseList, saveCategory, deleteCategory, newCategory }}>
+		<CategoryContext.Provider value={{ processingStatus, error, categoryList, incomeList, expenseList, saveCategory, deleteCategory, newCategory }}>
 			{children}
 		</CategoryContext.Provider>
 	);

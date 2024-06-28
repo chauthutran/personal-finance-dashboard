@@ -4,12 +4,9 @@ import React, { useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import CategoryWiseExppenseChart from '@/ui/report/expense/CategoryWiseExppenseChart';
 import { useAuth } from '@/contexts/AuthContext';
 import * as Utils from "@/lib/utils";
 import DatePicker from 'react-datepicker';
-import MonthlyExpenseChart from '@/ui/report/expense/MonthlyExpenseChart';
 
 
 export default function DashboardPage() {
@@ -58,17 +55,17 @@ export default function DashboardPage() {
 
             <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white rounded-lg p-4 shadow-md">
-                    <CategoryWiseExppenseChart 
+                    {/* <CategoryWiseExppenseChart 
                         userId={user!._id} 
                         startDate={Utils.formatDate(startDate!.toISOString())} 
                         endDate={Utils.formatDate(endDate!.toISOString())} 
-                        requestToUpdate={requestToUpdate} />
+                        requestToUpdate={requestToUpdate} /> */}
                 </div>
                 <div className="bg-white rounded-lg p-4 shadow-md">
-                    <MonthlyExpenseChart  userId={user!._id} 
+                    {/* <MonthlyExpenseChart  userId={user!._id} 
                         startDate={Utils.formatDate(startDate!.toISOString())} 
                         endDate={Utils.formatDate(endDate!.toISOString())} 
-                        requestToUpdate={requestToUpdate} />
+                        requestToUpdate={requestToUpdate} /> */}
                 </div>
 
 
