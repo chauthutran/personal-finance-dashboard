@@ -80,18 +80,18 @@ const getReportData = async (userId: string, startDate: string, endDate: string,
 				from: 'categories',
 				localField: 'categoryId',
 				foreignField: '_id',
-				as: 'categoryInfo'
+				as: 'categoryDetails'
 			}
 		},
 		{
 			$unwind: {
-				path: '$categoryInfo',
+				path: '$categoryDetails',
 				preserveNullAndEmptyArrays: false
 			}
 		},
 		{
 			$match: {
-				'categoryInfo.type': categoryType
+				'categoryDetails.type': categoryType
 			}
 		},
 		{

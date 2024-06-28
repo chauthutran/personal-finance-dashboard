@@ -8,13 +8,7 @@ import * as Constant from "@/lib/constants";
 export const COLORS = ['#4CAF50', '#F44336', '#2196F3', '#9E9E9E'];
 
 
-export const retrieveAggregateData = async (path: string, userId: string, startDate: string, endDate: string): Promise<JSONObject> => {
-
-	const payload = {
-		"userId" : userId,
-		"startDate" : startDate,
-		"endDate": endDate
-	}
+export const retrieveAggregateData = async (path: string, payload: JSONObject): Promise<JSONObject> => {
 
 	try {
 		const response = await fetch(`api/report/${path}`, {
@@ -45,7 +39,10 @@ export const retrieveAggregateData = async (path: string, userId: string, startD
 }
 
 export const generateColor = (num: number) => {
-	return COLORS[num % COLORS.length];
+	const r = Math.floor(Math.sin(num) * 128 + 128);
+	const g = Math.floor(Math.sin(num + 2) * 128 + 128);
+	const b = Math.floor(Math.sin(num + 4) * 128 + 128);
+	return `rgb(${r}, ${g}, ${b})`;
 }
 
 export const transformReportData_IncomeVSExpense = (data: JSONObject, startDate: Date, endDate: Date ): JSONObject[] => {
@@ -87,6 +84,30 @@ export const transformReportData_BudgetVSActual = ( reportData: JSONObject ): JS
 			// remainingAmount: item.remainingAmount
 		})
 	}
-console.log(transformedData);
+	
+	return transformedData;
+}
+
+
+export const transformReportData_CategoryMonthly = ( reportData: JSONObject, startDate: Date, endDate: Date ): JSONObject => {
+	var transformedData: JSONObject[] = [];
+	
+	// Add empty items if missing and conver the "name" of items to readable names of months
+	const monthList = Utils.getMonthListFromDateRange(startDate, endDate);
+	const data = reportData.data;
+
+	for( var i=0; i< monthList.length; i++ ) {
+		const monthInfo = monthList[i];
+		const itemList = data.filter((item) => (item.month === monthInfo.month && item.year === monthInfo.year));
+		
+		const totals = (itemList === undefined || itemList.length == 0) ? 0 : itemList[0].totals;
+	
+		transformedData.push({
+			name: monthInfo.displayName,
+			...totals
+		})
+	}
+
+	console.log(transformedData);
 	return transformedData;
 }

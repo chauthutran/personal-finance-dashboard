@@ -39,6 +39,10 @@ export const removeFromArray = function( list: JSONObject[], value: string, prop
 	return list;
 };
 
+export const mergeArrays = (obj: { [key: string]: any[] }): any[] => {
+    return Object.values(obj).flat();
+};
+
 /** 
  * Relate to DATE 
  * */ 
