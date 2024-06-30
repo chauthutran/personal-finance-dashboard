@@ -50,6 +50,10 @@ export default function ReportPage() {
 		else if( selectedReportType === Constant.REPORT_TYPE_MONTHLY_EXPENSE ) {
 			await generateMonthlyExpenseReport();
 		}
+		else if( selectedReportType === Constant.REPORT_TYPE_ANNUAL_FINANCIAL_SUMMARY ) {
+			await generateAnnualFinancialSummaryReport();
+		}
+
 
 	}
 
@@ -114,6 +118,25 @@ export default function ReportPage() {
 		}
 	}
 
+	const generateAnnualFinancialSummaryReport = async() => {
+		const urlPath = "annual-financial-summary";
+		const payload = {
+			userId: user!._id,
+			startDate: startDate!.toISOString(), 
+			endDate: endDate!.toISOString()
+		}
+		const tempChartData = await ReportService.retrieveAggregateData(urlPath, payload);
+
+		if (tempChartData.errMsg === undefined) {
+			const dataTranformed = ReportService.transformReportData_AnnualFinancialSummary(tempChartData);
+			setChartData(dataTranformed);
+			handleUpdateChart();
+		}
+		else {
+			// Show error message here
+		}
+	}
+
 	return (
 
 		<div className="container mx-auto p-4">
@@ -154,22 +177,12 @@ export default function ReportPage() {
 			</div>
 
 
+
+
 			{!Utils.isEmptyJSON(chartData) && <ReportDisplay reportType={selectedReportType} data={chartData} />}
 
 
 		</div>
-
-		// <div className="container mx-auto p-4">
-		//   <h1 className="text-2xl font-bold mb-4">Reports</h1>
-		//   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-		//     <CustomDatePicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
-		//     <CustomMonthPicker selectedMonth={selectedMonth} onMonthChange={setSelectedMonth} />
-		//     <CustomYearPicker selectedYear={selectedYear} onYearChange={setSelectedYear} />
-		//     <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
-		//     <ReportTypeSelector selectedReportType={selectedReportType} onReportTypeChange={setSelectedReportType} />
-		//   </div>
-		//   <ReportDisplay data={reportData} />
-		// </div>
 	);
 };
 

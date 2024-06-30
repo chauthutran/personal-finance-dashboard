@@ -2,8 +2,10 @@ import React from 'react';
 import CustomBarChart from '../charts/CustomBarChart';
 import * as Constant from "@/lib/constants";
 import CustomLineChart from '../charts/CustomLineChart';
-import CustomStackedBarChart from '../charts/CustomStackedBarChart';
+import MonthlyStackedBarChart from '../charts/MonthlyStackedBarChart';
+import AnnualStackedBarChart from '../charts/AnnualStackedBarChart';
 import { useCategory } from '@/contexts/CategoryContext';
+import CustomPieChart from '../charts/CustomPieChart';
 
 
 const ReportDisplay = ({ reportType, data }) => {
@@ -21,8 +23,12 @@ const ReportDisplay = ({ reportType, data }) => {
         <CustomLineChart data={data}/> 
       </>}
       { reportType === Constant.REPORT_TYPE_MONTHLY_EXPENSE && <>
-        <CustomStackedBarChart data={data} categoryList={categoryList!} />
+        <MonthlyStackedBarChart data={data} categoryList={categoryList!} />
       </>}
+      { reportType === Constant.REPORT_TYPE_ANNUAL_FINANCIAL_SUMMARY && <>
+        <AnnualStackedBarChart data={data} categoryList={categoryList!} />
+      </>}
+      
     </div>
   );
 };

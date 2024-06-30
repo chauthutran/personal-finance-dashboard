@@ -65,6 +65,15 @@ export async function POST( request: NextRequest ) {
 const getReportData = async(userId: string, startDate: string, endDate: string, categoryType: string): Promise<ReportData[]> => {
 	const reportData: ReportData[] = await Transaction.aggregate([
 		{
+			$match: {
+				userId: new mongoose.Types.ObjectId(userId),
+				date: {
+					$gte: new Date(startDate),
+					$lte: new Date(endDate)
+				}
+			}
+		},
+		{
 		  $lookup:
 			/**
 			 * from: The target collection.

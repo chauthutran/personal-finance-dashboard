@@ -13,7 +13,7 @@ import {
 import * as ReportService from "@/lib/services/reportService";
 import * as Utils from "@/lib/utils";
 
-export default function CustomStackedBarChart({ data, categoryList }: { data: JSONObject, categoryList: JSONObject[]}) {
+export default function AnnualStackedBarChart({ data, categoryList }: { data: JSONObject, categoryList: JSONObject[]}) {
 	let valueColdsName = (data.length > 0) ? Object.keys(data[0]) : [];
 	valueColdsName = valueColdsName.filter(item => item !== "name");
 
@@ -42,9 +42,20 @@ export default function CustomStackedBarChart({ data, categoryList }: { data: JS
                 {/* <Tooltip shared={false} trigger="click" /> */}
                 <Tooltip />
                 <Legend wrapperStyle={{paddingTop: "60px"}} />
-                {categoryList.map((item, index) => (
-                   <Bar key={item._id} dataKey={item.name} stackId="expense" fill={ReportService.generateColor(index)} />
-                ))}
+                {Object.keys(reportData[0])
+                    .filter((key) => key !== "year")
+                    .map((key, index) => (
+                        <Bar
+                        key={key}
+                        dataKey={key}
+                        stackId={key.startsWith("income_") ? "income" : "expense"}
+                        fill={
+                            key.startsWith("income_")
+                            ? ReportService.COLORS[index % ReportService.COLORS.length]
+                            : ReportService.COLORS[index % ReportService.COLORS.length]
+                        }
+                        />
+                    ))}
             </BarChart>
 		</ResponsiveContainer>
 	);
