@@ -6,6 +6,7 @@ import MonthlyStackedBarChart from '../charts/MonthlyStackedBarChart';
 import AnnualStackedBarChart from '../charts/AnnualStackedBarChart';
 import { useCategory } from '@/contexts/CategoryContext';
 import CustomPieChart from '../charts/CustomPieChart';
+import CategoryExpenseReport from '../CategoryWiseExpenseReport';
 
 
 const ReportDisplay = ({ reportType, data }) => {
@@ -27,6 +28,9 @@ const ReportDisplay = ({ reportType, data }) => {
       </>}
       { reportType === Constant.REPORT_TYPE_ANNUAL_FINANCIAL_SUMMARY && <>
         <AnnualStackedBarChart data={data} categoryList={categoryList!} />
+      </>}
+      { reportType === Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE && <>
+        <CategoryExpenseReport data={data} />
       </>}
       
     </div>

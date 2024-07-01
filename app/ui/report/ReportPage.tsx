@@ -53,7 +53,9 @@ export default function ReportPage() {
 		else if( selectedReportType === Constant.REPORT_TYPE_ANNUAL_FINANCIAL_SUMMARY ) {
 			await generateAnnualFinancialSummaryReport();
 		}
-
+		else if( selectedReportType === Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE ) {
+			await generateCategoryWiseExpenseReport();
+		}
 
 	}
 
@@ -130,6 +132,26 @@ export default function ReportPage() {
 		if (tempChartData.errMsg === undefined) {
 			const dataTranformed = ReportService.transformReportData_AnnualFinancialSummary(tempChartData);
 			setChartData(dataTranformed);
+			handleUpdateChart();
+		}
+		else {
+			// Show error message here
+		}
+	}
+
+	const generateCategoryWiseExpenseReport = async() => {
+		const urlPath = "category-wise-expense-report";
+		const payload = {
+			userId: user!._id,
+			startDate: startDate!.toISOString(), 
+			endDate: endDate!.toISOString()
+		}
+		const tempChartData = await ReportService.retrieveAggregateData(urlPath, payload);
+// console.log("============= tempChartData");
+// console.log(tempChartData);
+		if (tempChartData.errMsg === undefined) {
+			// const dataTranformed = ReportService.transformReportData_AnnualFinancialSummary(tempChartData);
+			setChartData(tempChartData);
 			handleUpdateChart();
 		}
 		else {

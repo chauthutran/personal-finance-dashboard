@@ -1,5 +1,6 @@
 "use client";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Utils from "@/lib/utils"

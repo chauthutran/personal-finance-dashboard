@@ -5,7 +5,7 @@ const reportTypes = [
 	Constant.REPORT_TYPE_BUDGET_VS_ACTUAL, // Compare budgeted amounts with actual spending ( Bar Chart and Line Chart) 
 	Constant.REPORT_TYPE_MONTHLY_EXPENSE, // Summarizes expenses for each month ( Bar Chart and Pie Chart), Month-to-month comparison. --> ( choose a year )
 	Constant.REPORT_TYPE_ANNUAL_FINANCIAL_SUMMARY, // Provides a yearly overview of income, expenses, and savings ( Area Chart, Stacked Bar Chart - broken down by category ), Annual (full year).
-	'Category-wise Expense Report', // Details expenses by category. ( Bar Chart and Pie Chart), Typically monthly or annually.
+	Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE, // Details expenses by category. ( Bar Chart and Pie Chart), Typically monthly or annually.
 	//   'Comparison Report',
 	//   'Trend Report',
 ];
