@@ -12,6 +12,8 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
+import * as ReportService from "@/lib/services/reportService";
+import * as Utils from "@/lib/utils";
 
 // // Sample aggregated data
 // const data1 = [
@@ -41,21 +43,100 @@ import {
 
 export default function CategoryExpenseBarChart({data}) {
     
-    const transformData = (categories: JSONObject): JSONObject[] => {
-        return categories.map((entry) => ({
-          category: entry.category,
-          totalAmount: entry.totalAmount,
-        }));
-      };
+    /**
+    # The transformed data should be in the format suitable for a bar chart:
+    # {
+    #     "Miscellaneous": {2023: 180, 2024: 180},
+    #     "Entertainment": {2023: 940, 2024: 940},
+    #     "Education": {2023: 500, 2024: 500},
+    # ...
+    # }
+    */
+    const transformData = (): JSONObject[] => {
 
+        let result: JSONObject[] = [];
+        // return categories.map((entry) => ({
+        //   category: entry.category,
+        //   totalAmount: entry.totalAmount,
+        // }));
 
+        for( let i=0; i<data.length; i++ ) {
+            const yearData = data[i];
+
+            const year = yearData.year;
+            const categories = yearData.categories;
+
+            for( let j=0; j<categories.length; j++ ) {
+                const categoryData = categories[j];
+                const categoryName = categoryData.category;
+                const totalAmount = categoryData.totalAmount;
+                
+                let found = Utils.findItemFromList(result, categoryName, "category");
+                if( found === null ){
+                    var item: JSONObject = {};
+                    item.category = categoryName;
+                    item[year] = totalAmount;
+                    result.push(item);
+                }
+                else {
+                    found[year] = totalAmount;
+                }
+                
+                // result[categoryName][year] = totalAmount;
+            }
+        }
+
+        return result;
+    };
+
+    const transformedData = transformData();
+    const years = data.map((item) => item.year);
+//     const chartData = years.map(year => {
+//         const entry: { [key: string]: number } = { year };
+//         Object.keys(transformedData).forEach(category => {
+//           entry[category] = transformedData[category][year] || 0;
+//         });
+//         return entry;
+//       })
   
-const transformedData = transformData(data.categories);
-console.log(transformedData);
+console.log(" ---------------------- transformedData: ");
+console.log(years);
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
 
   return ( <ResponsiveContainer width="100%" height={500}>
-    <BarChart data={transformedData} 
-    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+    {/* <BarChart
+      width={500}
+      height={300}
+      data={transformedData}
+      margin={{
+        top: 20, right: 30, left: 20, bottom: 5,
+      }}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="category" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      {Object.keys(transformedData).map((category, index) => ( 
+        <Bar key={category} dataKey={category} fill={ReportService.expenseColors[index % ReportService.COLORS.length]} />
+      ))}
+    </BarChart> */}
+     <BarChart
+      width={1000}
+      height={600}
+      data={transformedData}
+      margin={{
+        top: 20, right: 30, left: 20, bottom: 5,
+      }}
+    >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis 
 				dataKey="category" 
@@ -67,7 +148,10 @@ console.log(transformedData);
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey="totalAmount" fill="#8884d8" />
+      {years.map((year, index) => ( 
+        <Bar key={year} dataKey={year} fill={ReportService.expenseColors[index % ReportService.expenseColors.length]} />
+      ))}
+
     </BarChart>
   </ResponsiveContainer> )
 }

@@ -132,7 +132,6 @@ export default function CategoryExpensePieChart({data}) {
 
   
 const transformedData = transformData(data.categories);
-console.log(transformedData);
 
   return ( 
     <ResponsiveContainer width="100%" height={400}>
