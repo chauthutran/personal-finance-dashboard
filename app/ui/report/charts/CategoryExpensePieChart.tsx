@@ -61,7 +61,7 @@ const renderActiveShape = (props: any) => {
     const ex = mx + (cos >= 0 ? 1 : -1) * 22;
     const ey = my;
     const textAnchor = cos >= 0 ? "start" : "end";
-   
+   console.log(payload);
     return (
       <g>
         <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
@@ -143,61 +143,38 @@ export default function CategoryExpensePieChart({data}) {
 
   return ( 
     <>
-    {data.map((reportData, index) => (<>
-    <ResponsiveContainer key={`peChart_${reportData.year}_${index}`} width="100%" height={400}>
+    {data.map((reportData, index) => {
+      const year = reportData.year;
+      const transformedData = transformData(reportData);
+      return(
+    <ResponsiveContainer key={`peChart_${year}_${index}`} width="100%" height={400}>
 
          <PieChart width={400} height={400}>
           
             <Pie
-              activeIndex={pieActiveIndex[reportData.year]}
+              activeIndex={pieActiveIndex[year]}
               activeShape={renderActiveShape}
-              data={transformData(data[0])}
+              data={transformedData}
               cx={200}
               cy={200}
               innerRadius={70}
               outerRadius={100}
               fill={ReportService.expenseColors[index % ReportService.expenseColors.length]}
               dataKey="value"
-              onMouseEnter={(_, index) => setToolTip(reportData.year, index)}
-            />
+              onMouseEnter={(_, idx) => setToolTip(year, idx)}
+            >
+              {transformedData.map((item, idx) => 
+                <Cell key={`cell-outer-${idx}`} fill={ReportService.expenseColors[idx % ReportService.expenseColors.length]} />
+              )}
+             
+
+              </Pie>
          
       
     </PieChart>
      
     </ResponsiveContainer>
-     <div className="text-center" style={{color: ReportService.expenseColors[index % ReportService.expenseColors.length]}}>
-     <svg 
-     className="recharts-surface" 
-     width="14" height="14" 
-     viewBox="0 0 32 32" 
-     style={{display: "inline-block", verticalAlign: "middle", marginRight: "4px"}}>
-       <title></title>
-       <desc></desc>
-       <path stroke="none" fill="#FFB6C1" d="M0,4h32v24h-32z" className="recharts-legend-icon"></path>
-       </svg>
-         {reportData.year}
-       </div>
-       </>
-  ))}
-
-
-    {/* <PieChart>
-      <Pie
-        data={transformedData}
-        dataKey="value"
-        cx="50%"
-        cy="50%"
-        // labelLine={false}
-        outerRadius={150}
-        fill="#8884d8"
-      >
-        {transformedData.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend />
-    </PieChart> */}
+    )})}
     </>
   );
 }

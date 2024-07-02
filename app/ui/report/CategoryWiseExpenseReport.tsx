@@ -90,7 +90,6 @@ const CategoryExpenseReport = ({ data }) => {
 						</tr>
 					</thead>
 					<tbody>
-
 						{reportDataList.map((reportData) => {
 							reportData.categories.map((category: JSONObject, index: number) => {
 								return (
