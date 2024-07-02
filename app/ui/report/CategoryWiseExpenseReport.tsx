@@ -91,7 +91,7 @@ const CategoryExpenseReport = ({ data }) => {
 					</thead>
 					<tbody>
 						{reportDataList.map((reportData) => {
-							reportData.categories.map((category: JSONObject, index: number) => {
+							return reportData.categories.map((category: JSONObject, index: number) => {
 								return (
 									<React.Fragment key={index}>
 										<tr>
