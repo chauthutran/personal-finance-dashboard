@@ -9,35 +9,33 @@ import {
   Legend,
   Sector,
 } from 'recharts';
+import * as ReportService from "@/lib/services/reportService";
+import * as Utils from "@/lib/utils";
 
 // // Sample aggregated data
 // const data = [
 //   {
-//     year: 2023,
-//     totalIncome: 7039,
-//     totalExpense: 5534,
-//     income: {
-//       "Other ( Any other income sources not covered by the above categories. )": 39,
-//       "Bonuses ( Extra income such as bonuses or incentives )": 200,
-//       "Investments ( Income from investments such as dividends, interest, etc. )": 2300,
-//       "Salary": 4500
-//     },
-//     expense: {
-//       "Gifts & Donations": 120,
-//       "Insurance": 2800,
-//       "Entertainment": 940,
-//       "Education": 500,
-//       "Miscellaneous": 180,
-//       "Personal Care ( Clothing, Haircuts, Gym, ... )": 680,
-//       "Transportation": 314
-//     }
-//   }
+//     "totalExpense": 12573,
+//     "year": 2023,
+//     "categories": [
+//         {
+//             "category": "Miscellaneous",
+//             "totalAmount": 180,
+//             "transactions": [
+//                 {
+//                     "date": "2023-06-24T02:56:47.719Z",
+//                     "amount": 30,
+//                     "description": "Dish washing, detergent, soaps, ...."
+//                 },
+//                ...
+//                
+//             ]
+//         },
+//         ...
+//     ]
+// },
+//     ...
 // ];
-
-// Colors for the pie chart segments
-const COLORS = [
-  '#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF5733', '#FF8D33', '#33FFD7'
-];
 
 const renderActiveShape = (props: any) => {
     const RADIAN = Math.PI / 180;
@@ -63,11 +61,11 @@ const renderActiveShape = (props: any) => {
     const ex = mx + (cos >= 0 ? 1 : -1) * 22;
     const ey = my;
     const textAnchor = cos >= 0 ? "start" : "end";
-  
+   
     return (
       <g>
         <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-          {payload.name}
+          {payload.payload.year}
         </text>
         <Sector
           cx={cx}
@@ -98,7 +96,7 @@ const renderActiveShape = (props: any) => {
           y={ey}
           textAnchor={textAnchor}
           fill="#333"
-        >{`PV ${value}`}</text>
+        >{`${payload.name} ${value}`}</text>
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
@@ -114,42 +112,73 @@ const renderActiveShape = (props: any) => {
   
     
 export default function CategoryExpensePieChart({data}) {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const onPieEnter = useCallback(
-      (_, index) => {
-        setActiveIndex(index);
-      },
-      [setActiveIndex]
-    );
+    // pieActiveIndex : [
+    //   {2023: 0},
+    //   {2024: 1}
+    // ]
+    const initPieActiveIndex = (): JSONObject => {
+      let indexJson = {};
+      for( let i=0; i<data.length; i++ ) {
+        const year = data[i].year;
+        indexJson[year] = 0;
+      }
 
-    const transformData = (categories: JSONObject[]): JSONObject[] => {
-        return categories.map((entry) => ({
-          name: entry.category,
-          value: entry.totalAmount,
-        }));
-      };
-
-
+      return indexJson;
+    }
+    const [pieActiveIndex, setPieActiveIndex] = useState<JSONObject>(initPieActiveIndex());
   
-const transformedData = transformData(data.categories);
+
+    const setToolTip = (year, index ) => {
+      const pieActiveIndexTemp = Utils.cloneJSONObject( pieActiveIndex );
+      pieActiveIndexTemp[year] = index;
+      setPieActiveIndex( pieActiveIndexTemp );
+    }
+    const transformData = (reportData: JSONObject): JSONObject[] => {
+      return reportData.categories.map((entry) => ({
+        name: entry.category,
+        value: entry.totalAmount,
+        year: reportData.year,
+      }));
+    };
 
   return ( 
-    <ResponsiveContainer width="100%" height={400}>
-         <PieChart width={400} height={400}>
-      <Pie
-        activeIndex={activeIndex}
-        activeShape={renderActiveShape}
-        data={transformedData}
-        cx={200}
-        cy={200}
-        innerRadius={70}
-        outerRadius={100}
-        fill="#8884d8"
-        dataKey="value"
-        onMouseEnter={onPieEnter}
-      />
-    </PieChart>
+    <>
+    {data.map((reportData, index) => (<>
+    <ResponsiveContainer key={`peChart_${reportData.year}_${index}`} width="100%" height={400}>
 
+         <PieChart width={400} height={400}>
+          
+            <Pie
+              activeIndex={pieActiveIndex[reportData.year]}
+              activeShape={renderActiveShape}
+              data={transformData(data[0])}
+              cx={200}
+              cy={200}
+              innerRadius={70}
+              outerRadius={100}
+              fill={ReportService.expenseColors[index % ReportService.expenseColors.length]}
+              dataKey="value"
+              onMouseEnter={(_, index) => setToolTip(reportData.year, index)}
+            />
+         
+      
+    </PieChart>
+     
+    </ResponsiveContainer>
+     <div className="text-center" style={{color: ReportService.expenseColors[index % ReportService.expenseColors.length]}}>
+     <svg 
+     className="recharts-surface" 
+     width="14" height="14" 
+     viewBox="0 0 32 32" 
+     style={{display: "inline-block", verticalAlign: "middle", marginRight: "4px"}}>
+       <title></title>
+       <desc></desc>
+       <path stroke="none" fill="#FFB6C1" d="M0,4h32v24h-32z" className="recharts-legend-icon"></path>
+       </svg>
+         {reportData.year}
+       </div>
+       </>
+  ))}
 
 
     {/* <PieChart>
@@ -169,6 +198,7 @@ const transformedData = transformData(data.categories);
       <Tooltip />
       <Legend />
     </PieChart> */}
-  </ResponsiveContainer>
+    </>
   );
 }
+

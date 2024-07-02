@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import CustomDatePicker from './basics/DatePicker';
 import CustomMonthPicker from './basics/MonthPicker';
 import CustomYearPicker from './basics/YearPicker';
-import CategoryFilter from './basics/CategoryFilter';
 import ReportTypeSelector from './basics/ReportTypeSelector';
 import ReportDisplay from './basics/ReportDisplay';
 import { JSONObject } from '@/lib/definations';
@@ -28,7 +27,7 @@ export default function ReportPage() {
 	//   const [selectedDate, setSelectedDate] = useState(null);
 	//   const [selectedMonth, setSelectedMonth] = useState(null);
 	//   const [selectedYear, setSelectedYear] = useState(null);
-	const [selectedCategory, setSelectedCategory] = useState('');
+	// const [selectedCategory, setSelectedCategory] = useState('');
 	const [selectedReportType, setSelectedReportType] = useState('');
 	const [chartData, setChartData] = useState<JSONObject | JSONObject[]>({});
 
@@ -187,12 +186,6 @@ export default function ReportPage() {
 				// dateFormat="yyyy-MM-dd"
 				// className="w-full p-2 border border-gray-300 rounded"
 				/>
-
-				<CategoryFilter
-					label="Category Filter"
-					id="ategoryFilter"
-					selectedCategory={selectedCategory}
-					onCategoryChange={(value) => {setChartData({}); setSelectedCategory(value)}} />
 
 				<button className="px-4 py-2  bg-green-700 rounded text-white" onClick={() => generateReport()} >Generate chart</button>
 
