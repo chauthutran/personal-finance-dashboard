@@ -10,6 +10,7 @@ import * as ReportService from "@/lib/services/reportService";
 import { useAuth } from '@/contexts/AuthContext';
 import * as Utils from "@/lib/utils";
 import { useCategory } from '@/contexts/CategoryContext';
+import PeriodTypeSelector from './basics/PeriodTypeSelector';
 
 
 export default function ReportPage() {
@@ -21,14 +22,21 @@ export default function ReportPage() {
 	const [endDate, setEndDate] = useState<Date | null>(new Date());
 
 	
-	const [startMonth, setStartMonth ] = useState<Date | null>(new Date());
-	const [endMonth, setEndMonth] = useState<Date | null>(new Date());
 
 	//   const [selectedDate, setSelectedDate] = useState(null);
-	//   const [selectedMonth, setSelectedMonth] = useState(null);
-	//   const [selectedYear, setSelectedYear] = useState(null);
 	// const [selectedCategory, setSelectedCategory] = useState('');
-	const [selectedReportType, setSelectedReportType] = useState('');
+	const [selectedPeriodType, setSelectedPeriodType] = useState("");
+	
+	// const [startMonth, setStartMonth ] = useState<{ startDate: Date; endDate: Date }>({startDate: new Date(), endDate: new Date()});
+	// const [endMonth, setEndMonth] = useState<{ startDate: Date; endDate: Date }>({startDate: new Date(), endDate: new Date()});
+
+	// const [startYear, setStartYear ] = useState<Date | null>(null);
+	// const [endYear, setEndYear] = useState<Date | null>(null);
+
+	  const [selectedMonth, setSelectedMonth] = useState(new Date());
+	//   const [selectedYear, setSelectedYear] = useState(null);
+
+	const [selectedReportType, setSelectedReportType] = useState(Constant.REPORT_PERIOD_TYPE_MONTHLY);
 	const [chartData, setChartData] = useState<JSONObject | JSONObject[]>({});
 
 
@@ -59,19 +67,34 @@ export default function ReportPage() {
 	}
 
 	const generateIncomeVsReport = async() => {
-		const urlPath = "monthly-report";
+		const urlPath = "income-vs-expense";
+		// let fromDate: Date | null = null; 
+		// let toDate: Date | null = null; 
+		// if( selectedPeriodType === Constant.REPORT_PERIOD_TYPE_MONTHLY ) {
+		// 	fromDate = startMonth.startDate;
+		// 	toDate = endMonth.endDate;
+		// }
+		// else if( selectedPeriodType === Constant.REPORT_PERIOD_TYPE_QUARTERLY ) {
+		// 	fromDate = startMonth.startDate;
+		// 	toDate = endMonth.endDate;
+		// }
+		// else if( selectedPeriodType === Constant.REPORT_PERIOD_TYPE_YEARLY ) {
+		// 	fromDate = startYear;
+		// 	toDate = endMonth.endDate;
+		// }
 		const payload = {
 			userId: user!._id,
 			startDate: startDate!.toISOString(), 
 			endDate: endDate!.toISOString(),
-			dataFrom: "income;expense"
+			periodType: selectedPeriodType
 		}
 
 		const tempChartData = await ReportService.retrieveAggregateData(urlPath, payload);
 
 		if (tempChartData.errMsg === undefined) {
-			const dataTranformed = ReportService.transformReportData_IncomeVSExpense(tempChartData, startDate!, endDate!);
-			setChartData(dataTranformed);
+			// const dataTranformed = ReportService.transformReportData_IncomeVSExpense(tempChartData, startDate!, endDate!);
+			// setChartData(dataTranformed);
+			setChartData(tempChartData);
 			handleUpdateChart();
 		}
 		else {
@@ -146,10 +169,7 @@ export default function ReportPage() {
 			endDate: endDate!.toISOString()
 		}
 		const tempChartData = await ReportService.retrieveAggregateData(urlPath, payload);
-// console.log("============= tempChartData");
-// console.log(tempChartData);
 		if (tempChartData.errMsg === undefined) {
-			// const dataTranformed = ReportService.transformReportData_AnnualFinancialSummary(tempChartData);
 			setChartData(tempChartData);
 			handleUpdateChart();
 		}
@@ -169,6 +189,57 @@ export default function ReportPage() {
 					selectedReportType={selectedReportType}
 					onReportTypeChange={(value) => {setChartData({}); setSelectedReportType(value)}} />
 
+				<PeriodTypeSelector selectedPeriodType={selectedPeriodType}
+					label="Period Type"
+					id="periodType"
+					onPeriodTypeChange={(value) => {setChartData({}); setSelectedPeriodType(value)}} />
+
+				{/* For monthly period */}
+				{/* {selectedPeriodType == Constant.REPORT_PERIOD_TYPE_MONTHLY && <>
+					<CustomMonthPicker label="Select a Month"
+						id="startMonth"
+						selectedMonth={startMonth.startDate}
+						onMonthChange={(dateRange) => {setChartData({}); setStartMonth(dateRange);}}
+					/>
+					<CustomMonthPicker label="Select a Month"
+						id="endMonth"
+						selectedMonth={endMonth.startDate}
+						onMonthChange={(dateRange) => {setChartData({}); setEndMonth(dateRange);}}
+					/>
+				</>} */}
+
+				{/* {selectedPeriodType == Constant.REPORT_PERIOD_TYPE_QUARTERLY && <>
+					<CustomQuarterPicker 
+					// label="Start Year"
+						// id="startYear"
+						selectedQuarter={startDate}
+						onQuarterChange={(date: Date | null) => {console.log(date); setChartData({}); setStartDate(date)}}
+					/>
+
+					<CustomQuarterPicker 
+					// label="End Year"
+						// id="endYear"
+						selectedQuarter={endDate}
+						onQuarterChange={(date: Date | null) => {setChartData({}); setEndDate(date)}}
+					/>
+				</>} */}
+
+				{/* {selectedPeriodType == Constant.REPORT_PERIOD_TYPE_YEARLY && <>
+					<CustomYearPicker label="Start Year"
+						id="startYear"
+						selectedYear={startDate}
+						onYearChange={(date: Date | null) => {console.log(date); setChartData({}); setStartDate(date)}}
+					/>
+
+					<CustomYearPicker label="End Year"
+						id="endYear"
+						selectedYear={endDate}
+						onYearChange={(date: Date | null) => {setChartData({}); setEndDate(date)}}
+					/>
+				</>} */}
+
+
+				{/* For date range */}
 				<CustomDatePicker
 					label="Start Date"
 					id="startDate"
@@ -194,7 +265,7 @@ export default function ReportPage() {
 
 
 
-			{!Utils.isEmptyJSON(chartData) && <ReportDisplay reportType={selectedReportType} data={chartData} />}
+			{!Utils.isEmptyJSON(chartData) && <ReportDisplay reportType={selectedReportType} data={chartData} startDate={startDate} endDate={endDate} periodType={selectedPeriodType} />}
 
 
 		</div>

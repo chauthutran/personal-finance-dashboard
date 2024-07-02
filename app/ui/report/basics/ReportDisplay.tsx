@@ -5,19 +5,20 @@ import CustomLineChart from '../charts/CustomLineChart';
 import MonthlyStackedBarChart from '../charts/MonthlyStackedBarChart';
 import AnnualStackedBarChart from '../charts/AnnualStackedBarChart';
 import { useCategory } from '@/contexts/CategoryContext';
-import CustomPieChart from '../charts/CustomPieChart';
-import CategoryExpenseReport from '../CategoryWiseExpenseReport';
+import CategoryExpenseReportPage from '../caterogyWiseExpenseReport/CategoryWiseExpenseReportPage';
+import IncomeVsExpenseReportPage from '../incomeVsExpenseReport/IncomeVsExpenseReportPage';
 
 
-const ReportDisplay = ({ reportType, data }) => {
+const ReportDisplay = ({ reportType, data, periodType, startDate, endDate }) => {
   const { categoryList } = useCategory();
 
   return (
     <div className="mt-4">
       <h2 className="text-xl font-bold">Report</h2>
       { reportType === Constant.REPORT_TYPE_INCOME_VS_EXPENSE && <>
-        <CustomBarChart data={data}/>
-        <CustomLineChart data={data}/> 
+        {/* <CustomBarChart data={data}/>
+        <CustomLineChart data={data}/>  */}
+        <IncomeVsExpenseReportPage data={data} startDate={startDate} endDate={endDate} periodType={periodType} />
       </> }
       { reportType === Constant.REPORT_TYPE_BUDGET_VS_ACTUAL && <>
         <CustomBarChart data={data}/>
@@ -30,7 +31,7 @@ const ReportDisplay = ({ reportType, data }) => {
         <AnnualStackedBarChart data={data} categoryList={categoryList!} />
       </>}
       { reportType === Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE && <>
-        <CategoryExpenseReport data={data} />
+        <CategoryExpenseReportPage data={data} />
       </>}
       
     </div>

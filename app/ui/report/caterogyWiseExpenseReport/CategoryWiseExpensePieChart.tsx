@@ -111,7 +111,7 @@ const renderActiveShape = (props: any) => {
 };
 
 
-export default function CategoryExpensePieChart({ data }) {
+export default function CategoryWiseExpensePieChart({ data }) {
 	// pieActiveIndex : [
 	//   {2023: 0},
 	//   {2024: 1}

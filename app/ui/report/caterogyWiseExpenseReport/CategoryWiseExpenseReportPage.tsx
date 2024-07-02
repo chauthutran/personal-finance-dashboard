@@ -1,11 +1,11 @@
 import React from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
-import CategoryExpenseBarChart from './charts/CategoryExpenseBarChart';
-import CategoryExpensePieChart from './charts/CategoryExpensePieChart';
+import CategoryWiseExpenseBarChart from './CategoryWiseExpenseBarChart';
+import CategoryExpensePieChart from './CategoryWiseExpensePieChart';
 import { JSONObject } from '@/lib/definations';
 import * as Utils from "@/lib/utils";
 
-const CategoryExpenseReport = ({ data }) => {
+export default function CategoryWiseExpenseReportPage ({ data }) {
 
 	const reportDataList = data.data;
 	/**
@@ -71,7 +71,7 @@ const CategoryExpenseReport = ({ data }) => {
 
 			<div className="bg-white shadow-md rounded-lg p-4 mb-6">
 				<h2 className="text-xl font-semibold mb-4">Expense by Categories</h2>
-				<CategoryExpenseBarChart data={transformedReportData} years={years} />
+				<CategoryWiseExpenseBarChart data={transformedReportData} years={years} />
 			</div>
 			<div className="bg-white shadow-md rounded-lg p-4 mb-6">
 				<h2 className="text-xl font-semibold mb-4">Expense Distribution</h2>
@@ -117,5 +117,3 @@ const CategoryExpenseReport = ({ data }) => {
 		</div>
 	);
 };
-
-export default CategoryExpenseReport;

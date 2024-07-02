@@ -73,7 +73,7 @@ export const isValidDate = (dateStr: string) => {
 }
 
 
-export const getMonthListFromDateRange = (startDate: Date, endDate: Date): JSONObject[] => {
+export const generateMonthList = (startDate: Date, endDate: Date): JSONObject[] => {
   
     if (startDate > endDate) {
       throw new Error("Start date must be before end date");
@@ -85,9 +85,12 @@ export const getMonthListFromDateRange = (startDate: Date, endDate: Date): JSONO
     const currentDate = new Date(startDate);
   
     while (currentDate <= endDate) {
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentYear = currentDate.getFullYear();
       monthList.push({
-        month: currentDate.getMonth() + 1,
-        year: currentDate.getFullYear(),
+        month: currentMonth,
+        year: currentYear,
+        dataKey: `${currentYear}-${currentMonth}`,
         displayName: currentDate.toLocaleDateString('en-US', options)
       });
       currentDate.setMonth(currentDate.getMonth() + 1);
@@ -95,6 +98,49 @@ export const getMonthListFromDateRange = (startDate: Date, endDate: Date): JSONO
     
     return monthList;
   };
+
+
+  export const generateYearList = (startDate: Date, endDate: Date): JSONObject[] => {
+  
+    if (startDate > endDate) {
+      throw new Error("Start date must be before end date");
+    }
+  
+    let resultList: JSONObject[] = [];
+    const fromYear = new Date(startDate).getFullYear();
+    const toYear = new Date(endDate).getFullYear();
+
+    for( let year= fromYear; year<=toYear; year++ ) {
+        resultList.push({
+            dataKey: year,
+            displayName: year
+        });
+    }
+  
+    return resultList;
+};
+
+
+export const generateQuarterList = (startDate: Date, endDate: Date): JSONObject[] => {
+    const quarters: JSONObject[] = [];
+    let currentYear = startDate.getFullYear();
+    let currentQuarter = Math.ceil((startDate.getMonth() + 1) / 3);
+  
+    const endYear = endDate.getFullYear();
+    const endQuarter = Math.ceil((endDate.getMonth() + 1) / 3);
+  
+    while (currentYear < endYear || (currentYear === endYear && currentQuarter <= endQuarter)) {
+      quarters.push({ year: currentYear, quarter: currentQuarter, dataKey:`{currentYear}-${currentQuarter}`,  displayName: `Q${currentQuarter} ${currentYear}`});
+  
+      currentQuarter++;
+      if (currentQuarter > 4) {
+        currentQuarter = 1;
+        currentYear++;
+      }
+    }
+  
+    return quarters;
+  }
 
   
 /** 

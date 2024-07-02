@@ -94,7 +94,7 @@ export const transformReportData_IncomeVSExpense = (data: JSONObject, startDate:
 	const incomeData = data.incomeData;
 	const expenseData = data.expenseData;
 
-	const monthList = Utils.getMonthListFromDateRange(startDate, endDate);
+	const monthList = Utils.generateMonthList(startDate, endDate);
 
 	for (var i = 0; i < monthList.length; i++) {
 		const monthInfo = monthList[i];
@@ -137,7 +137,7 @@ export const transformReportData_CategoryMonthly = (reportData: JSONObject, star
 	var transformedData: JSONObject[] = [];
 
 	// Add empty items if missing and conver the "name" of items to readable names of months
-	const monthList = Utils.getMonthListFromDateRange(startDate, endDate);
+	const monthList = Utils.generateMonthList(startDate, endDate);
 	const data = reportData.data;
 
 	for (var i = 0; i < monthList.length; i++) {

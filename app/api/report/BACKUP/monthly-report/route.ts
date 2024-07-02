@@ -25,23 +25,22 @@ export async function POST(request: NextRequest) {
 		errArr.push("Invalid user ID");
 	}
 
-	if (payload.startDate == undefined) {
+	if (payload.startDate === undefined) {
 		errArr.push("Start date is missing");
 	}
 	else if (!Utils.isValidDate(payload.startDate)) {
 		errArr.push("Start date is invalid");
 	}
 
-	if (payload.endDate == undefined) {
+	if (payload.endDate === undefined) {
 		errArr.push("End date is missing");
 	}
 	else if (!Utils.isValidDate(payload.endDate)) {
 		errArr.push("End date is invalid");
 	}
 
-	if (payload.dataFrom == undefined
-		|| (payload.dataFrom.indexOf("income") < 0
-			&& payload.dataFrom.indexOf("expense") < 0)) {
+	if (payload.periodType === undefined
+			&& payload.dataFrom.indexOf("expense") < 0) {
 		errArr.push(`Please define at least one 'dataFrom', 'income' or 'expense'`);
 	}
 

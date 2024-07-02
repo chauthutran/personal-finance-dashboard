@@ -23,7 +23,8 @@ export default function LoginForm() {
 	useEffect(() => {
 		console.log("============ After login");
 	  if( user != null ) {
-	    setMainPage( Constant.UI_BUDGET_PAGE );
+	    // setMainPage( Constant.UI_BUDGET_PAGE );
+		setMainPage( Constant.UI_REPORT_PAGE );
 	  }
 	},[user])
 

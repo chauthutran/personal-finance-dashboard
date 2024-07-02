@@ -24,7 +24,7 @@ import * as Utils from "@/lib/utils";
 // ];
 
 
-export default function CategoryExpenseBarChart({ data, years }) {
+export default function CategoryWiseExpenseBarChart({ data, years }) {
 
     return (
         <ResponsiveContainer width="100%" height={500}>
