@@ -110,8 +110,8 @@ export default function IncomeVsExpenseReportPage({ data, periodType, startDate,
 								{/* Income  */}
 								{(reportData.income == undefined) ? "" : Object.keys(reportData.income).map((categoryName: string, index: number) => {
 									return (
-										<tr key={index} className="text-green-600">
-											<td className="border px-4 py-2 ">Income -{categoryName}</td>
+										<tr key={index} className="text-green-600 bg-slate-100 hover:bg-slate-300">
+											<td className="border px-4 py-2">Income -{categoryName}</td>
 											<td className="border px-4 py-2">{reportData.income[categoryName]}</td>
 										</tr>
 									);
@@ -120,7 +120,7 @@ export default function IncomeVsExpenseReportPage({ data, periodType, startDate,
 								{/* Expense  */}
 								{(reportData.expense == undefined) ? "" : Object.keys(reportData.expense).map((categoryName: string, index: number) => {
 									return (
-										<tr key={index} className="text-red-600 bg-slate-100">
+										<tr key={index} className="text-red-600 bg-slate-100 hover:bg-slate-300">
 											<td className="border px-4 py-2">Expense - {categoryName}</td>
 											<td className="border px-4 py-2">{reportData.expense[categoryName]}</td>
 										</tr>
