@@ -31,7 +31,7 @@ const ReportDisplay = ({ reportType, data, periodType, startDate, endDate }) => 
 				<AnnualStackedBarChart data={data} categoryList={categoryList!} />
 			</>}
 			{reportType === Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE && <>
-				<CategoryExpenseReportPage data={data} />
+				<CategoryExpenseReportPage data={data} startDate={startDate} endDate={endDate} periodType={periodType} />
 			</>}
 
 		</div>

@@ -239,7 +239,7 @@ export const getAppHeaderSubTitle = ( subTitleKey: string ): string => {
             title = "Income Management";
             break;
         case Constant.UI_EXPENSE_PAGE:
-            title = "Income Management";
+            title = "Expense Management";
             break; 
         case Constant.UI_DASHBOARD_PAGE:
             title = "Dashbord";

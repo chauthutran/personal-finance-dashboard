@@ -31,7 +31,7 @@ export default function IncomeVsExpenseReportPage({ data, periodType, startDate,
 		  }
 	};
 
-	const reportDataList = (data.data).slice().sort(compareDates);;
+	const reportDataList = (data.data).slice().sort(compareDates);
 	const { expenseList, incomeList }  = useCategory();
 
 	// // [
@@ -112,7 +112,7 @@ export default function IncomeVsExpenseReportPage({ data, periodType, startDate,
 									return (
 										<tr key={index} className="text-green-600 bg-slate-100 hover:bg-slate-300">
 											<td className="border px-4 py-2">Income -{categoryName}</td>
-											<td className="border px-4 py-2">{reportData.income[categoryName]}</td>
+											<td className="border px-4 py-2">{reportData.income[categoryName]}$</td>
 										</tr>
 									);
 								})}
@@ -122,7 +122,7 @@ export default function IncomeVsExpenseReportPage({ data, periodType, startDate,
 									return (
 										<tr key={index} className="text-red-600 bg-slate-100 hover:bg-slate-300">
 											<td className="border px-4 py-2">Expense - {categoryName}</td>
-											<td className="border px-4 py-2">{reportData.expense[categoryName]}</td>
+											<td className="border px-4 py-2">{reportData.expense[categoryName]}$</td>
 										</tr>
 									);
 								})}

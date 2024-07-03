@@ -15,11 +15,11 @@ export default function IncomePage() {
 
     return (
         <IncomeProvider userId={user!._id}>
-            <>
+            <div className="bg-green-50">
                 { subPage === null && <IncomeList /> }
                 { subPage == Constant.SUB_UI_ADD_FORM && <IncomeForm  />}
                 { subPage == Constant.SUB_UI_EDIT_FORM && <IncomeForm data={AppStore.getSelected()!} />}
-            </>
+            </div>
         </IncomeProvider>
     )
 }

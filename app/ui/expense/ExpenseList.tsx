@@ -17,8 +17,8 @@ export default function ExpenseList() {
 
     return (
 		<>
-			 <div className="mx-auto my-3 p-3 bg-white shadow-md">
-				<div className=" overflow-y-auto h-[calc(100vh-150px)]">
+			 <div className="mx-auto p-3 shadow-md">
+				<div className=" overflow-y-auto h-[calc(100vh-125px)]">
 					<div className="divide-y divide-gray-200 ">
 						{expenseList && expenseList.map( (expense: JSONObject) => (
 							<ExpenseItem key={expense._id} data={expense}  />
@@ -28,7 +28,7 @@ export default function ExpenseList() {
 			</div>
 
 			{/* <!-- Floating Button --> */}
-			<button className="fixed bottom-16 right-5 w-14 h-14 bg-sal bg-yellow-500 hover:bg-yellow-600 text-black rounded-full shadow-lg flex items-center justify-center text-2xl"
+			<button className="fixed bottom-16 right-14 w-14 h-14 bg-sal bg-yellow-500 hover:bg-yellow-600 text-black rounded-full shadow-lg flex items-center justify-center text-2xl"
 			onClick={()=> {AppStore.setSelected(null); setSubPage(Constant.SUB_UI_ADD_FORM)}}> + </button>
 			
 		</>

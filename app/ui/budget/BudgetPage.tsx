@@ -11,15 +11,12 @@ import BudgetList from "./BudgetList";
 export default function BudgetPage() {
 
     const { subPage } = useMainUi();
-    // const { user } = useAuth();
 
     return (
-        // <BudgetProvider userId={user!._id}>
-            <>
-                { subPage === null && <BudgetList /> }
-                { subPage == Constant.SUB_UI_ADD_FORM && <BudgetForm  />}
-                { subPage == Constant.SUB_UI_EDIT_FORM && <BudgetForm data={AppStore.getSelected()!} />}
-            </>
-        // </BudgetProvider>
+        <div className="bg-blue-50">
+            { subPage === null && <BudgetList /> }
+            { subPage == Constant.SUB_UI_ADD_FORM && <BudgetForm  />}
+            { subPage == Constant.SUB_UI_EDIT_FORM && <BudgetForm data={AppStore.getSelected()!} />}
+        </div>
     )
 }

@@ -28,7 +28,7 @@ export default function ReportPage() {
 
 	//   const [selectedDate, setSelectedDate] = useState(null);
 	// const [selectedCategory, setSelectedCategory] = useState('');
-	const [selectedPeriodType, setSelectedPeriodType] = useState("");
+	const [selectedPeriodType, setSelectedPeriodType] = useState(Constant.REPORT_PERIOD_TYPE_MONTHLY);
 	
 	// const [startMonth, setStartMonth ] = useState<{ startDate: Date; endDate: Date }>({startDate: new Date(), endDate: new Date()});
 	// const [endMonth, setEndMonth] = useState<{ startDate: Date; endDate: Date }>({startDate: new Date(), endDate: new Date()});
@@ -54,16 +54,16 @@ export default function ReportPage() {
 		else if( selectedReportType === Constant.REPORT_TYPE_BUDGET_VS_ACTUAL ) {
 			await generateBudgetVsActutalReport();
 		}
-
+		else if( selectedReportType === Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE ) {
+			await generateCategoryWiseExpenseReport();
+		}
+		
 
 		else if( selectedReportType === Constant.REPORT_TYPE_MONTHLY_EXPENSE ) {
 			await generateMonthlyExpenseReport();
 		}
 		else if( selectedReportType === Constant.REPORT_TYPE_ANNUAL_FINANCIAL_SUMMARY ) {
 			await generateAnnualFinancialSummaryReport();
-		}
-		else if( selectedReportType === Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE ) {
-			await generateCategoryWiseExpenseReport();
 		}
 
 	}
@@ -124,6 +124,29 @@ export default function ReportPage() {
 		}
 	}
 
+	const generateCategoryWiseExpenseReport = async() => {
+		const urlPath = "income-vs-expense"; // Get expense only after this
+		const payload = {
+			userId: user!._id,
+			startDate: startDate!.toISOString(), 
+			endDate: endDate!.toISOString(),
+			periodType: selectedPeriodType
+		}
+		const tempChartData = await ReportService.retrieveAggregateData(urlPath, payload);
+		if (tempChartData.errMsg === undefined) {
+			delete tempChartData.totalIncome;
+			delete tempChartData.income;
+
+			setChartData(tempChartData);
+			handleUpdateChart();
+		}
+		else {
+			// Show error message here
+		}
+	}
+
+
+
 	const generateMonthlyExpenseReport = async() => {
 		const urlPath = "category-monthly-report";
 		const payload = {
@@ -163,26 +186,9 @@ export default function ReportPage() {
 		}
 	}
 
-	const generateCategoryWiseExpenseReport = async() => {
-		const urlPath = "category-wise-expense-report";
-		const payload = {
-			userId: user!._id,
-			startDate: startDate!.toISOString(), 
-			endDate: endDate!.toISOString()
-		}
-		const tempChartData = await ReportService.retrieveAggregateData(urlPath, payload);
-		if (tempChartData.errMsg === undefined) {
-			setChartData(tempChartData);
-			handleUpdateChart();
-		}
-		else {
-			// Show error message here
-		}
-	}
-
 	return (
 
-		<div className="container mx-auto p-4">
+		<div className="container mx-auto p-4 min-h-[calc(100vh-100px)]">
 			<h1 className="text-2xl font-bold mb-4">Reports</h1>
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				<ReportTypeSelector
@@ -206,7 +212,9 @@ export default function ReportPage() {
 					onDateChange={(date: Date | null) => {setChartData({}); setEndDate(date)}}
 				/>
 
-				{selectedReportType == Constant.REPORT_TYPE_INCOME_VS_EXPENSE 
+				{(selectedReportType == Constant.REPORT_TYPE_INCOME_VS_EXPENSE 
+					|| selectedReportType == Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE
+				)
 					&& <PeriodTypeSelector selectedPeriodType={selectedPeriodType}
 					label="Period Type"
 					id="periodType"

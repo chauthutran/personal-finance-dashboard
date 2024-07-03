@@ -83,3 +83,7 @@
 .recharts-pie-sector:focus {
   outline: none;
 }
+
+.react-datepicker__input-container {
+  position: static !important;
+}
