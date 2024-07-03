@@ -54,6 +54,8 @@ export default function ReportPage() {
 		else if( selectedReportType === Constant.REPORT_TYPE_BUDGET_VS_ACTUAL ) {
 			await generateBudgetVsActutalReport();
 		}
+
+
 		else if( selectedReportType === Constant.REPORT_TYPE_MONTHLY_EXPENSE ) {
 			await generateMonthlyExpenseReport();
 		}
@@ -103,7 +105,7 @@ export default function ReportPage() {
 	}
 
 	const generateBudgetVsActutalReport = async() => {
-		const urlPath = "budget-vs-expense";
+		const urlPath = "budget-vs-actual"; 
 		const payload = {
 			userId: user!._id,
 			startDate: startDate!.toISOString(), 
@@ -113,8 +115,8 @@ export default function ReportPage() {
 		const tempChartData = await ReportService.retrieveAggregateData(urlPath, payload);
 
 		if (tempChartData.errMsg === undefined) {
-			const dataTranformed = ReportService.transformReportData_BudgetVSActual( tempChartData );
-			setChartData(dataTranformed);
+			// const dataTranformed = ReportService.transformReportData_BudgetVSActual( tempChartData );
+			setChartData(tempChartData);
 			handleUpdateChart();
 		}
 		else {

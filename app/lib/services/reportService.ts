@@ -52,6 +52,12 @@ export const expenseColors = [
 	"#FF7F7F", "#FF6F61", "#D32F2F"
 ];
 
+export const budgetColors = [
+	"#87CEFA", "#00BFFF", "#1E90FF", "#6495ED", "#4169E1", "#0000CD",
+	"#00008B", "#000080", "#4682B4", "#6A5ACD", "#87CEEB", "#F0F8FF",
+	"#B0E0E6", "#ADD8E6", "#008080"
+];
+
 export const retrieveAggregateData = async (path: string, payload: JSONObject): Promise<JSONObject> => {
 
 	try {

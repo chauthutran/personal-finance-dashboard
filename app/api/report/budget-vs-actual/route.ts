@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 import * as Constant from "@/lib/constants";
 import Budget from "@/lib/schemas/Budget.schema";
 import Transaction from "@/lib/schemas/Transaction.schema";
- 
+
 interface ReportData {
 	categoryId: string,
 	budgetAmount: number,
@@ -17,7 +17,7 @@ interface ReportData {
 }
 
 
-export async function POST( request: NextRequest ) {
+export async function POST(request: NextRequest) {
 
 	const payload: JSONObject = await request.json();
 
@@ -27,32 +27,32 @@ export async function POST( request: NextRequest ) {
 		errArr.push("Invalid user ID");
 	}
 
-	if (payload.startDate == undefined ) {
+	if (payload.startDate == undefined) {
 		errArr.push("Start date is missing");
 	}
-	else if(!Utils.isValidDate(payload.startDate) ) {
+	else if (!Utils.isValidDate(payload.startDate)) {
 		errArr.push("Start date is invalid");
 	}
 
-	if (payload.endDate == undefined ) {
+	if (payload.endDate == undefined) {
 		errArr.push("End date is missing");
 	}
-	else if(!Utils.isValidDate(payload.endDate) ) {
+	else if (!Utils.isValidDate(payload.endDate)) {
 		errArr.push("End date is invalid");
 	}
 
-	if( errArr.length > 0 ) {
-		return NextResponse.json({errMsg: errArr.join("; ")}, { status: 200 });
+	if (errArr.length > 0) {
+		return NextResponse.json({ errMsg: errArr.join("; ") }, { status: 200 });
 	}
 
 	let reportData: JSONObject = {};
 	reportData.data = await getReportData(payload.userId, payload.startDate, payload.endDate);
-		
+
 	return NextResponse.json(reportData, { status: 200 });
 }
 
 
-const getReportData = async(userId: string, startDate: string, endDate: string): Promise<ReportData[]> => {
+const getReportData = async (userId: string, startDate: string, endDate: string): Promise<ReportData[]> => {
 	const reportData: ReportData[] = await Transaction.aggregate([
 		{
 			$match: {
@@ -65,12 +65,12 @@ const getReportData = async(userId: string, startDate: string, endDate: string):
 			}
 		},
 		{
-		  $lookup: {
-			from: 'budgets',
-			localField: 'budgetId',
-			foreignField: '_id',
-			as: 'budgetDetails'
-		  }
+			$lookup: {
+				from: 'budgets',
+				localField: 'budgetId',
+				foreignField: '_id',
+				as: 'budgetDetails'
+			}
 		},
 		{
 			$unwind: {
@@ -79,12 +79,12 @@ const getReportData = async(userId: string, startDate: string, endDate: string):
 			}
 		},
 		{
-		  $lookup: {
-			from: 'categories',
-			localField: 'categoryId',
-			foreignField: '_id',
-			as: 'categoryDetails'
-		  }
+			$lookup: {
+				from: 'categories',
+				localField: 'categoryId',
+				foreignField: '_id',
+				as: 'categoryDetails'
+			}
 		},
 		{
 			$unwind: {
@@ -93,27 +93,27 @@ const getReportData = async(userId: string, startDate: string, endDate: string):
 			}
 		},
 		{
-		  $group: {
-			_id: '$budgetId',
-			category: { $first: '$budgetDetails.categoryId' },
-			budgetAmount: { $first: '$budgetDetails.amount' },
-			expenseAmount: { $sum: '$amount' },
-			categoryName: { $first: '$categoryDetails.name' },
-			categories: { $addToSet: '$categoryDetails.name' }
-		  }
+			$group: {
+				_id: {
+					categoryName: '$categoryDetails.name'
+				},
+				category: { $first: '$budgetDetails.categoryId' },
+				budgetAmount: { $sum: '$budgetDetails.amount' },
+				expenseAmount: { $sum: '$amount' },
+				categories: { $addToSet: '$categoryDetails.name' }
+			}
 		},
 		{
-		  $project: {
-			categoryId: 1,
-			budgetAmount: 1,
-			expenseAmount: 1,
-			remainingAmount: { $subtract: ['$budgetAmount', '$expenseAmount'] },
-			categoryName: 1,
-			categories: 1
-		  }
+			$project: {
+				categoryId: 1,
+				budgetAmount: 1,
+				expenseAmount: 1,
+				remainingAmount: { $subtract: ['$budgetAmount', '$expenseAmount'] },
+				categoryName: 1,
+				categories: 1
+			}
 		}
-	  ]);
-	  console.log("=========== reportData");
-	console.log(reportData);
+	]);
+
 	return reportData;
 }
