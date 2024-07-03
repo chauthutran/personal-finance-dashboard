@@ -7,37 +7,37 @@ import * as Constant from "@/lib/constants";
 
 // export const COLORS = ['#4CAF50', '#F44336', '#2196F3', '#9E9E9E'];
 
-export const COLORS = [ 
+export const COLORS = [
 	"#1F77B4", // Strong Blue
-  "#FF7F0E", // Strong Orange
-  "#2CA02C", // Strong Green
-  "#D62728", // Strong Red
-  "#9467BD", // Strong Purple
-  "#8C564B", // Strong Brown
-  "#E377C2", // Strong Pink
-  "#7F7F7F", // Strong Grey
-  "#BCBD22", // Strong Yellow-Green
-  "#17BECF", // Strong Cyan
-  "#FFBB78", // Light Orange
-  "#98DF8A", // Light Green
-  "#FF9896", // Light Red
-  "#C5B0D5", // Light Purple
-  "#C49C94", // Light Brown
-  "#F7B6D2", // Light Pink
-  "#C7C7C7", // Light Grey
-  "#DBDB8D", // Light Yellow-Green
-  "#9EDAE5", // Light Cyan
-  "#1F78B4", // Deep Blue
-  "#33A02C", // Deep Green
-  "#FB9A99", // Soft Red
-  "#E31A1C", // Deep Red
-  "#FDBF6F", // Deep Orange
-  "#FF7F00", // Bright Orange
-  "#CAB2D6", // Soft Purple
-  "#6A3D9A", // Deep Purple
-  "#B15928", // Deep Brown
-  "#FFFF99", // Bright Yellow
-  "#B2DF8A"  // Soft Green
+	"#FF7F0E", // Strong Orange
+	"#2CA02C", // Strong Green
+	"#D62728", // Strong Red
+	"#9467BD", // Strong Purple
+	"#8C564B", // Strong Brown
+	"#E377C2", // Strong Pink
+	"#7F7F7F", // Strong Grey
+	"#BCBD22", // Strong Yellow-Green
+	"#17BECF", // Strong Cyan
+	"#FFBB78", // Light Orange
+	"#98DF8A", // Light Green
+	"#FF9896", // Light Red
+	"#C5B0D5", // Light Purple
+	"#C49C94", // Light Brown
+	"#F7B6D2", // Light Pink
+	"#C7C7C7", // Light Grey
+	"#DBDB8D", // Light Yellow-Green
+	"#9EDAE5", // Light Cyan
+	"#1F78B4", // Deep Blue
+	"#33A02C", // Deep Green
+	"#FB9A99", // Soft Red
+	"#E31A1C", // Deep Red
+	"#FDBF6F", // Deep Orange
+	"#FF7F00", // Bright Orange
+	"#CAB2D6", // Soft Purple
+	"#6A3D9A", // Deep Purple
+	"#B15928", // Deep Brown
+	"#FFFF99", // Bright Yellow
+	"#B2DF8A"  // Soft Green
 ];
 
 export const incomeColors = [
@@ -169,4 +169,36 @@ export const transformReportData_AnnualFinancialSummary = (reportData: JSONObjec
 		});
 		return transformed;
 	});
+}
+
+export const generateRedColor = (index: number): string => {
+	const maxIndex = 255; // Maximum value for green and blue components
+	const variation = index % maxIndex;
+
+	// Create a color in the form of 'rgb(255, <variation>, <variation>)'
+	// const color = `rgb(255, ${variation}, ${variation})`;
+	const color = `rgb(${variation}, 0, 0)`;
+
+	return color;
+}
+
+export const generateGreenColor = (index: number): string => {
+	const maxIndex = 255; // Maximum value for green component
+	const variation = index % maxIndex;
+
+	// Create a color in the form of 'rgb(<variation>, 255, <variation>)'
+	const color = `rgb(${variation}, 255, ${variation})`;
+
+	return color;
+}
+
+
+export const generateBlueColor = (index: number): string => {
+	const maxIndex = 255; // Maximum value for blue component
+	const variation = index % maxIndex;
+
+	// Create a color in the form of 'rgb(0, 0, <variation>)'
+	const color = `rgb(0, 0, ${variation})`;
+
+	return color;
 }

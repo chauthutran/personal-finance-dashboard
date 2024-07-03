@@ -18,7 +18,7 @@ export default function AnnualStackedBarChart({ data, categoryList }: { data: JS
 	valueColdsName = valueColdsName.filter(item => item !== "name");
 
     let reportData: JSONObject[] = Utils.mergeArrays(data);
-    
+    console.log(reportData);
 	return (
 		<ResponsiveContainer width="100%" height={800}>
             <BarChart
