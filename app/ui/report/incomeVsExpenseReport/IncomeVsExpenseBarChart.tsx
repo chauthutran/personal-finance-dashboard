@@ -86,13 +86,13 @@ export default function IncomeVsExpenseBarChart({ data, periodType, startDate, e
 			if (found.length > 0) {
 				if (found[0].income !== undefined) {
 					Object.keys(found[0].income).forEach((key) => {
-						resultItem[`income_${key}`] = found[0].income[key];
+						resultItem[`Income: ${key}`] = found[0].income[key];
 					});
 				}
 
 				if (found[0].expense !== undefined) {
 					Object.keys(found[0].expense).forEach((key) => {
-						resultItem[`expense_${key}`] = found[0].expense[key];
+						resultItem[`Expense: ${key}`] = found[0].expense[key];
 					});
 				}
 			}
@@ -115,13 +115,13 @@ export default function IncomeVsExpenseBarChart({ data, periodType, startDate, e
 			if (found.length > 0) {
 				if (found[0].income !== undefined) {
 					Object.keys(found[0].income).forEach((key) => {
-						resultItem[`income_${key}`] = found[0].income[key];
+						resultItem[`Income: ${key}`] = found[0].income[key];
 					});
 				}
 
 				if (found[0].expense !== undefined) {
 					Object.keys(found[0].expense).forEach((key) => {
-						resultItem[`expense_${key}`] = found[0].expense[key];
+						resultItem[`Expense: ${key}`] = found[0].expense[key];
 					});
 				}
 			}
@@ -143,13 +143,13 @@ export default function IncomeVsExpenseBarChart({ data, periodType, startDate, e
 			if (found.length > 0) {
 				if (found[0].income !== undefined) {
 					Object.keys(found[0].income).forEach((key) => {
-						resultItem[`income_${key}`] = found[0].income[key];
+						resultItem[`Income: ${key}`] = found[0].income[key];
 					});
 				}
 
 				if (found[0].expense !== undefined) {
 					Object.keys(found[0].expense).forEach((key) => {
-						resultItem[`expense_${key}`] = found[0].expense[key];
+						resultItem[`Expense: ${key}`] = found[0].expense[key];
 					});
 				}
 			}
@@ -184,10 +184,10 @@ export default function IncomeVsExpenseBarChart({ data, periodType, startDate, e
 				<Tooltip />
 
 				{categoryExpenseList.map((category, index) => (
-					<Bar key={category.name} dataKey={`expense_${category.name}`} stackId="expense" fill={ReportService.expenseColors[index]} />
+					<Bar key={category.name} dataKey={`Expense: ${category.name}`} stackId="expense" fill={ReportService.expenseColors[index]} />
 				))}
 				{categoryIncomeList.map((category, index) => (
-					<Bar key={category.name} dataKey={`income_${category.name}`} stackId="income" fill={ReportService.incomeColors[index]} />
+					<Bar key={category.name} dataKey={`Income: ${category.name}`} stackId="income" fill={ReportService.incomeColors[index]} />
 				))}
 			</BarChart>
 		</ResponsiveContainer>

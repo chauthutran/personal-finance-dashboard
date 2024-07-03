@@ -10,32 +10,30 @@ import IncomeVsExpenseReportPage from '../incomeVsExpenseReport/IncomeVsExpenseR
 
 
 const ReportDisplay = ({ reportType, data, periodType, startDate, endDate }) => {
-  const { categoryList } = useCategory();
+	const { categoryList } = useCategory();
 
-  return (
-    <div className="mt-4">
-      <h2 className="text-xl font-bold">Report</h2>
-      { reportType === Constant.REPORT_TYPE_INCOME_VS_EXPENSE && <>
-        {/* <CustomBarChart data={data}/>
-        <CustomLineChart data={data}/>  */}
-        <IncomeVsExpenseReportPage data={data} startDate={startDate} endDate={endDate} periodType={periodType} />
-      </> }
-      { reportType === Constant.REPORT_TYPE_BUDGET_VS_ACTUAL && <>
-        <CustomBarChart data={data}/>
-        <CustomLineChart data={data}/> 
-      </>}
-      { reportType === Constant.REPORT_TYPE_MONTHLY_EXPENSE && <>
-        <MonthlyStackedBarChart data={data} categoryList={categoryList!} />
-      </>}
-      { reportType === Constant.REPORT_TYPE_ANNUAL_FINANCIAL_SUMMARY && <>
-        <AnnualStackedBarChart data={data} categoryList={categoryList!} />
-      </>}
-      { reportType === Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE && <>
-        <CategoryExpenseReportPage data={data} />
-      </>}
-      
-    </div>
-  );
+	return (
+		<div className="mt-4">
+
+			{reportType === Constant.REPORT_TYPE_INCOME_VS_EXPENSE && <>
+				<IncomeVsExpenseReportPage data={data} startDate={startDate} endDate={endDate} periodType={periodType} />
+			</>}
+			{reportType === Constant.REPORT_TYPE_BUDGET_VS_ACTUAL && <>
+				<CustomBarChart data={data} />
+				<CustomLineChart data={data} />
+			</>}
+			{reportType === Constant.REPORT_TYPE_MONTHLY_EXPENSE && <>
+				<MonthlyStackedBarChart data={data} categoryList={categoryList!} />
+			</>}
+			{reportType === Constant.REPORT_TYPE_ANNUAL_FINANCIAL_SUMMARY && <>
+				<AnnualStackedBarChart data={data} categoryList={categoryList!} />
+			</>}
+			{reportType === Constant.REPORT_TYPE_CATEGORY_WISE_EXPENSE && <>
+				<CategoryExpenseReportPage data={data} />
+			</>}
+
+		</div>
+	);
 };
 
 export default ReportDisplay;

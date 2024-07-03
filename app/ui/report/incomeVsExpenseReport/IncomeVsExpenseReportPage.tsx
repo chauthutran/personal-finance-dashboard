@@ -62,7 +62,7 @@ export default function IncomeVsExpenseReportPage({ data, periodType, startDate,
 
 	return (
 		<div className="container mx-auto p-4">
-			<h1 className="text-2xl font-bold mb-4">Income vsxpense Report</h1>
+			<h1 className="text-2xl font-bold mb-4">Income vs Expense Report</h1>
 			{/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 				{reportDataList.map((reportData, index) => {
 					return (
