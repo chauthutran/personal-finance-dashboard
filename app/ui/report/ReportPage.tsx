@@ -22,6 +22,9 @@ export default function ReportPage() {
 	const [endDate, setEndDate] = useState<Date | null>(new Date());
 
 	
+	const [selectedReportType, setSelectedReportType] = useState(Constant.REPORT_TYPE_INCOME_VS_EXPENSE);
+	const [chartData, setChartData] = useState<JSONObject | JSONObject[]>({});
+
 
 	//   const [selectedDate, setSelectedDate] = useState(null);
 	// const [selectedCategory, setSelectedCategory] = useState('');
@@ -35,9 +38,6 @@ export default function ReportPage() {
 
 	  const [selectedMonth, setSelectedMonth] = useState(new Date());
 	//   const [selectedYear, setSelectedYear] = useState(null);
-
-	const [selectedReportType, setSelectedReportType] = useState(Constant.REPORT_PERIOD_TYPE_MONTHLY);
-	const [chartData, setChartData] = useState<JSONObject | JSONObject[]>({});
 
 
 	const [requestToUpdate, setRequestToUpdate] = useState<number>(0);
@@ -191,10 +191,26 @@ export default function ReportPage() {
 					selectedReportType={selectedReportType}
 					onReportTypeChange={(value) => {setChartData({}); setSelectedReportType(value)}} />
 
-				<PeriodTypeSelector selectedPeriodType={selectedPeriodType}
+				{/* For date range */}
+				<CustomDatePicker
+					label="Start Date"
+					id="startDate"
+					selectedDate={startDate}
+					onDateChange={(date: Date | null) => {setChartData({}); setStartDate(date)}}
+				/>
+
+				<CustomDatePicker
+					label="End Date"
+					id="endDate"
+					selectedDate={endDate}
+					onDateChange={(date: Date | null) => {setChartData({}); setEndDate(date)}}
+				/>
+
+				{selectedReportType == Constant.REPORT_TYPE_INCOME_VS_EXPENSE 
+					&& <PeriodTypeSelector selectedPeriodType={selectedPeriodType}
 					label="Period Type"
 					id="periodType"
-					onPeriodTypeChange={(value) => {setChartData({}); setSelectedPeriodType(value)}} />
+					onPeriodTypeChange={(value) => {setChartData({}); setSelectedPeriodType(value)}} /> }
 
 				{/* For monthly period */}
 				{/* {selectedPeriodType == Constant.REPORT_PERIOD_TYPE_MONTHLY && <>
@@ -240,25 +256,6 @@ export default function ReportPage() {
 					/>
 				</>} */}
 
-
-				{/* For date range */}
-				<CustomDatePicker
-					label="Start Date"
-					id="startDate"
-					selectedDate={startDate}
-					onDateChange={(date: Date | null) => {setChartData({}); setStartDate(date)}}
-				// dateFormat="yyyy-MM-dd"
-				// className="w-full p-2 border border-gray-300 rounded"
-				/>
-
-				<CustomDatePicker
-					label="End Date"
-					id="endDate"
-					selectedDate={endDate}
-					onDateChange={(date: Date | null) => {setChartData({}); setEndDate(date)}}
-				// dateFormat="yyyy-MM-dd"
-				// className="w-full p-2 border border-gray-300 rounded"
-				/>
 
 				<button className="px-4 py-2  bg-green-700 rounded text-white" onClick={() => generateReport()} >Generate chart</button>
 
